@@ -1,0 +1,28 @@
+{
+    "context": {
+        "class": "\\Core\\Context",
+        "constructor-args": [],
+        "dependencies": {
+            "1": [
+                { 
+                    "class": "\\Core\\Application",
+                    "property": "application",
+                    "constructor-args": []
+                },
+                { 
+                    "class": "\\Web\\HttpRequest",
+                    "property": "applicationRequest",
+                    "constructor-args": [
+                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestRoute", [] ],
+                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestMethod", [] ],
+                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestHeaders", [] ],
+                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestCookies", [] ],
+                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestData", [] ]
+                    ]
+                }
+            ],
+            "2": [
+            ]
+        }
+    }
+}
