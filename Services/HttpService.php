@@ -2,10 +2,10 @@
 
 use DateTime;
 
-use Interfaces\Web\HttpHeader;
-use Interfaces\Web\HttpRequest;
-use Interfaces\Web\HttpResponse;
-use Interfaces\Web\HttpCookie;
+use Web\HttpHeader;
+use Web\HttpRequest;
+use Web\HttpResponse;
+use Web\HttpCookie;
 
 use Factories\Web\HttpHeaderFactory;
 use Factories\Web\HttpCookieFactory;
@@ -22,26 +22,27 @@ class HttpService
         return $isCookes instanceof HttpCookie;
     }
 
-    public static function cookieToCurlOptValue(HttpCookie $cookie): string
+    public static function cookieToSetCookieHeader(HttpCookie $cookie): string
     {
-        $value = 'Set-Cookie: ';
+        $name = 'Set-Cookie';
 
+        $value = '';
         $value .= $cookie->getName() . '=' . $cookie->getValue() . '; ';
         $value .= 'Expires=' . $cookie->getExpiresRFC() . '; ';
         $value .= $cookie->getSecure() ? 'Secure; ' : '';
         $value .= $cookie->getHttpOnly() ? 'HttpOnly' : '';
 
-        return $value;
+        return HttpHeaderFactory::get($name, $value, false);
     }
 
-    public static function getHeadersFromSplittedHead(array $headParts): array
+    public static function getHeadersFromResponseHead(string $responseHead): array
     {
-        $headersArray = [];
+        $headers = [];
+        $headLines = StringService::explode($responseHead);
 
-        foreach ( $headParts as $part ) {
-            if ( StringService::strPosition($part, ': ') !== -1 ) {
-                $headerParts = StringService::explode($part, ': ');
-
+        foreach ( $headLines as $line ) {
+            if ( StringService::strPosition($line, ': ') !== -1 ) {
+                $headerParts = StringService::explode($line, ': ');
                 $headersArray[] = HttpHeaderFactory::get($headerParts[0], $headerParts[1]);
             }
         }

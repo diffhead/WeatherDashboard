@@ -1,7 +1,5 @@
 <?php namespace Core;
 
-use Core\DependencyInjection\Container;
-
 class Loader 
 {
     public static function loadClass(string $className): void
@@ -23,6 +21,7 @@ class Loader
 
     public function bootstrap(): void
     {
+        /*
         $context = Context::getInstance();
 
         if ( _ENABLE_MODULES_ ) {
@@ -30,20 +29,25 @@ class Loader
         }
 
         $context->application->run($context->applicationRequest);
+        */
     }
 
     private function initConstants(): void
     {
-        define('_APP_BASE_DIR_', $_SERVER['DOCUMENT_ROOT'] . '/');
         define('_PHP_EXTENSION_', '.php');
+
+        if ( php_sapi_name() === 'cli' ) {
+            define('_APP_BASE_DIR_', getenv('PWD') . '/');
+            //define('_APP_ENVIRONMENT_', Application::CLI_ENVIRONMENT);
+        } else {
+            define('_APP_BASE_DIR_', $_SERVER['DOCUMENT_ROOT'] . '/');
+            //define('_APP_ENVIRONMENT_', Application::WEB_ENVIRONMENT);
+        }
+
+        define('_APP_ENVIRONMENT_', 'web');
+
         define('_DEV_MODE_', true);
         define('_ENABLE_MODULES_', true);
-
-        if ( !empty($_SERVER['HTTP_HOST']) ) {
-            define('_APP_ENVIRONMENT_', Application::WEB_ENVIRONMENT);
-        } else {
-            define('_APP_ENVIRONMENT_', Application::CLI_ENVIRONMENT);
-        }
     }
 
     private function initSplLoader(): void
@@ -53,10 +57,5 @@ class Loader
 
     private function initContext(): void
     {
-        $diContainer = new Container('context');
-
-        Context::setInstance(
-            $diContainer->get(_APP_ENVIRONMENT_)
-        );
     }
 }

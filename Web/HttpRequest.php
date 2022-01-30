@@ -1,10 +1,8 @@
 <?php namespace Web;
 
 use Interfaces\ApplicationRequest;
-use Interfaces\DependencyInjection\Injectable;
-use Interfaces\Web\HttpRequest as HttpRequestInterface;
 
-class HttpRequest implements ApplicationRequest, HttpRequestInterface, Injectable
+class HttpRequest implements ApplicationRequest
 {
     private string       $url         = '';
     private string       $method      = 'GET';
@@ -61,23 +59,19 @@ class HttpRequest implements ApplicationRequest, HttpRequestInterface, Injectabl
         return $this->data;
     }
 
-    public function setRequestData(array $requestData): void
+    public function setRequestData(array $requestData): bool
     {
-        $this->requestData = $requestData;
+        if ( empty($this->requestData) === true ) {
+            $this->requestData = $requestData;
+
+            return true;
+        }
+
+        return false;
     }
 
     public function getRequestData(): array
     {
         return $this->requestData;
-    }
-
-    public function onInjected(): bool
-    {
-        return true;
-    }
-
-    public function onEjected(): bool
-    {
-        return true;
     }
 }

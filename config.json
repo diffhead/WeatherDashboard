@@ -1,0 +1,20 @@
+{
+    "host": "local.development.me",
+    "port": 80,
+    "devMode": true,
+    "storage": {
+        "database": {
+            "host": "localhost",
+            "port": 5432,
+            "user": "tree",
+            "pswd": "strongpassword",
+            "dbDrv": "pgsql"
+        },
+        "memcached": {
+            "enabled": false,
+            "servers": [
+                { "host": "127.0.0.1", "port": "11211" }
+            ]
+        }
+    }
+}

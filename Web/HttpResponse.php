@@ -1,8 +1,6 @@
 <?php namespace Web;
 
-use Interfaces\Web\HttpResponse as HttpResponseInterface;
-
-class HttpResponse implements HttpResponseInterface
+class HttpResponse
 {
     private string|array $data = [];
     private array        $headers = [];

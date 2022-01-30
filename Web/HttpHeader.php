@@ -1,8 +1,6 @@
 <?php namespace Web;
 
-use Interfaces\Web\HttpHeader as HttpHeaderInterface;
-
-class HttpHeader implements HttpHeaderInterface
+class HttpHeader
 {
     private string $name = '';
     private string $value = '';

@@ -6,10 +6,6 @@ use Services\JsonService;
 use Services\HttpService;
 use Services\StringService;
 
-use Interfaces\Web\HttpHeader;
-use Interfaces\Web\HttpRequest;
-use Interfaces\Web\HttpResponse;
-
 use Factories\Web\HttpResponseFactory;
 
 class HttpClient
@@ -21,24 +17,12 @@ class HttpClient
 
     public function __construct(HttpRequest $request)
     {
-        $this->request = $request;
+        $this->setRequest($request);
+        $this->initCurl($request);
     }
 
     public function sendRequest(): bool
     {
-        $this->initCurl();
-
-        if ( $this->request->getMethod() === 'POST' ) {
-            $this->curlSetOpt(CURLOPT_POST, 1);
-            $this->curlSetOpt(CURLOPT_POSTFIELDS, $this->request->getData());
-        }
-
-        $this->curlSetOpt(CURLOPT_HEADER, 1);
-        $this->curlSetOpt(CURLOPT_RETURNTRANSFER, 1);
-
-        $this->loadRequestHeaders();
-        $this->loadRequestCookies();
-
         return $this->curlExec();
     }
 
@@ -60,9 +44,22 @@ class HttpClient
         return curl_errno($this->curl);
     }
 
-    private function initCurl(): void
+    private function setRequest(HttpRequest $request): void
     {
-        $this->curl = curl_init($this->request->getUrl());
+        $this->request = $request;
+    }
+
+    private function initCurl(HttpRequest $request): void
+    {
+        $this->curl = curl_init($request->getUrl());
+
+        if ( $request->getMethod() === 'POST' ) {
+            $this->curlSetOpt(CURLOPT_POST, 1);
+            $this->curlSetOpt(CURLOPT_POSTFIELDS, $request->getData());
+        }
+
+        $this->curlSetOpt(CURLOPT_HEADER, 1);
+        $this->curlSetOpt(CURLOPT_RETURNTRANSFER, 1);
     }
 
     private function curlSetOpt(int $curlOption, mixed $value): bool
@@ -94,7 +91,9 @@ class HttpClient
 
         foreach ( $this->request->getCookies() as $cookie ) {
             if ( HttpService::isCookie($cookie) ) {
-                $status &= $this->curlSetOpt(CURLOPT_HTTPHEADER, HttpService::cookieToCurlOptValue($cookie));
+                $header = HttpService::cookieToSetCookieHeader($cookie);
+
+                $status &= $this->curlSetOpt(CURLOPT_HTTPHEADER, $header->getRaw());
             }
         }
 
@@ -120,7 +119,7 @@ class HttpClient
         $curlHead = StringService::subString($curlResult, 0, $curlHeaderSize);
         $curlBody = StringService::subString($curlResult, $curlHeaderSize);
 
-        $curlHeaders = HttpService::getHeadersFromSplittedHead(StringService::explode($curlHead, PHP_EOL));
+        $curlHeaders = HttpService::getHeadersFromResponseHead($curlHead);
         $curlCookies = [];
 
         foreach ( $curlHeaders as $header ) {
@@ -150,7 +149,16 @@ class HttpClient
 
         $this->curlClose();
 
-        return true;
+        $responseCode = $this->response->getCode();
+
+        $responseCodeIsSuccess = $responseCode >= 200 && $responseCode <= 299;
+        $responseCodeIsRedirect = $responseCode >= 300 && $responseCode <= 399;
+
+        if ( $responseCodeIsSuccess || $responseCodeIsRedirect ) {
+            return true;
+        }
+
+        return false;
     }
 
     private function curlInfo(int $option): mixed

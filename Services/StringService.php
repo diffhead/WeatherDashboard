@@ -42,7 +42,7 @@ class StringService
         return $strpos;
     }
 
-    public static function strReplace(string $pattern, string $replacement, string $string): string
+    public static function strReplace(string $string, string $pattern, string $replacement): string
     {
         return str_replace($pattern, $replacement, $string);
     }

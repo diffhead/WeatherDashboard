@@ -1,8 +1,6 @@
 <?php namespace Web;
 
-use Interfaces\Web\HttpCookie as HttpCookieInterface;
-
-class HttpCookie implements HttpCookieInterface
+class HttpCookie
 {
     public function __construct(
         string $name, 

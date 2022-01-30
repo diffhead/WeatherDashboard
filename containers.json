@@ -1,13 +1,17 @@
 {
     "context": {
         "class": "\\Core\\Context",
-        "constructor-args": [],
+        "constructor-args": [
+        ],
         "dependencies": {
             "1": [
                 { 
                     "class": "\\Core\\Application",
                     "property": "application",
-                    "constructor-args": []
+                    "constructor-args": [
+                        [ "static-method", "\\Services\\ApplicationService::getConfiguration", [] ],
+                        [ "static-method", "\\Services\\ApplicationService::getApplicationRouter", [] ]
+                    ]
                 },
                 { 
                     "class": "\\Web\\HttpRequest",

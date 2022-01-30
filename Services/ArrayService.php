@@ -17,11 +17,6 @@ class ArrayService
         return empty($isEmpty);
     }
 
-    public static function isSet(array $array, string|int $key): bool
-    {
-        return isset($array[$key]);
-    }
-
     public static function sizeOf(array $array): int
     {
         return sizeof($array);

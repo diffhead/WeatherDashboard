@@ -1,7 +1,7 @@
 <?php namespace Interfaces;
 
-interface ApplicationRequest 
+interface ApplicationRequest
 {
-    public function setRequestData(array $requestData): void;
+    public function setRequestData(array $requestData): bool;
     public function getRequestData(): array;
 }
