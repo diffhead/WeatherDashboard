@@ -1,7 +1,8 @@
 {
     "host": "local.development.me",
     "port": 80,
-    "devMode": true,
+    "dev": true,
+    "modules": true,
     "storage": {
         "database": {
             "host": "localhost",

@@ -1,5 +1,14 @@
 <?php namespace Core;
 
+use Interfaces\Application;
+
+use Services\DependencyInjectionService;
+use Services\ApplicationService;
+
+use Config\ApplicationConfig;
+use Config\DatabaseConfig;
+use Config\MemcachedConfig;
+
 class Loader 
 {
     public static function loadClass(string $className): void
@@ -17,11 +26,11 @@ class Loader
         $this->initSplLoader();
         $this->initConstants();
         $this->initContext();
+        $this->initConfigs();
     }
 
     public function bootstrap(): void
     {
-        /*
         $context = Context::getInstance();
 
         if ( _ENABLE_MODULES_ ) {
@@ -29,25 +38,20 @@ class Loader
         }
 
         $context->application->run($context->applicationRequest);
-        */
     }
 
     private function initConstants(): void
     {
         define('_PHP_EXTENSION_', '.php');
+        define('_APP_EMPTY_STRING_', '');
 
         if ( php_sapi_name() === 'cli' ) {
             define('_APP_BASE_DIR_', getenv('PWD') . '/');
-            //define('_APP_ENVIRONMENT_', Application::CLI_ENVIRONMENT);
+            define('_APP_ENVIRONMENT_', Application::CLI_ENVIRONMENT);
         } else {
             define('_APP_BASE_DIR_', $_SERVER['DOCUMENT_ROOT'] . '/');
-            //define('_APP_ENVIRONMENT_', Application::WEB_ENVIRONMENT);
+            define('_APP_ENVIRONMENT_', Application::WEB_ENVIRONMENT);
         }
-
-        define('_APP_ENVIRONMENT_', 'web');
-
-        define('_DEV_MODE_', true);
-        define('_ENABLE_MODULES_', true);
     }
 
     private function initSplLoader(): void
@@ -57,5 +61,38 @@ class Loader
 
     private function initContext(): void
     {
+        $diContainer = DependencyInjectionService::initContainer('core.context');
+
+        Context::setInstance(
+            $diContainer->get(_APP_ENVIRONMENT_)
+        );
+    }
+
+    private function initConfigs(): void
+    {
+        $configJson = ApplicationService::getGlobalConfigJson();
+
+        ApplicationConfig::setFields([
+            'host'    => $configJson['host'],
+            'port'    => $configJson['port'],
+            'dev'     => $configJson['dev'],
+            'modules' => $configJson['modules']
+        ]);
+
+        DatabaseConfig::setFields([
+            'driver'   => $configJson['storage']['database']['dbDrv'],
+            'host'     => $configJson['storage']['database']['host'],
+            'port'     => $configJson['storage']['database']['port'],
+            'username' => $configJson['storage']['database']['user'],
+            'password' => $configJson['storage']['database']['pswd']
+        ]);
+
+        MemcachedConfig::setFields([
+            'enabled' => $configJson['storage']['memcached']['enabled'],
+            'servers' => $configJson['storage']['memcached']['servers']
+        ]);
+
+        define('_ENABLE_MODULES_', ApplicationConfig::get('modules'));
+        define('_DEV_MODE_', ApplicationConfig::get('dev'));
     }
 }

@@ -1,31 +1,25 @@
 {
-    "context": {
+    "core.context": {
         "class": "\\Core\\Context",
-        "constructor-args": [
-        ],
-        "dependencies": {
+        "constructor-args": {
             "1": [
                 { 
-                    "class": "\\Core\\Application",
-                    "property": "application",
-                    "constructor-args": [
-                        [ "static-method", "\\Services\\ApplicationService::getConfiguration", [] ],
-                        [ "static-method", "\\Services\\ApplicationService::getApplicationRouter", [] ]
-                    ]
+                    "type": "class", 
+                    "value": "\\Web\\Application",
+                    "arguments": [
+                    ] 
                 },
-                { 
-                    "class": "\\Web\\HttpRequest",
-                    "property": "applicationRequest",
-                    "constructor-args": [
-                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestRoute", [] ],
-                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestMethod", [] ],
-                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestHeaders", [] ],
-                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestCookies", [] ],
-                        [ "static-method", "\\Services\\ApplicationRequestService::getRequestData", [] ]
+                {
+                    "type": "class",
+                    "value": "\\Web\\HttpRequest",
+                    "arguments": [
+                        { "type": "static-method", "value": "\\Services\\ApplicationService::getCurrentRoute", "arguments": [] },
+                        { "type": "static-method", "value": "\\Services\\ApplicationService::getCurrentMethod", "arguments": [] },
+                        { "type": "static-method", "value": "\\Services\\ApplicationService::getCurrentHeaders", "arguments": [] },
+                        { "type": "static-method", "value": "\\Services\\ApplicationService::getCurrentCookies", "arguments": [] },
+                        { "type": "static-method", "value": "\\Services\\ApplicationService::getCurrentData", "arguments": [] }
                     ]
                 }
-            ],
-            "2": [
             ]
         }
     }

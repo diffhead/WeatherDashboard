@@ -31,6 +31,16 @@ class StringService
         return trim($string);
     }
 
+    public static function toLowerCase(string $string): string
+    {
+        return strtolower($string);
+    }
+
+    public static function toUpperCase(string $string): string
+    {
+        return strtoupper($string);
+    }
+
     public static function strPosition(string $string, string $pattern, int $offset = 0): int
     {
         $strpos = strpos($string, $pattern, $offset);
