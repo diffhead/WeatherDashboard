@@ -7,6 +7,9 @@ use Core\FileStream;
 use Core\DependencyInjection\Action;
 use Core\DependencyInjection\Container;
 
+use Factories\DependencyInjection\ContainerFactory;
+use Factories\DependencyInjection\ActionFactory;
+
 class DependencyInjectionService
 {
     private static array $containers;
@@ -34,23 +37,22 @@ class DependencyInjectionService
             $containerClass = $containerData['class'];
             $containerConstructorArgs = self::getContainerArgsActions($containerData['constructor-args']);
 
-            self::$containers[$containerName] = new Container($containerData['class'], $containerConstructorArgs);
+            self::$containers[$containerName] = ContainerFactory::get($containerData['class'], $containerConstructorArgs);
         }
     }
 
     private static function getContainerArgsActions(array $containerArgsDataByEntities): array
     {
-        $args = [];
+        $argumentsByEntities = [];
 
-        foreach ( $containerArgsDataByEntities as $entity => $args ) {
-            foreach ( $args as $arg ) {
-                $argsActions = self::getArgsActionsRecursive($arg['arguments']);
-
-                $args[$entity][] = new Action($arg['type'], $arg['value'], $argsActions);
+        foreach ( $containerArgsDataByEntities as $entity => $arguments ) {
+            foreach ( $arguments as $argument ) {
+                $argumentsOfArgument = self::getArgsActionsRecursive($argument['arguments']);
+                $argumentsByEntities[$entity][] = ActionFactory::get($argument['type'], $argument['value'], $argumentsOfArgument);
             }
         }
 
-        return $args;
+        return $argumentsByEntities;
     }
 
     private static function getArgsActionsRecursive($args): array

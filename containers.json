@@ -20,6 +20,20 @@
                         { "type": "static-method", "value": "\\Services\\ApplicationService::getCurrentData", "arguments": [] }
                     ]
                 }
+            ],
+            "2": [
+                {
+                    "type": "class",
+                    "value": "\\Cli\\Application",
+                    "arguments": [
+                    ]
+                },
+                {
+                    "type": "class",
+                    "value": "\\Cli\\Request",
+                    "arguments": [
+                    ]
+                }
             ]
         }
     }
