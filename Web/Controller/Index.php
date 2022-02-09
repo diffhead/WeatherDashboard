@@ -13,6 +13,8 @@ class Index extends Controller
 
     public function execute(array $params = []): bool
     {
+        $this->view->assign([ 'message' => 'Eric' ]);
+
         return true;
     }
 }

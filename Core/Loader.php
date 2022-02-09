@@ -27,6 +27,7 @@ class Loader
         $this->initConstants();
         $this->initContext();
         $this->initConfigs();
+        $this->initVendor();
     }
 
     public function bootstrap(): void
@@ -102,5 +103,10 @@ class Loader
 
         define('_ENABLE_MODULES_', ApplicationConfig::get('modules'));
         define('_DEV_MODE_',       ApplicationConfig::get('dev'));
+    }
+
+    private function initVendor(): void
+    {
+        require_once(_APP_BASE_DIR_ . 'vendor/autoload.php');
     }
 }
