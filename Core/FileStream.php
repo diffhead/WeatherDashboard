@@ -61,8 +61,8 @@ class FileStream
 
     public function read(): string
     {
-        if ( $this->stream && $this->isAvailableForReading() ) {
-            return fread($this->stream, $this->getFileSize());
+        if ( $this->stream && $this->isAvailableForReading() && $fileSize = $this->getFileSize() ) {
+            return fread($this->stream, $fileSize);
         }
 
         return '';
