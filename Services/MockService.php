@@ -7,8 +7,8 @@ class MockService
         return [
             '/' => [
                 'type' => 1,
-                'controller' => '\\Web\\IndexController',
-                'params' => [ 'POST' ],
+                'controller' => '\\Web\\Controller\\Index',
+                'params' => [ 'GET', 'POST' ],
                 'route' => '/'
             ]
         ];

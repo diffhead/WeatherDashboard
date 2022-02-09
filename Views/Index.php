@@ -1,26 +1,16 @@
 <?php namespace Views;
 
-use Interfaces\View;
+use Core\View;
 
 use Services\ArrayService;
 
-class Index implements View
+class Index extends View
 {
-    private string $content = '<h1>Hello world</h1>';
-    private array  $data = [];
-
-    public function assign(array $data = []): void
-    {
-        $this->data = ArrayService::merge($this->data, $data);
-    }
+    protected string $template = _APP_BASE_DIR_ . 'Templates/index.tpl';
+    protected bool   $templateIsFile = true;
 
     public function render(): string
     {
-        return $this->content;
-    }
-
-    public function display(): void
-    {
-        echo $this->render();
+        return $this->template;
     }
 }
