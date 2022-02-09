@@ -1,10 +1,11 @@
 <?php namespace Core;
 
 use Interfaces\Singleton;
-use Interfaces\Application;
 use Interfaces\User;
 use Interfaces\Controller;
 use Interfaces\ApplicationRequest;
+
+use Core\Application;
 
 use Services\ClassService;
 
@@ -48,8 +49,8 @@ class Context implements Singleton
 
     public function __set(string $property, mixed $value): void
     {
-        if ( ClassService::propertyExists($this, $property) && isset($this->$property) === false ) {
-            $this->property = $value;
+        if ( ClassService::propertyExists($this, $property) ) {
+            $this->$property = $value;
         }
     }
 

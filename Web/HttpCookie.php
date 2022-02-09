@@ -2,6 +2,14 @@
 
 class HttpCookie
 {
+    private string $name;
+    private string $value;
+    private int    $expries;
+    private string $path;
+    private string $domain;
+    private bool   $secure;
+    private bool   $httpOnly;
+
     public function __construct(
         string $name, 
         string $value, 

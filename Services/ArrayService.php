@@ -27,6 +27,16 @@ class ArrayService
         return in_array($value, $array);
     }
 
+    public static function getKeys(array $array): array
+    {
+        return array_keys($array);
+    }
+
+    public static function getValues(array $array): array
+    {
+        return array_values($array);
+    }
+
     public static function merge(): array
     {
         $arguments = func_get_args();
@@ -44,5 +54,36 @@ class ArrayService
     public static function slice(array $array, int $offset, int|null $length = null, bool $preserveKeys = false): array
     {
         return array_slice($array, $offset, $length, $preserveKeys);
+    }
+
+    public static function pop(array &$array): mixed
+    {
+        return array_pop($array);
+    }
+
+    public static function shift(array &$array): mixed
+    {
+        return array_shift($array);
+    }
+
+    public static function intersect(): mixed
+    {
+        $arguments = func_get_args();
+        $arrays = [];
+
+        foreach ( $arguments as $argument ) {
+            if ( self::isArray($argument) ) {
+                $arrays[] = $argument;
+            }
+        }
+
+        return call_user_func_array('array_intersect', $arrays);
+    }
+
+    public static function sort(array $array, int $flags = SORT_REGULAR): array
+    {
+        sort($array, $flags);
+
+        return $array;
     }
 }

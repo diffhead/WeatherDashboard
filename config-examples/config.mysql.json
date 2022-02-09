@@ -6,11 +6,11 @@
     "storage": {
         "database": {
             "host": "localhost",
-            "port": 5432,
+            "port": 3306,
             "username": "tree",
             "password": "strongpassword",
             "database": "weatherdashboard",
-            "driver": "pgsql"
+            "driver": "mysqli"
         },
         "memcached": {
             "enabled": false,

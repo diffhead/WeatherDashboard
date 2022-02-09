@@ -9,13 +9,7 @@ class RuntimeConfig implements Configuration
 {
     protected static function getCurrentClass(): string
     {
-        static $class = '';
-
-        if ( StringService::isEmpty($class) ) {
-            $class = get_called_class();
-        }
-
-        return $class;
+        return get_called_class();
     }
 
     public static function setFields(array $fields): bool

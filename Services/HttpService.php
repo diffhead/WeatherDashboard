@@ -101,4 +101,23 @@ class HttpService
             $cookieName, $cookieValue, $cookieExpires, $cookiePath, $cookieDomain, $cookieSecure, $cookieHttpOnly
         );
     }
+
+    public static function setResponseCode(int $code): void
+    {
+        http_response_code($code);
+    }
+
+    public static function setCookie(HttpCookie $cookie): void
+    {
+        setcookie(
+            $cookie->getName(), $cookie->getValue(), $cookie->getExpires(), 
+            $cookie->getPath(), $cookie->getDomain(), $cookie->getSecure(),
+            $cookie->getHttpOnly()
+        );
+    }
+
+    public static function setHeader(HttpHeader $header): void
+    {
+        header($header->getRaw(), $header->isForReplace());
+    }
 }

@@ -2,12 +2,16 @@
 
 use Exception;
 
-use Interfaces\Application;
+use Interfaces\Controller;
 
+use Core\Route;
+use Core\Application;
 use Core\FileStream;
 
 use Factories\Web\HttpHeaderFactory;
 use Factories\Web\HttpCookieFactory;
+
+use Services\MockService;
 
 class ApplicationService
 {
@@ -31,6 +35,11 @@ class ApplicationService
         }
 
         return $configJson;
+    }
+
+    public static function isRoute(mixed $isRoute): bool
+    {
+        return $isRoute instanceof Route;
     }
 
     public static function getCurrentRoute(): string
@@ -81,19 +90,45 @@ class ApplicationService
     {
         $dataContainer = [];
 
-        $phpInputStream = new FileStream('php://input');
+        if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
+            $phpInputStream = new FileStream('php://input');
 
-        if ( $phpInputStream->open() ) {
-            $inputText = $phpInputStream->read();
-            $inputJson = JsonService::decode($inputText);
+            if ( $phpInputStream->open() ) {
+                $inputText = $phpInputStream->read();
+                $inputJson = JsonService::decode($inputText);
 
-            if ( JsonService::lastError() === JSON_ERROR_NONE ) {
-                $dataContainer = ArrayService::merge($dataContainer, $inputJson);
+                if ( JsonService::lastError() === JSON_ERROR_NONE ) {
+                    $dataContainer = ArrayService::merge($dataContainer, $inputJson);
+                }
             }
+
+            $dataContainer = ArrayService::merge($dataContainer, $_POST, $_GET);
+        } else {
+            $dataContainer = ArrayService::slice($argv, 2);
         }
 
-        $dataContainer = ArrayService::merge($dataContainer, $_POST, $_GET);
-
         return $dataContainer;
+    }
+
+    public static function getCurrentRoutes(): array
+    {
+        $routes = [];
+
+        if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
+            $routesData = MockService::getRoutes();
+
+            foreach ( $routesData as $route => $data ) {
+                $routes[$route] = new Route($data['route'], $data['type'], $data['controller'], $data['params']);
+            }
+        } else {
+            $routesData = [];
+        }
+
+        return $routes;
+    }
+
+    public static function isController(mixed $isController): bool
+    {
+        return $isController instanceof Controller;
     }
 }

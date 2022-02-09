@@ -1,6 +1,6 @@
 <?php namespace Core;
 
-use Interfaces\Application;
+use Core\Application;
 
 use Services\DependencyInjectionService;
 use Services\ApplicationService;
@@ -32,12 +32,24 @@ class Loader
     public function bootstrap(): void
     {
         $context = Context::getInstance();
+        $routes = ApplicationService::getCurrentRoutes();
+
+        foreach ( $routes as $route => $instance ) {
+            if ( ApplicationService::isRoute($instance) ) {
+                $context->application->getRouter()->setRoute($route, $instance);
+            }
+        }
 
         if ( _ENABLE_MODULES_ ) {
             $context->application->initModules();
         }
 
         $context->application->run($context->applicationRequest);
+    }
+
+    private function initSplLoader(): void
+    {
+        spl_autoload_register('\\Core\\Loader::loadClass');
     }
 
     private function initConstants(): void
@@ -52,11 +64,6 @@ class Loader
             define('_APP_BASE_DIR_', $_SERVER['DOCUMENT_ROOT'] . '/');
             define('_APP_ENVIRONMENT_', Application::WEB_ENVIRONMENT);
         }
-    }
-
-    private function initSplLoader(): void
-    {
-        spl_autoload_register('\\Core\\Loader::loadClass');
     }
 
     private function initContext(): void
@@ -80,11 +87,12 @@ class Loader
         ]);
 
         DatabaseConfig::setFields([
-            'driver'   => $configJson['storage']['database']['dbDrv'],
+            'driver'   => $configJson['storage']['database']['driver'],
             'host'     => $configJson['storage']['database']['host'],
             'port'     => $configJson['storage']['database']['port'],
-            'username' => $configJson['storage']['database']['user'],
-            'password' => $configJson['storage']['database']['pswd']
+            'username' => $configJson['storage']['database']['username'],
+            'password' => $configJson['storage']['database']['password'],
+            'database' => $configJson['storage']['database']['database']
         ]);
 
         MemcachedConfig::setFields([
@@ -93,6 +101,6 @@ class Loader
         ]);
 
         define('_ENABLE_MODULES_', ApplicationConfig::get('modules'));
-        define('_DEV_MODE_', ApplicationConfig::get('dev'));
+        define('_DEV_MODE_',       ApplicationConfig::get('dev'));
     }
 }
