@@ -30,7 +30,6 @@ class Application
     public function initModules(): bool
     {
         if ( _ENABLE_MODULES_ ) {
-
         }
 
         return true;
