@@ -13,4 +13,26 @@ class MockService
             ]
         ];
     }
+
+    public static function getModules(): array
+    {
+        return [
+            [
+                'enable' => true,
+                'name' => 'firstModule'
+            ],
+            [
+                'enable' => false,
+                'name' => 'secondModule'
+            ],
+            [
+                'enable' => false, 
+                'name' => 'thirdModule'
+            ],
+            [
+                'enable' => true,
+                'name' => 'fourthModule'
+            ]
+        ];
+    }
 }

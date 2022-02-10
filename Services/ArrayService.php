@@ -56,12 +56,12 @@ class ArrayService
         return array_slice($array, $offset, $length, $preserveKeys);
     }
 
-    public static function pop(array &$array): mixed
+    public static function pop(array $array): mixed
     {
         return array_pop($array);
     }
 
-    public static function shift(array &$array): mixed
+    public static function shift(array $array): mixed
     {
         return array_shift($array);
     }

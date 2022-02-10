@@ -11,4 +11,9 @@ class ClassService
     {
         return method_exists($class, $method);
     }
+
+    public static function getProperties(string|object $class): array
+    {
+        return StringService::isString($class) ? get_class_vars($class) : get_class_vars(get_class($class));
+    }
 }

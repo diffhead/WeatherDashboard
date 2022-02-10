@@ -41,8 +41,8 @@ interface Query
     public function limit(int $limit): self;
     public function offset(int $offset): self;
 
-    public function update(string $name, string $alias = _APP_EMPTY_STRING_): self;
-    public function set(string $field, string $value, bool $quotes = true): self;
+    public function update(string $name): self;
+    public function set(string $field, string $value): self;
 
     public function delete(): self;
 

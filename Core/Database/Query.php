@@ -40,10 +40,7 @@ class Query implements QueryInterface
         ],
         
         QueryInterface::TYPE_UPDATE_TABLE => [
-            'table'  => [
-                'name'  => '',
-                'alias' => ''
-            ],
+            'table'  => '',
             'set'    => [],
             'where'  => []
         ],
@@ -217,22 +214,17 @@ class Query implements QueryInterface
         return $this;
     }
 
-    public function update(string $name, string $alias = _APP_EMPTY_STRING_): self
+    public function update(string $name): self
     {
         $this->setType(QueryInterface::TYPE_UPDATE_TABLE);
 
-        $this->containers[$this->type]['table']['name'] = $name;
-        $this->containers[$this->type]['table']['alias'] = $alias;
+        $this->containers[$this->type]['table'] = $name;
 
         return $this;
     }
 
-    public function set(string $field, string $value, bool $quotes = true): self
+    public function set(string $field, string $value): self
     {
-        if ( $quotes ) {
-            $value = "'$value'";
-        }
-
         $this->containers[$this->type]['set'][] = "$field=$value";
 
         return $this;
@@ -342,7 +334,7 @@ class Query implements QueryInterface
                     break;
 
                 case QueryInterface::TYPE_UPDATE_TABLE:
-                        $query .= $this->type . ' ';
+                        $query .= $this->type . ' ' . $container['table'] . ' ';
                         $query .= 'SET ' . implode(',', $container['set']) . ' ';
 
                         if ( ArrayService::isEmpty($container['where']) === false ) {
