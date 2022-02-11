@@ -33,18 +33,8 @@ class Loader
     public function bootstrap(): void
     {
         $context = Context::getInstance();
-        $routes = ApplicationService::getCurrentRoutes();
 
-        foreach ( $routes as $route => $instance ) {
-            if ( ApplicationService::isRoute($instance) ) {
-                $context->application->getRouter()->setRoute($route, $instance);
-            }
-        }
-
-        if ( _ENABLE_MODULES_ ) {
-            $context->application->initModules();
-        }
-
+        $context->application->initModules();
         $context->application->run($context->applicationRequest);
     }
 
@@ -103,8 +93,9 @@ class Loader
         ]);
 
         define('_ENABLE_MODULES_', ApplicationConfig::get('modules'));
-        define('_DEV_MODE_',       ApplicationConfig::get('dev'));
+        define('_DEV_MODE_', ApplicationConfig::get('dev'));
         define('_CACHE_DIR_', _APP_BASE_DIR_ . ApplicationConfig::get('cacheDir') . '/');
+        define('_MODULES_DIR_', _APP_BASE_DIR_ . 'Modules/');
     }
 
     private function initVendor(): void

@@ -26,7 +26,7 @@ class Cache
         $this->expiration = $expiration;
     }
 
-    public function getValue(): mixed
+    public function getData(): mixed
     {
         switch ( $this->type ) {
             case Cache::MEM:
@@ -64,7 +64,7 @@ class Cache
         }
     }
 
-    public function setValue(mixed $value): bool
+    public function setData(mixed $value): bool
     {
         switch ( $this->type ) {
             case Cache::MEM:

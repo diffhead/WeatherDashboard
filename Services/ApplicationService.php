@@ -110,23 +110,6 @@ class ApplicationService
         return $dataContainer;
     }
 
-    public static function getCurrentRoutes(): array
-    {
-        $routes = [];
-
-        if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
-            $routesData = MockService::getRoutes();
-
-            foreach ( $routesData as $route => $data ) {
-                $routes[$route] = new Route($data['route'], $data['type'], $data['controller'], $data['params']);
-            }
-        } else {
-            $routesData = [];
-        }
-
-        return $routes;
-    }
-
     public static function isController(mixed $isController): bool
     {
         return $isController instanceof Controller;

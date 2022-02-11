@@ -9,6 +9,8 @@ use Interfaces\ApplicationRequest;
 use Core\Router;
 use Core\Display;
 
+use Models\Module;
+
 use Services\HelperService;
 use Services\ArrayService;
 use Services\ApplicationService;
@@ -30,9 +32,27 @@ class Application
     public function initModules(): bool
     {
         if ( _ENABLE_MODULES_ ) {
+            $modulesDataCache = new Cache('modules.enabled', 3600, Cache::MEM);
+
+            $modulesData = $modulesDataCache->getData();
+
+            if ( $modulesData === false ) {
+                $modulesData = Module::getEnabled();
+                $modulesDataCache->setData($modulesData);
+            }
+
+            foreach ( $modulesData as $moduleData ) {
+                $moduleModel = new Module;
+                $moduleModel->setModelData($moduleData);
+
+                $moduleInstance = $moduleModel->getModuleInstance();
+                $moduleInstance->init();
+            }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public function run(ApplicationRequest $request): void
