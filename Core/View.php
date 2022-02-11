@@ -2,7 +2,7 @@
 
 use Interfaces\View as ViewInterface;
 
-use Lib\TwigWrapper;
+use Lib\Twig;
 
 use Services\ArrayService;
 use Services\FileService;
@@ -14,7 +14,7 @@ class View implements ViewInterface
     protected string $template = '';
     protected bool   $templateIsFile = false;
 
-    protected TwigWrapper $twig;
+    protected Twig $twig;
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class View implements ViewInterface
             $templatePath = FileService::getDir($this->template) . '/';
             $templateFile = StringService::strReplace($this->template, $templatePath, '');
 
-            $this->twig = new TwigWrapper(FileService::getDir($this->template));
+            $this->twig = new Twig(FileService::getDir($this->template));
             $this->template = $templateFile;
         }
     }

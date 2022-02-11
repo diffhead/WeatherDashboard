@@ -3,11 +3,13 @@
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 
-class TwigWrapper
+use Config\ApplicationConfig;
+
+class Twig
 {
     private Environment $twig;
 
-    public function __construct(string $templatesPath, string $cachePath = _APP_BASE_DIR_ . 'Cache/twig')
+    public function __construct(string $templatesPath, string $cachePath = _APP_BASE_DIR_ . 'cache/twig')
     {
         $loader = new FilesystemLoader($templatesPath);
         $environment = new Environment($loader, [ 'cache' => $cachePath ]);

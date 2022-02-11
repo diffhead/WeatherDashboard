@@ -2,6 +2,8 @@
 
 use Core\Controller;
 
+use Lib\Memcached;
+
 use Views\Index as IndexView;
 
 use Models\Module;
@@ -17,7 +19,15 @@ class Index extends Controller
 
     public function execute(array $params = []): bool
     {
-        $modulesData = Module::getAll();
+        $memcached = new Memcached;
+
+        $modulesData = $memcached->get('Module::getAll');
+
+        if ( $modulesData === false ) {
+            $modulesData = Module::getAll();
+
+            $memcached->set('Module::getAll', $modulesData);
+        }
 
         $this->view->assign([ 
             'title' => 'Weather Dashboard',
