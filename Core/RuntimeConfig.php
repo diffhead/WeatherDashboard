@@ -17,7 +17,7 @@ class RuntimeConfig implements Configuration
         $isOk = true;
 
         foreach ( $fields as $name => $value ) {
-            $isOk &= self::set($name, $value);
+            $isOk &= static::set($name, $value);
         }
 
         return $isOk;
