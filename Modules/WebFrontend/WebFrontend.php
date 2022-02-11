@@ -14,18 +14,4 @@ class WebFrontend extends AbstractModule
             '/', new Route('/', Route::TYPE_RAW, '\\Modules\\WebFrontend\\Controllers\\Index', [ 'GET', 'POST' ])
         );
     }
-
-    public function enable(): bool
-    {
-        $this->model->enable = true;
-
-        return $this->model->update();
-    }
-
-    public function disable(): bool
-    {
-        $this->model->enable = false;
-
-        return $this->model->update();
-    }
 }

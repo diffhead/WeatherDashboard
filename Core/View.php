@@ -18,11 +18,11 @@ class View implements ViewInterface
 
     public function __construct()
     {
-        if ( $this->templateIsFile && FileService::fileExists($this->template) ) {
-            $templatePath = FileService::getDir($this->template) . '/';
-            $templateFile = StringService::strReplace($this->template, $templatePath, '');
+        if ( $this->templateIsFile && FileService::fileExists(_APP_BASE_DIR_ . $this->template) ) {
+            $templatePath = FileService::getDir(_APP_BASE_DIR_ . $this->template) . '/';
+            $templateFile = StringService::strReplace(_APP_BASE_DIR_ . $this->template, $templatePath, '');
 
-            $this->twig = new Twig(FileService::getDir($this->template));
+            $this->twig = new Twig($templatePath);
             $this->template = $templateFile;
         }
     }

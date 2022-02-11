@@ -13,6 +13,8 @@ abstract class AbstractModule implements Module
     protected string $name;
     protected string $path;
 
+    abstract public function init(): void;
+
     final public function __construct(Model $model)
     {
         $this->model = $model;
@@ -22,9 +24,19 @@ abstract class AbstractModule implements Module
         $this->path = _MODULES_DIR_ . $model->name . '/';
     }
 
-    abstract public function init(): void;
-    abstract public function enable(): bool;
-    abstract public function disable(): bool;
+    public function enable(): bool
+    {
+        $this->model->enable = true;
+
+        return $this->model->update();
+    }
+
+    public function disable(): bool
+    {
+        $this->model->enable = false;
+
+        return $this->model->update();
+    }
 
     public function isEnabled(): bool
     {
