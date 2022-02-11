@@ -134,7 +134,21 @@ class ActiveRecord
 
         $db = Db::getConnection();
 
-        return $db->execute($query);
+        if ( $db->execute($query) === false ) {
+            return false;
+        }
+
+        $idField = static::$idField;
+
+        $query = new Query;
+        $query->select([ "MAX({$idField}) as id" ])
+              ->from(static::$table);
+
+        $db->execute($query);
+
+        $this->$idField = ArrayService::pop($db->fetch())['id'];
+
+        return true;
     }
 
     public function update(): bool
@@ -144,6 +158,10 @@ class ActiveRecord
         }
 
         $idField = static::$idField;
+
+        if ( empty($this->$idField) ) {
+            return false;
+        }
 
         $query = new Query;
         $query->update(static::$table);
@@ -174,6 +192,10 @@ class ActiveRecord
         }
 
         $idField = static::$idField;
+
+        if ( empty($this->$idField) ) {
+            return false;
+        }
 
         $query = new Query;
         $query->delete()

@@ -251,12 +251,6 @@ class Query implements QueryInterface
      */
     public function values(array $values = []): self
     {
-        foreach ( $values as &$valuesTuple ) {
-            foreach ( $valuesTuple as &$value ) {
-                $value = "'$value'";
-            }
-        }
-
         $this->containers[$this->type]['values'] = $values;
 
         return $this;

@@ -19,21 +19,6 @@ class Index extends Controller
 
     public function execute(array $params = []): bool
     {
-        $memcached = new Memcached;
-
-        $modulesData = $memcached->get('Module::getAll');
-
-        if ( $modulesData === false ) {
-            $modulesData = Module::getAll();
-
-            $memcached->set('Module::getAll', $modulesData);
-        }
-
-        $this->view->assign([ 
-            'title' => 'Weather Dashboard',
-            'modules' => $modulesData
-        ]);
-
         return true;
     }
 }
