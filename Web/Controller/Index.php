@@ -2,13 +2,7 @@
 
 use Core\Controller;
 
-use Lib\Memcached;
-
 use Views\Index as IndexView;
-
-use Models\Module;
-
-use Services\MockService;
 
 class Index extends Controller
 {

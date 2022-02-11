@@ -81,28 +81,30 @@ class Loader
         $configJson = ApplicationService::getGlobalConfigJson();
 
         ApplicationConfig::setFields([
-            'host'    => $configJson['host'],
-            'port'    => $configJson['port'],
-            'dev'     => $configJson['dev'],
-            'modules' => $configJson['modules']
+            'host'      => (string)$configJson['host'],
+            'port'      => (int)$configJson['port'],
+            'dev'       => (bool)$configJson['dev'],
+            'modules'   => (bool)$configJson['modules'],
+            'cacheDir' => (string)$configJson['cacheDir']
         ]);
 
         DatabaseConfig::setFields([
-            'driver'   => $configJson['storage']['database']['driver'],
-            'host'     => $configJson['storage']['database']['host'],
-            'port'     => $configJson['storage']['database']['port'],
-            'username' => $configJson['storage']['database']['username'],
-            'password' => $configJson['storage']['database']['password'],
-            'database' => $configJson['storage']['database']['database']
+            'driver'   => (string)$configJson['storage']['database']['driver'],
+            'host'     => (string)$configJson['storage']['database']['host'],
+            'port'     => (string)$configJson['storage']['database']['port'],
+            'username' => (string)$configJson['storage']['database']['username'],
+            'password' => (string)$configJson['storage']['database']['password'],
+            'database' => (string)$configJson['storage']['database']['database']
         ]);
 
         MemcachedConfig::setFields([
-            'enabled' => $configJson['storage']['memcached']['enabled'],
-            'servers' => $configJson['storage']['memcached']['servers']
+            'enabled' => (bool)$configJson['storage']['memcached']['enabled'],
+            'servers' => (array)$configJson['storage']['memcached']['servers']
         ]);
 
         define('_ENABLE_MODULES_', ApplicationConfig::get('modules'));
         define('_DEV_MODE_',       ApplicationConfig::get('dev'));
+        define('_CACHE_DIR_', _APP_BASE_DIR_ . ApplicationConfig::get('cacheDir') . '/');
     }
 
     private function initVendor(): void

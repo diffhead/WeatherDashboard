@@ -3,7 +3,7 @@
     "port": 80,
     "dev": true,
     "modules": true,
-    "cachePath": "cache",
+    "cacheDir": "cache",
     "storage": {
         "database": {
             "host": "localhost",

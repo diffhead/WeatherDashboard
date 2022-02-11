@@ -50,6 +50,11 @@ class FileStream
         return false;
     }
 
+    public function touch(): bool
+    {
+        return touch($this->filePath);
+    }
+
     public function close(): void
     {
         if ( $this->stream ) {

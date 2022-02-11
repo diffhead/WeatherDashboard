@@ -21,4 +21,9 @@ class FileService
     {
         return is_readable($filePath);
     }
+
+    public static function getFileChangedTime(string $filePath): int|false
+    {
+        return filectime($filePath);
+    }
 }

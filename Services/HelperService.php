@@ -11,4 +11,14 @@ class HelperService
     {
         return is_bool($isBool);
     }
+
+    public static function serialize(mixed $value): string
+    {
+        return serialize($value);
+    }
+
+    public static function unserialize(string $serialized): mixed
+    {
+        return unserialize($serialized);
+    }
 }

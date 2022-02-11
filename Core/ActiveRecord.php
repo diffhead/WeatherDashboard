@@ -48,11 +48,6 @@ class ActiveRecord
                 return (float)$value;
 
             case static::TYPE_STRING:
-                if ( $reverse ) {
-                    $value = (string)$value;
-
-                    return "'$value'";
-                }
                 return (string)$value;
         }
     }
