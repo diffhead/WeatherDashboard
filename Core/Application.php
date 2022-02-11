@@ -70,7 +70,7 @@ class Application
 
     private function getCurrentController(ApplicationRequest $request): Controller
     {
-        if ( _APP_ENVIRONMENT_ === self::WEB_ENVIRONMENT ) {
+        if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
             $route = $this->router->getRoute($request->getRequestData()['url']);
 
             if ( $route && ArrayService::inArray($route->getParams(), $request->getMethod()) === false ) {

@@ -7,6 +7,8 @@ use Models\Module;
 
 use Modules\WebFrontend\Views\Index as IndexView;
 
+use Core\GlobalConfig;
+
 class Index extends Controller
 {
     public function init(): void
