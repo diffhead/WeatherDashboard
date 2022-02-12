@@ -6,7 +6,7 @@ use Services\StringService;
 
 class Error extends View
 {
-    protected string $template = _APP_BASE_DIR_ . 'Templates/error.tpl';
+    protected string $template = 'templates/error.tpl';
 
     protected array  $params = [
         'code'    => 0,

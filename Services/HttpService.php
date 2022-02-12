@@ -107,7 +107,7 @@ class HttpService
         http_response_code($code);
     }
 
-    public static function setCookie(HttpCookie $cookie): void
+    public static function setResponseCookie(HttpCookie $cookie): void
     {
         setcookie(
             $cookie->getName(), $cookie->getValue(), $cookie->getExpires(), 
@@ -116,7 +116,7 @@ class HttpService
         );
     }
 
-    public static function setHeader(HttpHeader $header): void
+    public static function setResponseHeader(HttpHeader $header): void
     {
         header($header->getRaw(), $header->isForReplace());
     }

@@ -34,7 +34,7 @@ class View implements ViewInterface
 
     public function render(): string
     {
-        if ( $this->templateIsFile && $this->twig ) {
+        if ( $this->templateIsFile && isset($this->twig) ) {
             return $this->twig->render($this->template, $this->params);
         }
 
