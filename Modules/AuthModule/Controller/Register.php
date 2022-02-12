@@ -72,6 +72,8 @@ class Register extends Controller
             $this->isFormValidChecking($userData)     === false ||
             $this->isUserNotExistsChecking($userData) === false
         ) {
+            HttpService::setResponseCode(400);
+            
             return false;
         }
         
@@ -81,6 +83,8 @@ class Register extends Controller
         $user->setModelData($userData);
         
         if ( $user->create() === false ) {
+            HttpService::setResponseCode(400);
+            
             $this->view->assign([
                 'message' => Register::ERR_CREATION_FAILED
             ]);
