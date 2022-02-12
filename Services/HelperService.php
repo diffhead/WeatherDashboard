@@ -12,6 +12,11 @@ class HelperService
         return is_bool($isBool);
     }
 
+    public static function isNumeric(mixed $isNumeric): bool
+    {
+        return is_numeric($isNumeric);
+    }
+
     public static function serialize(mixed $value): string
     {
         return serialize($value);

@@ -2,6 +2,11 @@
 
 class StringService
 {
+    public static function isMatch(string $regExp, $string): bool
+    {
+        return (bool)preg_match($regExp, $string);
+    }
+
     public static function isString(mixed $value): bool
     {
         return is_string($value);
@@ -60,6 +65,11 @@ class StringService
     public static function subString(string $string, int $offset = 0, null|int $length = null): string
     {
         return substr($string, $offset, $length);
+    }
+
+    public static function strLength(string $string): int
+    {
+        return strlen($string);
     }
 
     public static function explode(string $string, string $delimiter = PHP_EOL): array

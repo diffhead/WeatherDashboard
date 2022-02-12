@@ -57,7 +57,7 @@ class User extends Model implements UserInterface
             $query = new Query;
             $query->select([ 'u.*' ])
                   ->from('users', 'u')
-                  ->join('user_access', 'ua', 'LEFT', 'u.id = ua.user_id')
+                  ->join('user_access', 'ua', 'left', 'u.id = ua.user_id')
                   ->join('access', 'a', 'left', 'ua.access = a.id')
                   ->where('a.title = \'guest\'');
 

@@ -19,5 +19,10 @@
                 { "host": "127.0.0.1", "port": "11211" }
             ]
         }
+    },
+    "cryptService": {
+        "passphrase": "randompass",
+        "algorythm": "aes-256-cbc",
+        "initvector": "aas41nm013Ids2ZX"
     }
 }

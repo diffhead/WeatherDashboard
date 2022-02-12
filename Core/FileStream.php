@@ -13,11 +13,13 @@ class FileStream
     private string $access;
     private string $filePath;
     private mixed  $stream = null;
+    private bool   $phpStream = false;
 
-    public function __construct(string $filePath, string $access = FileStream::ACCESS_RO)
+    public function __construct(string $filePath, string $access = FileStream::ACCESS_RO, bool $phpStream = false)
     {
         $this->access = $access;
         $this->filePath = $filePath;
+        $this->phpStream = $phpStream;
     }
 
     public function getAccess(): string
@@ -32,7 +34,11 @@ class FileStream
 
     public function getFileSize(): int
     {
-        if ( $this->stream ) {
+        if ( $this->stream )  {
+            if ( $this->phpStream ) {
+                return _PHP_INPUT_MAX_LENGTH_;
+            }
+
             return filesize($this->filePath);
         }
 
@@ -41,7 +47,7 @@ class FileStream
 
     public function open(): bool
     {
-        if ( FileService::fileExists($this->filePath) ) {
+        if ( $this->phpStream || FileService::fileExists($this->filePath) ) {
             $this->stream = fopen($this->filePath, $this->access);
 
             return (bool)$this->stream;

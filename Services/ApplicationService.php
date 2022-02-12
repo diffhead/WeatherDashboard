@@ -91,7 +91,7 @@ class ApplicationService
         $dataContainer = [];
 
         if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
-            $phpInputStream = new FileStream('php://input');
+            $phpInputStream = new FileStream('php://input', FileStream::ACCESS_RO, true);
 
             if ( $phpInputStream->open() ) {
                 $inputText = $phpInputStream->read();

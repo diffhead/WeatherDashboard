@@ -8,6 +8,7 @@ use Services\ApplicationService;
 use Config\ApplicationConfig;
 use Config\DatabaseConfig;
 use Config\MemcachedConfig;
+use Config\CryptServiceConfig;
 
 class Loader 
 {
@@ -55,6 +56,8 @@ class Loader
             define('_APP_BASE_DIR_', $_SERVER['DOCUMENT_ROOT'] . '/');
             define('_APP_ENVIRONMENT_', Application::WEB_ENVIRONMENT);
         }
+
+        define('_PHP_INPUT_MAX_LENGTH_', 64 * 1024 * 1024);
     }
 
     private function initContext(): void
@@ -90,6 +93,12 @@ class Loader
         MemcachedConfig::setFields([
             'enabled' => (bool)$configJson['storage']['memcached']['enabled'],
             'servers' => (array)$configJson['storage']['memcached']['servers']
+        ]);
+
+        CryptServiceConfig::setFields([
+            'passphrase' => (string)$configJson['cryptService']['passphrase'],
+            'algorythm'  => (string)$configJson['cryptService']['algorythm'],
+            'initvector' => (string)$configJson['cryptService']['initvector']
         ]);
 
         define('_ENABLE_MODULES_', ApplicationConfig::get('modules'));
