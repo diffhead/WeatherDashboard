@@ -35,6 +35,8 @@ class RoutesHandler extends AbstractModule
         $cache = new Cache('RoutesHandler.config.enableCaching', 3600);
         $cache->setData(1);
 
+        $this->enableCaching = 1;
+
         return GlobalConfig::set('ROUTES_HANDLER_CACHING', '1');
     }
 
@@ -42,6 +44,8 @@ class RoutesHandler extends AbstractModule
     {
         $cache = new Cache('RoutesHandler.config.enableCaching', 3600);
         $cache->setData(0);
+
+        $this->enableCaching = 0;
 
         return GlobalConfig::set('ROUTES_HANDLER_CACHING', '0');
     }
