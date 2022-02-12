@@ -22,7 +22,7 @@ class HttpService
         return $isCookes instanceof HttpCookie;
     }
 
-    public static function cookieToSetCookieHeader(HttpCookie $cookie): string
+    public static function cookieToSetCookieHeader(HttpCookie $cookie): HttpHeader
     {
         $name = 'Set-Cookie';
 
