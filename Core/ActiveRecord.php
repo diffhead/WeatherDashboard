@@ -17,9 +17,10 @@ class ActiveRecord
 
     protected int  $id;
 
-    protected static bool   $dataCaching;
     protected static string $table;
     protected static string $idField;
+
+    protected static bool $dataCaching;
 
     protected static array $definitions = [
     ];
