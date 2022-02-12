@@ -8,6 +8,7 @@ CREATE TABLE modules(
 
 INSERT INTO modules (name, enable) 
 VALUES 
+    ('RoutesHandler', 1),
     ('AuthModule', 1), 
     ('WebFrontend', 1),
     ('CacheHandler', 1);

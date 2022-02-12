@@ -86,4 +86,13 @@ class ArrayService
 
         return $array;
     }
+
+    public static function sortMultiArrayByKey(array $arrays, string $key, int $flag = SORT_ASC): array
+    {
+        $columnValues = array_column($arrays, $key);
+
+        array_multisort($columnValues, $flag, $arrays, $flag);
+
+        return $arrays;
+    }
 }

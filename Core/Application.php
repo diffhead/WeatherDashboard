@@ -92,9 +92,20 @@ class Application
         if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
             $route = $this->router->getRoute($request->getRequestData()['url']);
 
-            if ( $route && ArrayService::inArray($route->getParams(), $request->getMethod()) === false ) {
-                $controller = new \Web\Controller\Error(405, 'Method not allowed');
-            } else if ( HelperService::isNull($route) ) {
+            if ( $route ) {
+                $routeParams = $route->getParams();
+
+                if ( isset($routeParams['redirect']) ) {
+                    $routeRedirect = $routeParams['redirect'];
+
+                    $redirectCode = isset($routeRedirect['code']) ? (int)$routeRedirect['code'] : 303;
+                    $redirectTarget = isset($routeRedirect['target']) ? (string)$routeRedirect['target'] : '/';
+
+                    $controller = new \Web\Controller\Redirect($redirectCode, $redirectTarget);
+                } else if ( ArrayService::inArray($routeParams, $request->getMethod()) === false ) {
+                    $controller = new \Web\Controller\Error(405, 'Request method not allowed');
+                }
+            } else {
                 $controller = new \Web\Controller\Error(404, 'Route not found');
             }
         } else {
@@ -121,6 +132,7 @@ class Application
     {
         if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
             $cookies = $request->getRequestData()['cookies'];
+
             $sessionCookie = null;
 
             foreach ( $cookies as $cookie ) {
@@ -141,7 +153,6 @@ class Application
 
             Context::getInstance()->user = $user;
         } else {
-
         }
     }
 

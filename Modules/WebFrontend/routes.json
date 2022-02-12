@@ -1,0 +1,19 @@
+{
+    "/": {
+        "type": 1,
+        "controller": "\\Modules\\WebFrontend\\Controller\\Index",
+        "params": [ "GET", "POST" ],
+        "protected": false
+    },
+    "/redirect-example": {
+        "type": 1,
+        "controller": "\\Web\\Controller\\Redirect",
+        "params": {
+            "redirect": {
+                "code": 303,
+                "target": "https://google.com"
+            }
+        },
+        "protected": false
+    }
+}

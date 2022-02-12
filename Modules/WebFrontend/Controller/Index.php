@@ -1,10 +1,8 @@
-<?php namespace Modules\WebFrontend\Controllers;
+<?php namespace Modules\WebFrontend\Controller;
 
 use Core\Cache;
 use Core\Context;
 use Core\Controller;
-
-use Models\Module;
 
 use Modules\WebFrontend\Views\Index as IndexView;
 

@@ -1,0 +1,8 @@
+{
+    "/cache": {
+        "type": 1,
+        "controller": "\\Modules\\CacheHandler\\Controller\\Cache",
+        "params": [ "GET", "POST" ],
+        "protected": true
+    }
+}

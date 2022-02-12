@@ -4,8 +4,6 @@ use Core\Controller;
 
 use Views\Error as ErrorView;
 
-use Web\HttpHeader;
-
 use Services\HttpService;
 
 class Error extends Controller
