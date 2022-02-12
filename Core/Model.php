@@ -2,6 +2,7 @@
 
 use Services\ClassService;
 use Services\ArrayService;
+use Services\StringService;
 
 class Model extends ActiveRecord
 {
@@ -30,7 +31,11 @@ class Model extends ActiveRecord
 
     public function __get(string $property): mixed
     {
-        if ( ClassService::propertyExists($this, $property) ) {
+        if ( ClassService::propertyExists($this, $property) || $property === static::$idField ) {
+            if ( $property === static::$idField ) {
+                return $this->id;
+            }
+
             return $this->$property;
         }
 
@@ -39,8 +44,12 @@ class Model extends ActiveRecord
 
     public function __set(string $property, mixed $value): void
     {
-        if ( ClassService::propertyExists($this, $property) ) {
-            $this->$property = $value;
+        if ( ClassService::propertyExists($this, $property) || $property === static::$idField ) {
+            if ( $property === static::$idField ) {
+                $this->id = $value;
+            } else {
+                $this->$property = $value;
+            }
         }
     }
 
@@ -50,10 +59,10 @@ class Model extends ActiveRecord
 
         foreach ( $properties as $property ) {
             if ( isset($this->$property) === false ) {
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 }

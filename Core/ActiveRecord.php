@@ -2,6 +2,7 @@
 
 use Exception;
 
+use Core\Cache;
 use Core\Database\Db;
 use Core\Database\Query;
 
@@ -14,6 +15,9 @@ class ActiveRecord
     const TYPE_FLOAT  = 5;
     const TYPE_STRING = 3;
 
+    protected int  $id;
+
+    protected static bool   $dataCaching;
     protected static string $table;
     protected static string $idField;
 
@@ -65,38 +69,70 @@ class ActiveRecord
 
     public static function getAll(): array
     {
-        if ( static::isValidRecord() === false ) {
-            $class = static::class;
+        $class = static::class;
 
+        if ( static::isValidRecord() === false ) {
             throw new Exception("Current '{$class}' active record is invalid");
         }
 
-        $query = new Query();
-        $query->select()->from(static::$table);
+        $records = false;
 
-        $db = Db::getConnection();
-        $db->execute($query);
+        if ( isset(static::$dataCaching) && static::$dataCaching ) {
+            $cache = new Cache("ActiveRecord.$class.getAll", 3600 * 24);
 
-        return self::filterAll($db->fetch());
+            $records = $cache->getData();
+        }
+
+        if ( $records === false ) {
+            $query = new Query();
+            $query->select()->from(static::$table);
+
+            $db = Db::getConnection();
+            $db->execute($query);
+
+            $records = self::filterAll($db->fetch());
+
+            if ( isset($cache) ) {
+                $cache->setData($records);
+            }
+        }
+
+        return $records;
     }
 
     public static function where(string $whereStatement): array
     {
-        if ( static::isValidRecord() === false ) {
-            $class = static::class;
+        $class = static::class;
 
+        if ( static::isValidRecord() === false ) {
             throw new Exception("Current '{$class}' active record is invalid");
         }
 
-        $query = new Query;
-        $query->select(ArrayService::getKeys(static::$definitions))
-              ->from(static::$table)
-              ->where($whereStatement);
+        $records = false;
 
-        $db = Db::getConnection();
-        $db->execute($query);
+        if ( isset(static::$dataCaching) && static::$dataCaching ) {
+            $cache = new Cache("ActiveRecord.$class.where.$whereStatement", 3600);
 
-        return self::filterAll($db->fetch());
+            $records = $cache->getData();
+        }
+
+        if ( $records === false ) {
+            $query = new Query;
+            $query->select(ArrayService::getKeys(static::$definitions))
+                  ->from(static::$table)
+                  ->where($whereStatement);
+
+            $db = Db::getConnection();
+            $db->execute($query);
+
+            $records = self::filterAll($db->fetch());
+
+            if ( isset($cache) ) {
+                $cache->setData($records);
+            }
+        }
+
+        return $records;
     }
 
     public function create(): bool
@@ -133,15 +169,17 @@ class ActiveRecord
             return false;
         }
 
-        $idField = static::$idField;
+        if ( isset($this->id) === false ) {
+            $idField = static::$idField;
 
-        $query = new Query;
-        $query->select([ "MAX({$idField}) as id" ])
-              ->from(static::$table);
+            $query = new Query;
+            $query->select([ "MAX({$idField}) as id" ])
+                  ->from(static::$table);
 
-        $db->execute($query);
+            $db->execute($query);
 
-        $this->$idField = ArrayService::pop($db->fetch())['id'];
+            $this->id = ArrayService::pop($db->fetch())['id'];
+        }
 
         return true;
     }

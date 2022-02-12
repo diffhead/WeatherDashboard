@@ -9,7 +9,9 @@ use Interfaces\ApplicationRequest;
 use Core\Router;
 use Core\Display;
 
+use Models\User;
 use Models\Module;
+use Models\Session;
 
 use Services\HelperService;
 use Services\ArrayService;
@@ -32,12 +34,12 @@ class Application
     public function initModules(): bool
     {
         if ( _ENABLE_MODULES_ ) {
-            $modulesDataCache = new Cache('modules.enabled', 3600, Cache::MEM);
+            $modulesDataCache = new Cache('modules.all', 3600, Cache::MEM);
 
             $modulesData = $modulesDataCache->getData();
 
             if ( $modulesData === false ) {
-                $modulesData = Module::getEnabled();
+                $modulesData = Module::getAll();
                 $modulesDataCache->setData($modulesData);
             }
 
@@ -45,8 +47,20 @@ class Application
                 $moduleModel = new Module;
                 $moduleModel->setModelData($moduleData);
 
-                $moduleInstance = $moduleModel->getModuleInstance();
-                $moduleInstance->init();
+                if ( $moduleModel->isValidModel() === false ) {
+                    throw new Exception("Invalid module model '{$moduleData['name']}'");
+                }
+
+                $moduleClass = "\\Modules\\{$moduleModel->name}\\{$moduleModel->name}";
+                $moduleReflector = new ReflectionClass($moduleClass);
+
+                $moduleInstance = $moduleReflector->newInstanceArgs([ $moduleModel ]);
+
+                if ( $moduleInstance->isEnabled() ) {
+                    $moduleInstance->init();
+                }
+
+                ModulesRegistry::setModule($moduleInstance->getName(), $moduleInstance);
             }
 
             return true;
@@ -57,7 +71,12 @@ class Application
 
     public function run(ApplicationRequest $request): void
     {
-        $controller = $this->getCurrentController($request);
+        $this->initCurrentController($request);
+        $this->initCurrentUser($request);
+
+        $context = Context::getInstance();
+
+        $controller = $context->controller;
 
         $controller->init();
         $controller->execute($request->getRequestData());
@@ -68,7 +87,7 @@ class Application
         $this->display->echo();
     }
 
-    private function getCurrentController(ApplicationRequest $request): Controller
+    private function initCurrentController(ApplicationRequest $request): void
     {
         if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
             $route = $this->router->getRoute($request->getRequestData()['url']);
@@ -96,8 +115,34 @@ class Application
         }
 
         Context::getInstance()->controller = $controller;
+    }
 
-        return $controller;
+    public function initCurrentUser(ApplicationRequest $request): void
+    {
+        if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
+            $cookies = $request->getRequestData()['cookies'];
+            $sessionCookie = null;
+
+            foreach ( $cookies as $cookie ) {
+                if ( $cookie->getName() === 'stoken' ) {
+                    $sessionCookie = $cookie;
+                }
+            }
+
+            if ( $sessionCookie ) {
+                $session = Session::getByToken($cookie->getValue());
+            }
+
+            if ( isset($session) && $session->isExpired() === false ) {
+                $user = new User($sesion->id);
+            } else {
+                $user = User::getGuestUser();
+            }
+
+            Context::getInstance()->user = $user;
+        } else {
+
+        }
     }
 
     public function getRouter(): Router

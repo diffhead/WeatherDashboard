@@ -303,7 +303,7 @@ class Query implements QueryInterface
                             foreach ( $container['join'] as $join ) {
                                 $query .= $join['type'] . ' JOIN ';
                                 $query .= $join['table'] . ' ' . $join['alias'] . ' ';
-                                $query .= $join['on'] . ' ';
+                                $query .= StringService::isEmpty($join['on']) ? ' ' :  'ON ' . $join['on'] . ' ';
                             }
                         }
 

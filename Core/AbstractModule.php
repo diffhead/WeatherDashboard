@@ -1,5 +1,7 @@
 <?php namespace Core;
 
+use ReflectionClass;
+
 use Core\Model;
 
 use Interfaces\Module;
@@ -8,10 +10,9 @@ abstract class AbstractModule implements Module
 {
     protected Model $model;
 
-    protected bool   $enable;
-
     protected string $name;
     protected string $path;
+    protected string $namespace;
 
     abstract public function init(): void;
 
@@ -20,8 +21,11 @@ abstract class AbstractModule implements Module
         $this->model = $model;
 
         $this->name = $model->name;
-        $this->enable = $model->enable;
         $this->path = _MODULES_DIR_ . $model->name . '/';
+
+        $reflectionClass = new ReflectionClass(static::class);
+
+        $this->namespace = $reflectionClass->getNamespaceName();
     }
 
     public function enable(): bool
@@ -40,7 +44,7 @@ abstract class AbstractModule implements Module
 
     public function isEnabled(): bool
     {
-        return $this->enable;
+        return $this->model->enable;
     }
 
     final public function getName(): string

@@ -13,36 +13,36 @@ class Router
         return isset($this->routes[$route]);
     }
 
-    public function setRoute(string $route, Route $routeInstance): int
+    public function setRoute(Route $route): int
     {
         $status = self::SET_ROUTE_SUCCESS;
 
-        if ( $this->isRouteExists($route) ) {
-            if ( $this->getRoute($route)->isProtected() ) {
+        if ( $this->isRouteExists($route->getRoute()) ) {
+            if ( $this->getRoute($route->getRoute())->isProtected() ) {
                 return self::SET_ROUTE_FAILED;
             }
 
             $status = self::SET_ROUTE_CHANGED;
         }
 
-        $this->routes[$route] = $routeInstance;
+        $this->routes[] = $route;
 
         return $status;
     }
 
-    public function getRoute(string $route): null|Route
+    public function getRoute(string $routeStr): null|Route
     {
         static $matches = [];
 
-        if ( isset($matches[$route]) ) {
-            return $matches[$route];
+        if ( isset($matches[$routeStr]) ) {
+            return $matches[$routeStr];
         }
 
-        foreach ( $this->routes as $routeAddress => $routeInstance ) {
-            if ( $routeInstance->isCurrentRoute($route) ) {
-                $matches[$route] = $routeInstance;
+        foreach ( $this->routes as $route ) {
+            if ( $route->isCurrentRoute($routeStr) ) {
+                $matches[$route->getRoute()] = $route;
 
-                return $routeInstance;
+                return $route;
             }
         }
 

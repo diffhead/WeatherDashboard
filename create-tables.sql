@@ -6,6 +6,11 @@ CREATE TABLE modules(
     PRIMARY KEY(id)
 );
 
+INSERT INTO modules (name, enable) 
+VALUES 
+    ('AuthModule', 1), 
+    ('WebFrontend', 1);
+
 CREATE TABLE cache(
     id SERIAL,
 
@@ -33,11 +38,15 @@ CREATE TABLE config(
 CREATE TABLE users (
     id SERIAL, 
 
+    active INTEGER NOT NULL DEFAULT 1,
+
     name TEXT, 
+    login TEXT NOT NULL UNIQUE,
     secondname TEXT NOT NULL DEFAULT '', 
     thirdname TEXT NOT NULL DEFAULT '', 
+    password TEXT NOT NULL,
 
-    email TEXT NOT NULL, 
+    email TEXT NOT NULL UNIQUE, 
     phone TEXT NOT NULL DEFAULT '', 
 
     date_add TIMESTAMP NOT NULL DEFAULT NOW(), 
@@ -48,6 +57,8 @@ CREATE TABLE users (
     PRIMARY KEY(id)
 );
 
+INSERT INTO users (name, email, login) VALUES ('Guest', 'info@site.com', 'guest');
+
 CREATE TABLE access (
     id SERIAL, 
     title TEXT NOT NULL, 
@@ -55,6 +66,12 @@ CREATE TABLE access (
 
     PRIMARY KEY(id)
 );
+
+INSERT INTO access (title, description) VALUES 
+    ('admin','User who has full access on the site'), 
+    ('employee', 'User who can manipulate content'), 
+    ('user', 'User who can view site content'), 
+    ('guest', 'Guest user');
 
 CREATE TABLE user_access (
     user_id INTEGER NOT NULL, 
@@ -64,4 +81,18 @@ CREATE TABLE user_access (
     CONSTRAINT fk_access FOREIGN KEY(access) REFERENCES access(id) ON DELETE CASCADE,
 
     PRIMARY KEY(user_id)
+);
+/**
+ * User access for guest 
+*/
+INSERT INTO user_access (user_id, access) VALUES (1, 4);
+
+CREATE TABLE user_session (
+    user_id INTEGER NOT NULL, 
+    token TEXT NOT NULL, 
+    expiration TIMESTAMP NOT NULL DEFAULT NOW() + INTERVAL '1 day', 
+    
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+
+    PRIMARY KEY (user_id)
 );

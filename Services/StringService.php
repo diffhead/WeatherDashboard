@@ -66,4 +66,19 @@ class StringService
     {
         return explode($delimiter, $string);
     }
+
+    public static function implode(array $stringParts, string $delimiter = PHP_EOL): string
+    {
+        return implode($delimiter, $stringParts);
+    }
+
+    public static function ucfirst(string $string): string
+    {
+        return ucfirst($string);
+    }
+
+    public static function lcfirst(string $string): string
+    {
+        return lcfirst($string);
+    }
 }
