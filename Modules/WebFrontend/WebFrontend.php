@@ -10,6 +10,6 @@ class WebFrontend extends AbstractModule
     {
         $appRouter = Context::getInstance()->application->getRouter();
 
-        $appRouter->setRoute(new Route('/', Route::TYPE_RAW, '\\Modules\\WebFrontend\\Controllers\\Index', [ 'GET', 'POST' ], true));
+        $appRouter->setRoute(new Route('/', Route::TYPE_RAW, "{$this->namespace}\\Controller\\Index", [ 'GET', 'POST' ], true));
     }
 }

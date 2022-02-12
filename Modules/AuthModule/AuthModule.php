@@ -10,9 +10,9 @@ class AuthModule extends AbstractModule
     {
         $routes = [];
 
-        $routes[] = new Route('/login', 1, "{$this->namespace}\\Controllers\\Login", [ 'GET', 'POST' ], true);
-        $routes[] = new Route('/logout', 1, "{$this->namespace}\\Controllers\\Logout", [ 'GET' ], true);
-        $routes[] = new Route('/register', 1, "{$this->namespace}\\Controllers\\Register", [ 'POST' ], true);
+        $routes[] = new Route('/login', 1, "{$this->namespace}\\Controller\\Login", [ 'GET', 'POST' ], true);
+        $routes[] = new Route('/logout', 1, "{$this->namespace}\\Controller\\Logout", [ 'GET' ], true);
+        $routes[] = new Route('/register', 1, "{$this->namespace}\\Controller\\Register", [ 'POST' ], true);
 
         $this->setRoutes($routes);
     }

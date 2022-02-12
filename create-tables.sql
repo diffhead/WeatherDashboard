@@ -9,7 +9,8 @@ CREATE TABLE modules(
 INSERT INTO modules (name, enable) 
 VALUES 
     ('AuthModule', 1), 
-    ('WebFrontend', 1);
+    ('WebFrontend', 1),
+    ('CacheHandler', 1);
 
 CREATE TABLE cache(
     id SERIAL,
