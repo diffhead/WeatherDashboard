@@ -112,7 +112,7 @@ class ActiveRecord
         $records = false;
 
         if ( isset(static::$dataCaching) && static::$dataCaching ) {
-            $cache = new Cache("ActiveRecord.$class.where.$whereStatement", 3600);
+            $cache = new Cache("ActiveRecord.$class.where.$whereStatement", 3600 * 24);
 
             $records = $cache->getData();
         }
