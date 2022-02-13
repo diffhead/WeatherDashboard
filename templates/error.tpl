@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>{{ code }} Error</title>
-        <link href="/styles/erorr.css" rel="stylesheet">
+        <link href="/bundle/erorr.css" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
