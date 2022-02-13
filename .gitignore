@@ -1,3 +1,9 @@
 vendor/
 cache/
+static/
+frontend/bundle/**
+**/node_modules/
+
+**/package-lock.json
+**/package.lock
 *.geany
