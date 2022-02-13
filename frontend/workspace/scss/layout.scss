@@ -1,0 +1,14 @@
+body {
+    margin: 0px;
+    
+    & * {
+        display: flex;
+    }
+    
+    & .content {
+        flex-direction: column;
+        min-height: 100%;
+        width: 100%;
+        overflow: auto;
+    }
+}
