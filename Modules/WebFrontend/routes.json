@@ -1,10 +1,22 @@
 {
     "/": {
         "type": 1,
-        "controller": "\\Modules\\WebFrontend\\Controller\\Index",
-        "params": [ "GET", "POST" ],
+        "controller": "\\Modules\\WebFrontend\\Controller\\Indes",
+        "params": [ "GET" ],
         "protected": false
     },
+    "/login": {
+        "type": 1,
+        "controller": "\\Modules\\WebFrontend\\Controller\\Login",
+        "params": [ "GET" ],
+        "protected": false
+    },
+    "/admin": {
+        "type": 1,
+        "controller": "\\Modules\\WebFrontend\\Controller\\Admin",
+        "params": [ "GET" ],
+        "protected": false
+    },    
     "/redirect-example": {
         "type": 1,
         "controller": "\\Web\\Controller\\Redirect",

@@ -16,13 +16,14 @@ class Error extends View
 
     protected bool   $templateIsFile = true;
 
-    public function __construct(int $code, string $message = 'Error')
+    public function __construct(int $code, string $message = 'Error', string $extMessage = '')
     {
         parent::__construct();
 
         $this->assign([
-            'code'    => $code,
-            'message' => $message
+            'code'       => $code,
+            'message'    => $message,
+            'extMessage' => $extMessage
         ]);
     }
 }

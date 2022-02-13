@@ -1,7 +1,8 @@
 <?php namespace Core;
 
-use ReflectionClass;
 use Exception;
+use Throwable;
+use ReflectionClass;
 
 use Interfaces\Controller;
 use Interfaces\ApplicationRequest;
@@ -71,19 +72,33 @@ class Application
 
     public function run(ApplicationRequest $request): void
     {
-        $this->initCurrentController($request);
-        $this->initCurrentUser($request);
+        try {
+            $this->initCurrentController($request);
+            $this->initCurrentUser($request);
 
-        $context = Context::getInstance();
+            $context = Context::getInstance();
 
-        $controller = $context->controller;
+            $controller = $context->controller;
 
-        $controller->init();
-        $controller->execute($request->getRequestData());
+            $controller->init();
+            $controller->execute($request->getRequestData());
+            
+            $view = $controller->getView();
+        } catch ( Throwable $e ) {
+            if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
+                $controller = new \Web\Controller\Error(500, $e->getMessage(), $e->getTraceAsString());
+            } else {
+                $controller = new \Cli\Controller\Error(500, $e->getMessage(), $e->getTraceAsString());
+            }
+            
+            $controller->init();
+            $controller->execute();
+            
+            $view = $controller->getView();
+        } 
 
-        $view = $controller->getView();
         $view->display();
-
+        
         $this->display->echo();
     }
 
