@@ -1,0 +1,15 @@
+{
+    "files": [ 
+        "workspace/ts/index.ts"
+    ],
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "target": "es2020",
+        "module": "commonjs",
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "outDir": "./bundle",
+        "noEmit": false
+    },
+    "include": [ "workspace/ts/**/*" ]
+}
