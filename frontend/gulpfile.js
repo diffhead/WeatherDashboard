@@ -31,10 +31,11 @@ gulp.task(
         }),
         gulp.parallel(function() {
             return gulp.src(
-                "home/scss/**/*.scss"
+                    "workspace/scss/**/*.scss"
                 ).pipe(scss(
-                {"bundleExec": true}
-            ))
+                    {"bundleExec": true}
+                )
+            )
             .pipe(gulp.dest("bundle"));
         })
     )
