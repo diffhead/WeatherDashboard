@@ -1,15 +1,13 @@
 <?php namespace Core;
 
-use Services\ClassService;
 use Services\ArrayService;
-use Services\StringService;
 
 class Model extends ActiveRecord
 {
     public function __construct(int $id = 0)
     {
         if ( $id ) {
-            $modelData = ArrayService::pop($this->where($this->getAloneItemWhereStatement($id)));
+            $modelData = (array)ArrayService::pop($this->where($this->getAloneItemWhereStatement($id)));
 
             $this->setModelData($modelData);
         }
@@ -19,7 +17,7 @@ class Model extends ActiveRecord
     {
         $idField = static::$idField;
 
-        return "{$idField}={$primaryFieldValue}";
+        return "{$idField}='{$primaryFieldValue}'";
     }
 
     public function setModelData(array $properties = []): void
@@ -29,34 +27,10 @@ class Model extends ActiveRecord
         }
     }
 
-    public function __get(string $property): mixed
-    {
-        if ( ClassService::propertyExists($this, $property) || $property === static::$idField ) {
-            if ( $property === static::$idField ) {
-                return $this->id;
-            }
-
-            return $this->$property;
-        }
-
-        return null;
-    }
-
-    public function __set(string $property, mixed $value): void
-    {
-        if ( ClassService::propertyExists($this, $property) || $property === static::$idField ) {
-            if ( $property === static::$idField ) {
-                $this->id = $value;
-            } else {
-                $this->$property = $value;
-            }
-        }
-    }
-
     public function isValidModel(): bool
     {
-        $properties = ClassService::getProperties($this);
-
+        $properties = ArrayService::getKeys(static::$definitions);
+        
         foreach ( $properties as $property ) {
             if ( isset($this->$property) === false ) {
                 return false;

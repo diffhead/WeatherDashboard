@@ -20,7 +20,7 @@ class Module extends Model
         'id'      => ActiveRecord::TYPE_INT,
         'enable'  => ActiveRecord::TYPE_BOOL,
         'name'    => ActiveRecord::TYPE_STRING,
-        'priorty' => ActiveRecord::TYPE_INT
+        'priority' => ActiveRecord::TYPE_INT
     ];
 
     public static function getAll(): array

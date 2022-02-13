@@ -7,6 +7,8 @@ use Views\Json as JsonView;
 use Web\HttpHeader;
 use Web\HttpCookie;
 
+use Services\HttpService;
+
 class Logout extends Controller
 {
     public function init(): void
@@ -16,7 +18,7 @@ class Logout extends Controller
     
     public function execute(array $params = []): bool
     {
-        $resetSessionCookie = new HttpCookie('stoken', 'resettoken');
+        $resetSessionCookie = new HttpCookie('stoken', 'resettoken', time() - 10);
         $redirectToIndexHeader = new HttpHeader('Location', '/');
         
         HttpService::setResponseCode(205);

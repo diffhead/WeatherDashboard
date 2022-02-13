@@ -225,7 +225,7 @@ class Query implements QueryInterface
 
     public function set(string $field, string $value): self
     {
-        $this->containers[$this->type]['set'][] = "$field=$value";
+        $this->containers[$this->type]['set'][] = "$field='$value'";
 
         return $this;
     }

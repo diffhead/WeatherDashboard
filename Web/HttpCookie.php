@@ -14,9 +14,9 @@ class HttpCookie
         string $name, 
         string $value, 
         int $expires = -1, 
-        string $path = '',
+        string $path = '/',
         string $domain = '',
-        bool $secure = true,
+        bool $secure = false,
         bool $httpOnly = true
     ) {
         $this->name = $name;

@@ -10,6 +10,7 @@ use Core\Database\Db;
 use Core\Database\Query;
 
 use Services\ArrayService;
+use Services\CryptService;
 
 class User extends Model implements UserInterface
 {
@@ -34,6 +35,7 @@ class User extends Model implements UserInterface
     protected static bool   $dataCaching = true;
 
     protected static array  $definitions = [
+        'id'         => ActiveRecord::TYPE_INT,
         'active'     => ActiveRecord::TYPE_BOOL,
         'name'       => ActiveRecord::TYPE_STRING,
         'email'      => ActiveRecord::TYPE_STRING,
@@ -73,6 +75,21 @@ class User extends Model implements UserInterface
         $user->setModelData($userData);
 
         return $user;
+    }
+    
+    public static function getByLogin(string $login): User
+    {
+        $userData = (array)ArrayService::pop(User::where("login = '{$login}'"));
+        
+        $user = new User();
+        $user->setModelData($userData);
+        
+        return $user;
+    }
+    
+    public function isValidPassword(string $password): bool
+    {
+        return CryptService::decrypt($this->password) === $password;
     }
 
     public function isLogged(): bool

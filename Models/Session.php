@@ -27,7 +27,9 @@ class Session extends Model
     {
         parent::setModelData($data);
 
-        $this->expirationDatetime = new DateTime($this->expiration);
+        if ( $this->isValidModel() ) {
+            $this->expirationDatetime = new DateTime($this->expiration);
+        }
     }
 
     public static function getByToken(string $token): null|Session

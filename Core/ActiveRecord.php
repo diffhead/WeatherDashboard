@@ -7,6 +7,7 @@ use Core\Database\Db;
 use Core\Database\Query;
 
 use Services\ArrayService;
+use Services\ClassService;
 
 class ActiveRecord
 {
@@ -135,6 +136,30 @@ class ActiveRecord
 
         return $records;
     }
+    
+    public function __get(string $property): mixed
+    {
+        if ( ClassService::propertyExists($this, $property) || $property === static::$idField ) {
+            if ( $property === static::$idField ) {
+                return $this->id;
+            }
+
+            return $this->$property;
+        }
+
+        return null;
+    }
+
+    public function __set(string $property, mixed $value): void
+    {
+        if ( ClassService::propertyExists($this, $property) || $property === static::$idField ) {            
+            if ( $property === static::$idField ) {
+                $this->id = $value;
+            }
+            
+            $this->$property = $value;
+        }
+    }
 
     public function create(): bool
     {
@@ -146,12 +171,12 @@ class ActiveRecord
         $values = [];
 
         foreach ( static::$definitions as $prop => $type ) {
-            if ( $prop === static::$idField ) {
-                continue;
-            }
-
             if ( isset($this->$prop) === false && static::$idField !== $prop ) {
                 return false;
+            }
+            
+            if ( isset($this->$prop) === false && $prop === static::$idField ) {
+                continue;
             }
 
             $value = self::filter($prop, $this->$prop, true);
@@ -201,18 +226,18 @@ class ActiveRecord
         $query->update(static::$table);
 
         foreach ( static::$definitions as $prop => $type ) {
-            if ( $prop === static::$idField ) {
-                continue;
-            }
-
             if ( isset($this->$prop) === false && static::$idField !== $prop ) {
                 return false;
             }
+            
+            if ( isset($this->$prop) === false && $prop === static::$idField ) {
+                continue;
+            }            
 
             $query->set($prop, self::filter($prop, $this->$prop, true));
         }
 
-        $query->where("{$idField}={$this->$idField}");
+        $query->where("{$idField}='{$this->$idField}'");
 
         $db = Db::getConnection();
 
@@ -234,7 +259,7 @@ class ActiveRecord
         $query = new Query;
         $query->delete()
               ->from(static::$table)
-              ->where("{$idField}={$this->$idField}");
+              ->where("{$idField}='{$this->$idField}'");
 
         $db = Db::getConnection();
 
