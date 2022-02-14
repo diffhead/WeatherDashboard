@@ -94,6 +94,10 @@ class User extends Model implements UserInterface
 
     public function isLogged(): bool
     {
+        if ( $this->isValidModel() === false ) {
+            return false;
+        }
+
         if ( isset($this->session) === false ) {
             $this->session = new Session($this->id);
         }
@@ -103,19 +107,36 @@ class User extends Model implements UserInterface
 
     public function isGuest(): bool
     {
-        if ( isset($this->access) === false ) {
-            $userAccess = new UserAccess($this->id);
+        if ( $this->isValidModel() === false ) {
+            return true;
+        }
 
-            $this->access = new Access($userAccess->access);
+        if ( isset($this->access) === false ) {
+            $this->initAccess();
         }
 
         return $this->access->title === 'guest';
     }
 
+    private function initAccess(): void
+    {
+        if ( $this->isValidModel() === false ) {
+            return;
+        }
+
+        $userAccess = new UserAccess($this->id);
+
+        $this->access = new Access($userAccess->access);
+    }
+
     public function isAdmin(): bool
     {
+        if ( $this->isValidModel() === false ) {
+            return false;
+        }
+
         if ( isset($this->access) === false ) {
-            $this->access = new Access($this->id);
+            $this->initAccess();
         }
 
         return $this->access->title === 'admin';
@@ -123,6 +144,24 @@ class User extends Model implements UserInterface
 
     public function isActive(): bool
     {
+        if ( $this->isValidModel() === false ) {
+            return false;
+        }
+
         return $this->active;
+    }
+
+    public function getAccessId(): int
+    {
+        if ( $this->isAdmin() ) {
+            return $this->access->id;
+        }
+
+        /* Model can to be an invalid */
+        if ( isset($this->access) === false ) {
+            return 0;
+        }
+
+        return $this->access->id;
     }
 }

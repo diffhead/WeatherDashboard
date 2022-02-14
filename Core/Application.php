@@ -148,20 +148,16 @@ class Application
         if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
             $cookies = $request->getRequestData()['cookies'];
 
-            $sessionCookie = null;
-
             foreach ( $cookies as $cookie ) {
                 if ( $cookie->getName() === 'stoken' ) {
-                    $sessionCookie = $cookie;
+                    $session = Session::getByToken($cookie->getValue());
+
+                    break;
                 }
             }
 
-            if ( $sessionCookie ) {
-                $session = Session::getByToken($cookie->getValue());
-            }
-
             if ( isset($session) && $session->isExpired() === false ) {
-                $user = new User($sesion->id);
+                $user = new User($session->id);
             } else {
                 $user = User::getGuestUser();
             }

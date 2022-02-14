@@ -22,12 +22,13 @@ class Login extends Controller
     const SUCCESS_LOGIN = 'Successfully log into account';
     
     const ERR_INVALID_DATA     = 'Invalid login data';
+    const ERR_USER_INACTIVE    = 'User is inactive. Connect with an admin';
     const ERR_USER_NOT_FOUND   = 'User not found';    
     const ERR_INVALID_PASSWORD = 'Invalid user password';
     const ERR_SESSION_CREATION = 'Failed session creation';
     
     private User $user;
-    
+
     public function init(): void
     {
         $this->view = new JsonView([ 'status' => false ]);
@@ -38,7 +39,7 @@ class Login extends Controller
         $loginData = $params['data'];
         
         $db = Db::getConnection();
-        
+
         $loginData['login'] = isset($loginData['login']) ?  $db->escapeString($loginData['login']) : '';
         
         if ( 
@@ -48,6 +49,16 @@ class Login extends Controller
             HttpService::setResponseCode(400);
             
             return true;
+        }
+
+        if ( $this->user->isActive() === false ) {
+            HttpService::setResponseCode(401);
+
+            $this->view->assign([
+                'message' => Login::ERR_USER_INACTIVE
+            ]);
+
+            return false;
         }
         
         if ( $this->user->isValidPassword($loginData['password']) === false ) {
@@ -59,7 +70,7 @@ class Login extends Controller
             
             return false;
         }
-        
+
         $dateTime  = new DateTime('now + 1 day');
 
         $sessionData = [
@@ -80,7 +91,8 @@ class Login extends Controller
             'status'  => true,
             'message' => Login::SUCCESS_LOGIN
         ]);
-       
+
+        
         return true;
     }
     
@@ -124,8 +136,6 @@ class Login extends Controller
     {        
         $session = new Session($this->user->id);
         
-        $redirectHeader = new HttpHeader('Location', '/');
-                
         if ( $session->isValidModel() === false ) {
             $session->setModelData($sessionData);
             
@@ -136,18 +146,17 @@ class Login extends Controller
             $session->setModelData($sessionData);
             
             if ( $session->update() ) {
-                $sessionCookie = new HttpCookie('stoken', $session->token, time() + 3600 * 24);
+               $sessionCookie = new HttpCookie('stoken', $session->token, time() + 3600 * 24);
             }
         }
-        
+
         if ( isset($sessionCookie) === false ) {
             return false;
         }
-        
+
         HttpService::setResponseCode(200);
         HttpService::setResponseCookie($sessionCookie);
-        HttpService::setResponseHeader($redirectHeader);            
-        
+
         return true;
     }
 }

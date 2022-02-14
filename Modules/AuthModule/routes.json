@@ -1,17 +1,17 @@
 {
-    "/login": {
+    "/api/login": {
         "type": 1,
         "controller": "\\Modules\\AuthModule\\Controller\\Login",
-        "params": [ "GET", "POST" ],
+        "params": [ "POST" ],
         "protected": true
     },
-    "/logout": {
+    "/api/logout": {
         "type": 1,
         "controller": "\\Modules\\AuthModule\\Controller\\Logout",
         "params": [ "GET" ],
         "protected": true
     },
-    "/register": {
+    "/api/register": {
         "type": 1,
         "controller": "\\Modules\\AuthModule\\Controller\\Register",
         "params": [ "POST" ],

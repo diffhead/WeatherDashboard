@@ -41,7 +41,7 @@ class Session extends Model
         }
 
         $model = new static();
-        $model->setModelData($modelData);
+        $model->setModelData(ArrayService::pop($modelData));
 
         return $model;
     }
@@ -52,7 +52,7 @@ class Session extends Model
             return true;
         }
 
-        $this->expirationDatetime < new DateTime('now');
+        return $this->expirationDatetime < new DateTime('now');
     }
 
     public function getExpirationFormatted(string $format): string

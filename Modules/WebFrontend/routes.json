@@ -1,7 +1,7 @@
 {
     "/": {
         "type": 1,
-        "controller": "\\Modules\\WebFrontend\\Controller\\Indes",
+        "controller": "\\Modules\\WebFrontend\\Controller\\Index",
         "params": [ "GET" ],
         "protected": false
     },

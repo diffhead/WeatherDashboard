@@ -1,0 +1,42 @@
+[
+    { 
+        "link": "/", 
+        "entity": "index",
+        "title": "Home", 
+        "active": false,
+        "access": [ 1, 2, 3, 4 ],
+        "class": ""
+    },
+    {
+        "link": "/profile",
+        "entity": "profile",
+        "title": "Profile",
+        "active": false,
+        "access": [ 1, 2, 3 ],
+        "class": ""
+    },
+    { 
+        "link": "/admin", 
+        "entity": "admin",
+        "title": "Settings",
+        "active": false,
+        "access": [ 1, 2 ],
+        "class": ""
+    },
+    {
+        "link": "/api/logout",
+        "entity": "logout",
+        "title": "LogOut",
+        "active": false,
+        "access": [ 1, 2, 3 ],
+        "class": "margin-left-auto"
+    },
+    {
+        "link": "/login",
+        "entity": "login",
+        "title": "LogIn",
+        "active": false,
+        "access": [ 4 ],
+        "class": "margin-left-auto"
+    }
+]

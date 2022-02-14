@@ -8,18 +8,10 @@
         <div class="content">
             <div class="error-modal">
                 <div class="error-modal-menu">
-                    <button>Home</button>
-                    <button>Expand</button>
-                    <button>ShortIt</button>
+                    <button data-entity="home">Home</button>
+                    <button data-entity="expand">Expand</button>
                 </div>
-                <div class="error-modal-img error-row">
-                    <a href="/">
-                        <div class="error-modal-img__a">
-                            <img src="/images/logo.webp" alt="Site's main logotype">
-                            <span>Go to homepage</span>
-                        </div>
-                    </a>
-                </div>
+                
                 <div class="error-modal-code error-row">{{ code }}</div>
                 <div class="error-modal-message error-row">{{ message }}</div>
                 
@@ -30,5 +22,16 @@
                 {% endif %}
             </div>
         </div>
+        
+        <script type="text/javascript">
+            window.error = {
+                code: {{ code }},
+                message: `{{ message|e('js') }}`,
+                extended: `{{ extMessage|e('js') }}`
+            }
+        </script>
+
+        <script src="/bundle/index.js"></script>
+
     </body>
 </html>

@@ -11,6 +11,8 @@ use Core\Database\Db;
 use Views\Json as JsonView;
 
 use Models\User;
+use Models\Access;
+use Models\UserAccess;
 
 use Services\ArrayService;
 use Services\CryptService;
@@ -83,7 +85,7 @@ class Register extends Controller
         $user->setModelData($userData);
         
         if ( $user->create() === false ) {
-            HttpService::setResponseCode(400);
+            HttpService::setResponseCode(500);
             
             $this->view->assign([
                 'message' => Register::ERR_CREATION_FAILED
@@ -91,7 +93,18 @@ class Register extends Controller
             
             return false;
         }
-        
+
+        /* Default access is 'User' */
+        if ( $this->setUserAccess($user, new Access(3)) === false ) {
+            HttpService::setResponseCode(500);
+            
+            $this->view->assign([
+                'message' => Register::ERR_CREATION_FAILED
+            ]);
+
+            return false;
+        }
+
         $this->view->assign([
             'status'  => true,
             'message' => Register::SUCCESS_CREATION
@@ -174,5 +187,16 @@ class Register extends Controller
             'last_login' => $dateTimestamp
             
         ], $data);
+    }
+
+    private function setUserAccess(User $user, Access $access): bool
+    {
+        $userAccess = new UserAccess();
+        $userAccess->setModelData([
+            'user_id' => $user->id,
+            'access'  => $access->id
+        ]);
+
+        return $userAccess->create();
     }
 }

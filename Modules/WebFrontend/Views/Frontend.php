@@ -2,8 +2,8 @@
 
 use Core\View;
 
-class Index extends View
+class Frontend extends View
 {
-    protected string $template = 'Modules/WebFrontend/templates/index.tpl';
+    protected string $template = 'Modules/WebFrontend/templates/layout.tpl';
     protected bool   $templateIsFile = true;
 }

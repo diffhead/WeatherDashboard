@@ -40,7 +40,7 @@ class Router
 
         foreach ( $this->routes as $route ) {
             if ( $route->isCurrentRoute($routeStr) ) {
-                $matches[$route->getRoute()] = $route;
+                $matches[$routeStr] = $route;
 
                 return $route;
             }

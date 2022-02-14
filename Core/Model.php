@@ -30,7 +30,7 @@ class Model extends ActiveRecord
     public function isValidModel(): bool
     {
         $properties = ArrayService::getKeys(static::$definitions);
-        
+
         foreach ( $properties as $property ) {
             if ( isset($this->$property) === false ) {
                 return false;

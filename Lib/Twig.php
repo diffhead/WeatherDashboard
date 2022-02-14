@@ -2,8 +2,7 @@
 
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
-
-use Config\ApplicationConfig;
+use Twig\Extension\DebugExtension;
 
 class Twig
 {
@@ -12,7 +11,12 @@ class Twig
     public function __construct(string $templatesPath, string $cachePath = _APP_BASE_DIR_ . 'cache/twig')
     {
         $loader = new FilesystemLoader($templatesPath);
-        $environment = new Environment($loader, [ 'cache' => $cachePath ]);
+        $environment = new Environment($loader, [ 
+            'cache' => $cachePath,
+            'debug' => _DEV_MODE_
+        ]);
+
+        $environment->addExtension(new DebugExtension());
 
         $this->twig = $environment;
     }
