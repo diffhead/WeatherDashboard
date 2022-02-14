@@ -1,5 +1,4 @@
-import { RoutesStorage } from './types/routesstorage.type';
-import { Route } from './types/route.type';
+import { RoutesStorage } from './types/routes-storage.type';
 
 export let routes: RoutesStorage = {
     '/': { 
@@ -13,5 +12,13 @@ export let routes: RoutesStorage = {
     '/admin': {
         'component': 'AdminComponent',
         'authorized': true
+    },
+    '/profile': {
+        'component': 'ProfileComponent',
+        'authorized': true
+    },
+    'error': {
+        'component': 'ErrorComponent',
+        'authorized': false
     }
 };

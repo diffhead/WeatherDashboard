@@ -21,7 +21,7 @@ export class Application
     run(): void
     {
         let router: Router = new Router();
-        let component: Component = router.getRouteComponent(this.route);
+        let component: Component = router.getRouteComponent(this.error ? 'error' : this.route);
 
         component.init();
         component.draw();
