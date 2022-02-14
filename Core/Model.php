@@ -7,9 +7,11 @@ class Model extends ActiveRecord
     public function __construct(int $id = 0)
     {
         if ( $id ) {
-            $modelData = (array)ArrayService::pop($this->where($this->getAloneItemWhereStatement($id)));
+            $modelData = static::where($this->getAloneItemWhereStatement($id));
 
-            $this->setModelData($modelData);
+            if ( ArrayService::isEmpty($modelData) === false ) {
+                $this->setModelData(ArrayService::pop($modelData));
+            }
         }
     }
 

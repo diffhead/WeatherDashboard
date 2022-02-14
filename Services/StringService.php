@@ -2,6 +2,13 @@
 
 class StringService
 {
+    public static function formatCacheKey(string $key): string
+    {
+        return self::trim(
+            self::strReplace($key, ' ', '')
+        );
+    }
+
     public static function isMatch(string $regExp, $string): bool
     {
         return (bool)preg_match($regExp, $string);

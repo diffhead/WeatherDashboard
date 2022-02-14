@@ -63,4 +63,13 @@ class Memcached
 
         return self::$memcached->flush();
     }
+
+    public function getCode(): int
+    {
+        if ( self::isEnabled() ) {
+            return MEMCACHED_CONNECTION_FAILURE;
+        }
+
+        return self::$memcached->getResultCode();
+    }
 }

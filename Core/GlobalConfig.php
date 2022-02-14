@@ -13,7 +13,7 @@ class GlobalConfig implements Configuration
     public static function get(string $code): mixed
     {
         $query = new Query;
-        $query->select([ 'value' ])->from('cache')->where("key = '{$code}'");
+        $query->select([ 'value' ])->from('config')->where("key = '{$code}'");
 
         $db = Db::getConnection();
 
@@ -36,6 +36,7 @@ class GlobalConfig implements Configuration
 
         $query = new Query;
 
+        /* PGSQL DEPENDENT QUERY */
         $query->setString("
             INSERT INTO config (key, value) VALUES ('$code', '$value') 
             ON CONFLICT (key)

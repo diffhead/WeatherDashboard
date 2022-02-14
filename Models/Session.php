@@ -14,6 +14,8 @@ class Session extends Model
     protected string $token;
     protected string $expiration;
 
+    protected static bool   $dataCaching = true;
+
     protected static string $table = 'user_session';
     protected static string $idField = 'user_id';
 
@@ -40,7 +42,7 @@ class Session extends Model
             return null;
         }
 
-        $model = new static();
+        $model = new Session();
         $model->setModelData(ArrayService::pop($modelData));
 
         return $model;

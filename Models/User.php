@@ -120,13 +120,15 @@ class User extends Model implements UserInterface
 
     private function initAccess(): void
     {
-        if ( $this->isValidModel() === false ) {
+        if ( $this->isValidModel() === false || isset($this->access) ) {
             return;
         }
 
         $userAccess = new UserAccess($this->id);
 
-        $this->access = new Access($userAccess->access);
+        if ( $userAccess->isValidModel() ) {
+            $this->access = new Access($userAccess->access);
+        }
     }
 
     public function isAdmin(): bool
@@ -153,9 +155,7 @@ class User extends Model implements UserInterface
 
     public function getAccessId(): int
     {
-        if ( $this->isAdmin() ) {
-            return $this->access->id;
-        }
+        $this->initAccess();
 
         /* Model can to be an invalid */
         if ( isset($this->access) === false ) {

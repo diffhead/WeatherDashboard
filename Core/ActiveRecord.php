@@ -8,6 +8,7 @@ use Core\Database\Query;
 
 use Services\ArrayService;
 use Services\ClassService;
+use Services\StringService;
 
 class ActiveRecord
 {
@@ -113,7 +114,9 @@ class ActiveRecord
         $records = false;
 
         if ( isset(static::$dataCaching) && static::$dataCaching ) {
-            $cache = new Cache("ActiveRecord.$class.where.$whereStatement", 3600 * 24);
+            $cacheKey = StringService::formatCacheKey("ActiveRecord.$class.where.$whereStatement");
+
+            $cache = new Cache($cacheKey, 3600 * 24);
 
             $records = $cache->getData();
         }
