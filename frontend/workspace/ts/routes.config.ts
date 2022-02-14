@@ -17,7 +17,8 @@ export let routes: RoutesStorage = {
         'component': 'ProfileComponent',
         'authorized': true
     },
-    'error': {
+
+    '__ERROR__': {
         'component': 'ErrorComponent',
         'authorized': false
     }

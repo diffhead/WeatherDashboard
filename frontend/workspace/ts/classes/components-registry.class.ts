@@ -5,19 +5,21 @@ import { IndexComponent } from '../components/index.component';
 
 export class ComponentsRegistry
 {
-    private static components: { [key: string]: Component } = {
-        'ErrorComponent': new ErrorComponent(),
-        'IndexComponent': new IndexComponent()
+    private static components: { [key: string]: any } = {
+        'ErrorComponent': ErrorComponent,
+        'IndexComponent': IndexComponent
     };
 
     public static getComponent(component: string): Component|null
     {
         console.log(component);
 
+        let _component: Component;
+
         if ( ComponentsRegistry.components.hasOwnProperty(component) === false ) {
             return null;
         }
 
-        return ComponentsRegistry.components[component];
+        return new ComponentsRegistry.components[component].prototype.constructor();
     }
 }

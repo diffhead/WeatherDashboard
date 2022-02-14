@@ -18,10 +18,12 @@ export class Application
         }
     }
 
-    run(): void
+    public run(): void
     {
         let router: Router = new Router();
-        let component: Component = router.getRouteComponent(this.error ? 'error' : this.route);
+        let component: Component = router.getRouteComponent(
+            this.error ? '__ERROR__' : this.route
+        );
 
         component.init();
         component.draw();
