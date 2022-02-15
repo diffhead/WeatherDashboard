@@ -1,5 +1,4 @@
 # WeatherDashboard
-***
 
 ### Project Architecture and Concepts
 
