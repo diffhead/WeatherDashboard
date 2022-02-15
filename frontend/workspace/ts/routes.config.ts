@@ -9,6 +9,10 @@ export let routes: RoutesStorage = {
         'component': 'LoginComponent',
         'authorized': false
     },
+    '/register': {
+        'component': 'RegisterComponent',
+        'authorized': false
+    },
     '/admin': {
         'component': 'AdminComponent',
         'authorized': true

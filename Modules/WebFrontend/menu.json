@@ -34,9 +34,17 @@
     {
         "link": "/login",
         "entity": "login",
-        "title": "LogIn",
+        "title": "Sign In",
         "active": false,
         "access": [ 4 ],
         "class": "margin-left-auto"
+    },
+    {
+        "link": "/register",
+        "entity": "register",
+        "title": "Sign Up",
+        "active": false,
+        "access": [ 4 ],
+        "class": ""
     }
 ]
