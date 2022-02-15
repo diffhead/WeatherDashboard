@@ -1,5 +1,7 @@
 <?php namespace Modules\WebFrontend\Controller;
 
+use Modules\WebFrontend\WebFrontend;
+
 use Core\Context;
 use Core\Controller;
 use Core\ModulesRegistry;
@@ -8,41 +10,45 @@ use Modules\WebFrontend\Views\Frontend as FrontendView;
 
 use Services\StringService;
 
-class WebFrontendController extends Controller
+abstract class WebFrontendController extends Controller
 {
-    const ENTITY_INDEX_ROUTE = '/';
-    const ENTITY_LOGIN_ROUTE = '/login';
-    const ENTITY_ADMIN_ROUTE = '/admin';
+    const ENTITY_INDEX     = 'index';
+    const ENTITY_LOGIN     = 'login';
+    const ENTITY_ADMIN     = 'admin';
+    const ENTITY_REGISTER  = 'register';
 
-    private string $entity;
+    protected WebFrontend $module;
+    protected string      $baseTitle = 'WeatherDashboard';
 
     final public function init(): void
     {
         $context = Context::getInstance();
-        $entity = $this->getEntityByRequestUrl($context->applicationRequest->getUrl());
-
-        $module = ModulesRegistry::getModule('WebFrontend');
-        $title = 'Weather Dashboard - ' . StringService::ucfirst($entity);
 
         $this->view = new FrontendView;
         $this->view->assign([
-            'title'  => $title,
+            'user' => $context->user
+        ]);
+
+        $this->module = ModulesRegistry::getModule('WebFrontend');
+    }
+
+    final protected function setEntity(string $entity): void
+    {
+        $this->view->assign([
             'entity' => $entity,
-            'menu'   => $module->getNavigationMenuItems($entity),
-            'user'   => $context->user
+            'title'  => $this->getTitleForEntity($entity),
+            'menu'   => $this->getMenuForEntity($entity)
         ]);
     }
 
-    private function getEntityByRequestUrl(string $url): string
+    protected function getTitleForEntity(string $entity): string
     {
-        switch ( $url ) {
-            case WebFrontendController::ENTITY_INDEX_ROUTE:
-                return 'index';
-            case WebFrontendController::ENTITY_LOGIN_ROUTE:
-                return 'login';
-            case WebFrontendController::ENTITY_ADMIN_ROUTE:
-                return 'admin';
-        }
+        return $this->module->getBaseTitle() . ' - ' . StringService::ucfirst($entity);
+    }
+
+    protected function getMenuForEntity(string $entity): array
+    {
+        return $this->module->getNavigationMenuItems($entity);
     }
 
     public function execute(array $params = []): bool

@@ -1,10 +1,10 @@
 <?php namespace Modules\WebFrontend\Controller;
 
-class Login extends WebFrontendController
+class Admin extends WebFrontendController
 {
     public function execute(array $params = []): bool
     {
-        $this->setEntity(WebFrontendController::ENTITY_LOGIN);
+        $this->setEntity(WebFrontendController::ENTITY_ADMIN);
 
         return true;
     }

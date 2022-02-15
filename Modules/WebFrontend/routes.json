@@ -11,12 +11,18 @@
         "params": [ "GET" ],
         "protected": false
     },
+    "/register": {
+        "type": 1,
+        "controller": "\\Modules\\WebFrontend\\Controller\\Register",
+        "params": [ "GET" ],
+        "protected": false
+    },
     "/admin": {
         "type": 1,
         "controller": "\\Modules\\WebFrontend\\Controller\\Admin",
         "params": [ "GET" ],
         "protected": false
-    },    
+    },
     "/redirect-example": {
         "type": 1,
         "controller": "\\Web\\Controller\\Redirect",

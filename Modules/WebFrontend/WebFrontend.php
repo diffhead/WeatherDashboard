@@ -46,4 +46,9 @@ class WebFrontend extends AbstractModule
 
         return $menuJson;
     }
+
+    public function getBaseTitle(): string
+    {
+        return 'Weather Dashboard';
+    }
 }
