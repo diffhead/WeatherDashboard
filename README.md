@@ -16,7 +16,7 @@ and Database relation described by ActiveRecord pattern.
 7. **containers.json** - DependencyInjection container configuration
 8. **Config/** - classes for App/Db/Memcached configs
 9. **Core/** - project core
-10. **create**-tables.sql - base migration for PostgreSQL
+10. **create-tables.sql** - base migration for PostgreSQL
 11. **Factories/** - contains abstract factory and other base factories
 12. **frontend/** - frontend part of the application
 13. **frontend/bundle** - bundled css js
