@@ -44,7 +44,7 @@ export class ErrorComponent implements Component
 
     private goHomeAction(): void
     {
-        document.location = '/';
+        window.application.getHome();
     }
 
     private toggleContent(): void

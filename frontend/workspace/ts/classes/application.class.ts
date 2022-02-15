@@ -28,4 +28,9 @@ export class Application
         component.init();
         component.draw();
     }
+
+    public getHome(): void
+    {
+        document.location = '/';
+    }
 }
