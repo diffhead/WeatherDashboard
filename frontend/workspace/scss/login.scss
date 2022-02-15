@@ -1,0 +1,62 @@
+.login-form {
+    width: 30rem;
+    margin: auto;
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 0 6px 1px $blackHalfTransparent;
+
+    &-fields {
+        flex-direction: column;
+        margin-bottom: .8rem;
+
+        & input {
+            height: 2.5rem;
+            outline: none;
+            border: 1px solid $blackHalfTransparent;
+            padding: 0.5rem 1.5rem;
+            transition: box-shadow, border-color .2s ease-out;
+        }
+
+        & input:not(:last-of-type) {
+            margin-bottom: .5rem;
+        }
+
+        & input:focus {
+            box-shadow: 0 0 3px 1px $sapphire;
+            border-color: $white;
+        }
+
+        & input.invalid {
+            border-color: $white;
+            box-shadow: 0 0 3px 1px $red;
+        }
+    }
+
+    &-button {
+        & button {
+            cursor: pointer;
+            height: 2rem;
+            border: 1px solid $blackHalfTransparent;
+            background-color: transparent;
+            padding: 0 1rem;
+            transition: background-color, border-color, color .2s;
+            color: $black;
+        }
+
+        & button:not(:last-of-type) {
+            margin-right: .5rem;
+        }
+
+        & button:hover {
+            background-color: $sapphire;
+            border-color: $white;
+            color: $white;
+        }
+        
+        & .simple-spinner {
+            margin-left: auto;
+            width: calc(2rem - 2px);
+            height: calc(2rem - 2px);
+        }
+    }
+}
