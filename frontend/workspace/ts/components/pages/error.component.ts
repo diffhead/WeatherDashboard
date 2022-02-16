@@ -1,4 +1,4 @@
-import { Component } from '../interfaces/component.interface';
+import { Component } from '../../interfaces/component.interface';
 
 export class ErrorComponent implements Component
 {

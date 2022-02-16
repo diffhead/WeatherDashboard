@@ -1,6 +1,6 @@
 import { Component } from '../interfaces/component.interface';
 
-const SPINNER_CLASS = '.simple-spinner';
+import { PAGE_SPINNER_CLASS } from '../consts';
 
 export class SpinnerComponent implements Component
 {
@@ -20,7 +20,7 @@ export class SpinnerComponent implements Component
             throw new Error(`Parent DIV by selector '${parentSelector}' not found`);
         }
 
-        $el = $parent.querySelector(SPINNER_CLASS);
+        $el = $parent.querySelector(`.${PAGE_SPINNER_CLASS}`);
 
         if ( $el ) {
             this.$el = $el;

@@ -2,21 +2,24 @@ import { Component } from '../interfaces/component.interface';
 
 export class ButtonComponent implements Component
 {
+    private selector: string;
     private $button: HTMLElement;
 
     public constructor(selector: string)
     {
-        let $button: HTMLElement|null = document.querySelector(selector);
-
-        if ( $button === null  ) {
-            throw new Error("Button element not found");
-        }
-
-        this.$button = $button;
+        this.selector = selector;
+        this.init();
     }
 
     public init(): void
     {
+        if ( this.$button === undefined ) {
+            let $button: HTMLElement|null = document.querySelector(this.selector);
+
+            if ( $button !== null  ) {
+                this.$button = $button;
+            }
+        }
     }
 
     public draw(): boolean
@@ -26,6 +29,8 @@ export class ButtonComponent implements Component
 
     public onClick(callback: (e: Event) => boolean): void
     {
-        this.$button.addEventListener('click', callback);
+        if ( this.$button ) {
+            this.$button.addEventListener('click', callback);
+        }
     }
 }

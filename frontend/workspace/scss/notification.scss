@@ -1,0 +1,55 @@
+.content-notification {
+    position: fixed;
+    width: 20rem;
+    bottom: 1rem;
+    left: -100vw;
+    min-height: 10rem;
+    flex-direction: column;
+    box-shadow: 0 0 3px 1px $blackHalfTransparent;
+    transition: left .4s;
+
+    &.error {
+        & .content-notification-menu {
+            background-color: $red;
+
+            & .notification-title {
+                color: $cultured;
+            }
+
+            & .close-button {
+                background-image: url('/images/close-black.webp');
+            }
+        }
+    }
+
+    &.visible {
+        left: 1rem;
+    }
+
+    &-menu {
+        height: 2.5rem;
+        padding: 0 .5rem 0 1rem;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $cultured;
+
+        & .notification-title {
+            font-size: 1.2rem;
+            color: $sapphire;
+        }
+
+        & .close-button {
+            width: 1.5rem;
+            height: 1.5rem;
+            cursor: pointer;
+            background-color: $white;
+            border: 1px solid $red;
+            background: no-repeat center/80% url('/images/close.webp');
+            outline: none;
+        }
+    }
+
+    &-text {
+        padding: 1rem;
+    }
+}

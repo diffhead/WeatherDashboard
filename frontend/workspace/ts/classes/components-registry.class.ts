@@ -1,9 +1,9 @@
 import { Component } from '../interfaces/component.interface';
 
-import { ErrorComponent } from '../components/error.component';
-import { IndexComponent } from '../components/index.component';
-import { LoginComponent } from '../components/login.component';
-import { RegisterComponent } from '../components/register.component';
+import { ErrorComponent } from '../components/pages/error.component';
+import { IndexComponent } from '../components/pages/index.component';
+import { LoginComponent } from '../components/pages/login.component';
+import { RegisterComponent } from '../components/pages/register.component';
 
 export class ComponentsRegistry
 {
