@@ -25,10 +25,6 @@ class Login extends WebFrontendController
                 [
                     'entity' => 'login',
                     'title'  => 'Sign In'
-                ],
-                [
-                    'entity' => 'register',
-                    'title'  => 'Sign Up'
                 ]
             ]
         ]);

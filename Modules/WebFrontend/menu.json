@@ -26,7 +26,7 @@
     {
         "link": "/api/logout",
         "entity": "logout",
-        "title": "LogOut",
+        "title": "Log Out",
         "active": false,
         "access": [ 1, 2, 3 ],
         "class": "margin-left-auto"
