@@ -2,9 +2,9 @@ import { Component } from '../interfaces/component.interface';
 
 export class InputComponent implements Component
 {
+    private valid: boolean = false;
     private value: string = '';
     private inited: boolean = false;
-    private invalid: boolean = false;
 
     private $input: HTMLInputElement;
 
@@ -25,10 +25,14 @@ export class InputComponent implements Component
     {
         if ( this.inited === false ) {
             this.value = this.$input.value;
-            this.invalid = this.$input.classList.contains('invalid');
+            this.valid = this.$input.classList.contains('invalid') === false;
             this.inited = true;
 
             this.$input.addEventListener('input', () => {
+                if ( this.valid === false ) {
+                    this.setValid(true);
+                }
+
                 this.setValue(this.$input.value);
             });
         }
@@ -53,14 +57,19 @@ export class InputComponent implements Component
 
     public validate(pattern: RegExp): boolean
     {
-        this.invalid = !!this.value.match(pattern) === false;
+        return this.setValid(!!this.value.match(pattern));
+    }
 
-        if ( this.invalid ) {
-            this.$input.classList.add('invalid');
-        } else {
+    private setValid(value: boolean): boolean
+    {
+        this.valid = value;
+
+        if ( value ) {
             this.$input.classList.remove('invalid');
+        } else {
+            this.$input.classList.add('invalid');
         }
 
-        return this.invalid;
+        return this.valid;
     }
 }

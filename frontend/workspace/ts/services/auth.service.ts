@@ -1,9 +1,9 @@
 import { Response } from '../types/response.type';
-import { LoginRequest } from '../types/login-request.type';
+import { Request } from '../types/request.type';
 
 export class AuthService
 {
-    public static loginRequest(loginData: LoginRequest): Promise<Response>
+    public static loginRequest(loginData: Request): Promise<Response>
     {
         return new Promise((resolve) => {
             let xhr: XMLHttpRequest = new XMLHttpRequest;

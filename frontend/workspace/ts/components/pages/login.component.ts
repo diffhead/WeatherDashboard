@@ -4,7 +4,7 @@ import { SpinnerComponent } from '../spinner.component';
 import { InputComponent } from '../input.component';
 import { ButtonComponent } from '../button.component';
 
-import { LoginRequest } from '../../types/login-request.type';
+import { Request } from '../../types/request.type';
 import { Response } from '../../types/response.type';
 
 import { AuthService } from '../../services/auth.service';
@@ -13,33 +13,46 @@ export class LoginComponent implements Component
 {
     private formSpinner: SpinnerComponent;
 
-    private loginInput: InputComponent;
-    private passwordInput: InputComponent;
+    private inputEntities: string[] = [
+        'login', 'password'
+    ];
 
-    private buttonLogin: ButtonComponent;
-    private buttonRegister: ButtonComponent;
+    private inputFields: InputComponent[] = [];
+    private loginButton: ButtonComponent;
 
     public init(): void
     {
         this.formSpinner = new SpinnerComponent('.login-form .login-form-button');
         this.formSpinner.init();
 
-        this.loginInput = new InputComponent('.login-form input[data-entity="login"]');
-        this.passwordInput = new InputComponent('.login-form input[data-entity="password"]');
-        this.buttonLogin = new ButtonComponent('.login-form button[data-entity="login"]');
-        this.buttonRegister = new ButtonComponent('.login-form button[data-entity="register"]');
+        for ( let entity of this.inputEntities ) {
+            this.inputFields.push(new InputComponent(`.login-form input[data-entity="${entity}"]`));
+        }
 
-        this.buttonLogin.onClick(() => this.actionLogin.call(this));
-        this.buttonRegister.onClick(() => this.getRegisterPage.call(this));
+        this.loginButton = new ButtonComponent('.login-form button[data-entity="login"]');
+        this.loginButton.onClick(() => this.actionLogin.call(this));
     }
 
     private async actionLogin(): Promise<void>
     {
-        this.loginInput
-        let loginData: LoginRequest = { 
-            login: this.loginInput.getValue(), 
-            password: this.passwordInput.getValue() 
-        };
+        let loginData: Request = {};
+        let foundInvalidFields: boolean = false;
+        let noEmptyValidationRegExp: RegExp = new RegExp('^\\w{0,}[\\w\\d]{1,}$', 'gm');
+
+        for ( let i = 0; i < this.inputEntities.length; i++ ) {
+            let entity: string = this.inputEntities[i];
+            let input: InputComponent = this.inputFields[i];
+
+            if ( input.validate(noEmptyValidationRegExp) === false ) {
+                foundInvalidFields = true;
+            }
+
+            loginData[entity] = input.getValue();
+        }
+
+        if ( foundInvalidFields ) {
+            return window.application.sendNotify('Invalid field value');
+        }
 
         let loginResponse: Response = await AuthService.loginRequest(loginData);
 

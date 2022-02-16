@@ -46,6 +46,7 @@ export class Application
         this.notification.setError(error);
         this.notification.setTitle(title);
         this.notification.setMessage(message);
+
         this.notification.draw();
     }
 }
