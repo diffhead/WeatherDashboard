@@ -38,7 +38,12 @@ export class Application
 
     public getHome(): void
     {
-        document.location = '/';
+        this.getPage('/');
+    }
+
+    public getPage(url: string): void
+    {
+        document.location = url;
     }
 
     public sendNotify(message: string, title: string = 'Notification', error: boolean = false): void

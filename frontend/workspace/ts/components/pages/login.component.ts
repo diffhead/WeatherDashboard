@@ -54,7 +54,11 @@ export class LoginComponent implements Component
             return window.application.sendNotify('Invalid field value');
         }
 
+        this.formSpinner.draw();
+
         let loginResponse: Response = await AuthService.loginRequest(loginData);
+
+        this.formSpinner.hide();
 
         if ( loginResponse.status ) {
             window.application.getHome();

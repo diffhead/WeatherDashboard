@@ -29,6 +29,7 @@ export class NotificationComponent implements Component
     private messages: string[] = [];
 
     private visible: number = 0;
+
     private notification: Promise<boolean> = new Promise(resolve => resolve(true));
 
     public init(): void

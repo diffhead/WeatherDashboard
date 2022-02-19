@@ -13,11 +13,7 @@
             background-color: $red;
 
             & .notification-title {
-                color: $cultured;
-            }
-
-            & .close-button {
-                background-image: url('/images/close-black.webp');
+                color: $white;
             }
         }
     }
@@ -31,19 +27,18 @@
         padding: 0 .5rem 0 1rem;
         align-items: center;
         justify-content: space-between;
-        background-color: $cultured;
+        background-color: $sapphire;
 
         & .notification-title {
             font-size: 1.2rem;
-            color: $sapphire;
+            color: $white;
         }
 
         & .close-button {
             width: 1.5rem;
             height: 1.5rem;
             cursor: pointer;
-            background-color: $white;
-            border: 1px solid $red;
+            border: none;
             background: no-repeat center/80% url('/images/close.webp');
             outline: none;
         }
