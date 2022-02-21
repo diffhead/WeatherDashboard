@@ -35,16 +35,24 @@ class GlobalConfig implements Configuration
         }
 
         $query = new Query;
-
-        /* PGSQL DEPENDENT QUERY */
-        $query->setString("
-            INSERT INTO config (key, value) VALUES ('$code', '$value') 
-            ON CONFLICT (key)
-              DO UPDATE 
-                    SET value = excluded.value
-        ");
+        $query->select([ 'value' ])->from('config')->where("key = '$code'");
 
         $db = Db::getConnection();
+        $db->execute($query);
+
+        if ( ArrayService::isEmpty($db->fetch()) === false ) {
+            $query = new Query;
+            $query->update('config')->set($code, $value)->where("key = '$code'");
+
+            return $db->execute($query);
+        }
+
+        $query = new Query;
+
+        $query->insert('config', [ 'key', 'value' ])
+              ->values([ 
+                  [ $code, $value ] 
+              ]);
 
         return $db->execute($query);
     }
