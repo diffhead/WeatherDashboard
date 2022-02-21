@@ -1,11 +1,9 @@
 <?php namespace Modules\WebFrontend;
 
-use Core\Route;
 use Core\Cache;
-use Core\Context;
 use Core\FileStream;
 use Core\AbstractModule;
-use Core\ModulesRegistry;
+use Core\RouterProvider;
 
 use Services\JsonService;
 
@@ -13,7 +11,8 @@ class WebFrontend extends AbstractModule
 {
     public function init(): void
     {
-        ModulesRegistry::getModule('RoutesHandler')->setRoutesFromJsonFile($this->path . 'routes.json');
+        $routerProvider = new RouterProvider();
+        $routerProvider->setRoutesFromJsonFile($this->path . 'routes.json');
     }
 
     public function getNavigationMenuItems(string $activeEntity): array

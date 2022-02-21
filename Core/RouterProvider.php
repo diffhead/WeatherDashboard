@@ -1,4 +1,4 @@
-<?php namespace Modules\RoutesHandler;
+<?php namespace Core;
 
 use Exception;
 
@@ -7,15 +7,14 @@ use Core\Route;
 use Core\Context;
 use Core\FileStream;
 use Core\GlobalConfig;
-use Core\AbstractModule;
 
 use Services\JsonService;
 
-class RoutesHandler extends AbstractModule
+class RouterProvider
 {
     private int $enableCaching = 0;
 
-    public function init(): void 
+    public function __construct()
     {
         $cache = new Cache('RoutesHandler.config.enableCaching', 3600);
 

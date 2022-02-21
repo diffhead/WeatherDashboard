@@ -35,12 +35,20 @@ class Application
     public function initModules(): bool
     {
         if ( _ENABLE_MODULES_ ) {
-            $modulesDataCache = new Cache('modules.all', 3600, Cache::MEM);
+            if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
+                $modulesDataCacheKey = 'modules.web';
+                $modulesDataEnvironment = 'web';
+            } else {
+                $modulesDataCacheKey = 'modules.cli';
+                $modulesDataEnvironment = 'cli';
+            }
+
+            $modulesDataCache = new Cache($modulesDataCacheKey, 3600, Cache::MEM);
 
             $modulesData = $modulesDataCache->getData();
 
             if ( $modulesData === false ) {
-                $modulesData = Module::getAll();
+                $modulesData = Module::where("environment = '$modulesDataEnvironment'");
                 $modulesDataCache->setData($modulesData);
             }
 

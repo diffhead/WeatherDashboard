@@ -2,13 +2,13 @@ CREATE TABLE modules(
     id SERIAL,
     name TEXT,
     enable INTEGER,
+    environment TEXT NOT NULL DEFAULT 'web'
 
     PRIMARY KEY(id)
 );
 
-INSERT INTO modules (name, enable) 
+INSERT INTO modules (name, enable, environment) 
 VALUES 
-    ('RoutesHandler', 1),
     ('AuthModule', 1), 
     ('WebFrontend', 1),
     ('CacheHandler', 1);
