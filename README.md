@@ -40,16 +40,24 @@ and Database relation described by ActiveRecord pattern.
 
 ### Application execution looks like this:
 
-1. **main.php** - is entry point, which executes **Loader** and calls **Loader::bootstrap** method.
-
-2. **Loader::bootstrap** processing calling inited **Application** instance and **Application::initModules** if **_ENABLE_MODULES_** const equals true then **Application::run** method with passing **ApplicationRequest** into it.
-
-3. **Appliction::run** processing calling the **Router** for giving current request's **Controller**, then running **Controller::init** and **Controller::execute** 
-with passing the request data which been taken by calling **ApplicationRequest::getRequestData**. After the controller execution 
-, algo calls **Controller::getView** method for taking the **View** and
-do **View::display** and it will echo view's data which will be bufferized. 
-Finally runs **Display::echo** and it will push bufferized content into the output.
-
+1. **main.php** - creating **Loader** instance:
+ * Creation of the base constants
+ * Initialization of the global configs
+ * Initialization of the **Application** instance.
+ 
+2. **public Loader::bootstrap(): void**:
+ * **public Application::initModules(): bool**
+ * **public Application::run(ApplicationRequest $request): bool**
+ 
+3. **public Application::run(ApplicationRequest $request): bool**
+ * **private Application::initCurrentController(ApplicationRequest $request): void**
+ * **private Application::initCurrentUser(ApplicationRequest $request): void**
+ * **public Controller::init(): void**
+ * **public Controller::execute(array $params = []): bool**
+ * **public Controller::getView(): View**
+ * **public View::display(): void**
+ * **public Display::echo(): void**
+ 
 ### Application extending
 
 According to the general concept, the developer should not touch the base files in the root directory, he needs to create a new module and work in its directory with
