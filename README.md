@@ -41,9 +41,10 @@ and Database relation described by ActiveRecord pattern.
 ### Application execution looks like this:
 
 1. **main.php** - creating **Loader** instance:
- * Creation of the base constants
- * Initialization of the global configs
- * Initialization of the **Application** instance.
+ * Init base constants
+ * Init global configs
+ * Init vendor
+ * Init **Application** instance.
  
 2. **public Loader::bootstrap(): void**:
  * **public Application::initModules(): bool**
