@@ -33,4 +33,9 @@ export class ButtonComponent implements Component
             this.$button.addEventListener('click', callback);
         }
     }
+
+    public setText(text: string): void
+    {
+        this.$button.textContent = text;
+    }
 }
