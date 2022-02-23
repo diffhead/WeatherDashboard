@@ -21,7 +21,8 @@
         "type": 1,
         "controller": "\\Modules\\WebFrontend\\Controller\\Admin",
         "params": [ "GET" ],
-        "protected": false
+        "protected": false,
+        "authorized": true
     },
     "/redirect-example": {
         "type": 1,

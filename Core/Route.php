@@ -12,14 +12,22 @@ class Route
     private array  $params;
     private bool   $protected;
     private string $controller;
+    private bool   $authorized;
 
-    public function __construct(string $route, int $type, string $controller, array $params = [], bool $protected = true)
-    {
+    public function __construct(
+        string $route, 
+        int $type, 
+        string $controller, 
+        array $params = [], 
+        bool $protected = true, 
+        bool $authorized = false
+    ){
         $this->route = $route;
         $this->type = $type;
         $this->controller = $controller;
         $this->params = $params;
         $this->protected = $protected;
+        $this->authorized = $authorized;
     }
 
     public function getRoute(): string
@@ -54,5 +62,10 @@ class Route
     public function isProtected(): bool
     {
         return $this->protected;
+    }
+
+    public function isOnlyAuthorized(): bool
+    {
+        return $this->authorized;
     }
 }

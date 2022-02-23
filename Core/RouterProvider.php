@@ -10,6 +10,8 @@ use Core\GlobalConfig;
 
 use Services\JsonService;
 
+use Factories\RouteFactory;
+
 class RouterProvider
 {
     private int $enableCaching = 0;
@@ -84,8 +86,12 @@ class RouterProvider
         $routes = [];
 
         foreach ( $routesJson as $route => $data ) {
-            $routes[] = new Route(
-                $route, $data['type'], $data['controller'], $data['params'], $data['protected']
+            $routeParams = isset($data['params']) ? (array)$data['params'] : [];
+            $routeProtected = isset($data['protected']) ? (bool)$data['protected'] : false;
+            $routeAuthorized = isset($data['authorized']) ? (bool)$data['authorized'] : false;
+
+            $routes[] = RouteFactory::get(
+                $route, $data['type'], $data['controller'], $routeParams, $routeProtected, $routeAuthorized
             );
         }
 

@@ -81,8 +81,8 @@ class Application
     public function run(ApplicationRequest $request): void
     {
         try {
-            $this->initCurrentController($request);
             $this->initCurrentUser($request);
+            $this->initCurrentController($request);
 
             $context = Context::getInstance();
 
@@ -126,7 +126,9 @@ class Application
 
                     $controller = new \Web\Controller\Redirect($redirectCode, $redirectTarget);
                 } else if ( ArrayService::inArray($routeParams, $request->getMethod()) === false ) {
-                    $controller = new \Web\Controller\Error(405, 'Request method not allowed');
+                    $controller = new \Web\Controller\Error(405, 'Request method is not allowed');
+                } else if ( $route->isOnlyAuthorized() && Context::getInstance()->user->isGuest() === true ) {
+                    $controller = new \Web\Controller\Error(401, 'Non authorized');
                 }
             } else {
                 $controller = new \Web\Controller\Error(404, 'Route not found');
