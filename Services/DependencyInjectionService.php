@@ -74,7 +74,7 @@ class DependencyInjectionService
         return $finalArray;
     }
 
-    public static function initContainer(string $container): Container
+    public static function getContainer(string $container): Container
     {
         if ( isset(self::$containers) === false ) {
             self::initContainers();
