@@ -62,7 +62,7 @@ class Loader
 
     private function initContext(): void
     {
-        $diContainer = DependencyInjectionService::initContainer('core.context');
+        $diContainer = DependencyInjectionService::getContainer('context');
 
         Context::setInstance(
             $diContainer->get(_APP_ENVIRONMENT_)
