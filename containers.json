@@ -1,5 +1,5 @@
 {
-    "core.context": {
+    "context": {
         "class": "\\Core\\Context",
         "constructor-args": {
             "1": [
@@ -36,6 +36,44 @@
                     "type": "class",
                     "value": "\\Cli\\Request",
                     "arguments": [
+                    ]
+                }
+            ]
+        }
+    },
+    "wrapper.db-connection": {
+        "class": "\\Core\\DependencyInjection\\Wrapper",
+        "constructor-args": {
+            "pgsql": [
+                {
+                    "type": "class",
+                    "value": "\\Core\\Database\\PgSQLConnection",
+                    "arguments": [
+                        { "type": "static-method", "value": "\\Config\\DatabaseConfig::get", "arguments": [ { "type": "static-value", "value": "database" } ] },
+                        { "type": "static-method", "value": "\\Config\\DatabaseConfig::get", "arguments": [ { "type": "static-value", "value": "host" } ] },
+                        { "type": "static-method", "value": "\\Config\\DatabaseConfig::get", "arguments": [ { "type": "static-value", "value": "port" } ] }
+                    ]
+                }
+            ],
+            "mysql": [
+                {
+                    "type": "class",
+                    "value": "\\Core\\Database\\MySQLConnection",
+                    "arguments": [
+                        { "type": "static-method", "value": "\\Config\\DatabaseConfig::get", "arguments": [ { "type": "static-value", "value": "database" } ] },
+                        { "type": "static-method", "value": "\\Config\\DatabaseConfig::get", "arguments": [ { "type": "static-value", "value": "host" } ] },
+                        { "type": "static-method", "value": "\\Config\\DatabaseConfig::get", "arguments": [ { "type": "static-value", "value": "port" } ] }
+                    ]
+                }
+            ],
+            "sqlite": [
+                {
+                    "type": "class",
+                    "value": "\\Core\\Database\\SQLiteConnection",
+                    "arguments": [
+                        { "type": "static-method", "value": "\\Config\\DatabaseConfig::get", "arguments": [ { "type": "static-value", "value": "database" } ] },
+                        { "type": "static-method", "value": "\\Config\\DatabaseConfig::get", "arguments": [ { "type": "static-value", "value": "host" } ] },
+                        { "type": "static-method", "value": "\\Config\\DatabaseConfig::get", "arguments": [ { "type": "static-value", "value": "port" } ] }
                     ]
                 }
             ]

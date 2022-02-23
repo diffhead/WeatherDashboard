@@ -6,19 +6,11 @@ use Interfaces\Database\Connection;
 
 use Config\DatabaseConfig;
 
+use Services\DependencyInjectionService;
+
 class Db
 {
-    const DRIVER_PGSQL  = 'pgsql';
-    const DRIVER_MYSQL  = 'mysql';
-    const DRIVER_SQLITE = 'sqlite';
-
     private static Connection $dbConnection;
-
-    private static array      $dbDrivers = [
-        'pgsql'  => '\\Core\\Database\\PgSQLConnection',
-        'mysqli' => '\\Core\\Database\\MySQLConnection',
-        'sqlite' => '\\Core\\Database\\SQLiteConnection'
-    ];
 
     public static function getConnection(bool $autoConnection = true): Connection
     {
@@ -58,21 +50,9 @@ class Db
 
     public static function createConnection(string $driver): void
     {
-        if ( self::isDriverImplementationExists($driver) === false ) {
-            throw new Exception("Connection implementation for driver '$driver' not exists");
-        }
+        $diContainer = DependencyInjectionService::getContainer('wrapper.db-connection');
 
-        $connectionClass = self::$dbDrivers[$driver];
-        $connectionDatabase = DatabaseConfig::get('database');
-        $connectionHost = DatabaseConfig::get('host');
-        $connectionPort = DatabaseConfig::get('port');
-
-        self::$dbConnection = new $connectionClass($connectionDatabase, $connectionHost, $connectionPort);
-    }
-
-    private static function isDriverImplementationExists(string $driver): bool
-    {
-        return isset(self::$dbDrivers[$driver]);
+        self::$dbConnection = $diContainer->get($driver)->getWrappedObject();
     }
 
     public static function closeConnection(): bool
