@@ -2,27 +2,10 @@
 
 interface Query
 {
-    const TYPE_CREATE_TABLE = 'CREATE TABLE';
-    const TYPE_DROP_TABLE   = 'DROP TABLE';
     const TYPE_SELECT_FROM  = 'SELECT';
     const TYPE_UPDATE_TABLE = 'UPDATE';
     const TYPE_DELETE_FROM  = 'DELETE FROM';
     const TYPE_INSERT_INTO  = 'INSERT INTO';
-
-    /**
-     * CREATE TABLE and DROP TABLE queries
-     *
-     * @param string $table - table name
-     * @param array  $fieldsDefinitions = [ 
-     *                   "id INT(11) NOT NULL DEFAULT 1 AUTO_INCREMENT", 
-     *                   "name VARCHAR(128) NOT NULL DEFAULT ''",
-     *                   "type VARCHAR(8) NOT NULL DEFAULT 'string'"
-     *               ]
-     *
-     * @param array $primaryKeys = [ 'id', 'name' ]
-     */
-    public function create(string $table, array $fieldsDefinitions = [], array $primaryKeys = [], bool $ifExists = true): self;
-    public function drop(string $table, bool $ifExists = true): self;
 
     public function select(array $fields = [ '*' ]): self;
     public function from(string $name, string $alias = _APP_EMPTY_STRING_): self;

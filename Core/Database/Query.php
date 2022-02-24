@@ -13,17 +13,6 @@ class Query implements QueryInterface
     private string $type        = _APP_EMPTY_STRING_;
 
     private array  $containers  = [
-        QueryInterface::TYPE_CREATE_TABLE  => [
-            'table'    => '',
-            'fields'   => [],
-            'ifExists' => true
-        ],
-
-        QueryInterface::TYPE_DROP_TABLE => [
-            'table'    => '',
-            'ifExists' => true
-        ],
-
         QueryInterface::TYPE_SELECT_FROM => [
             'table'  => [
                 'name'  => '',
@@ -59,38 +48,6 @@ class Query implements QueryInterface
             'values' => []
         ],
     ];
-    /**
-     * CREATE TABLE and DROP TABLE queries
-     *
-     * @param string $table - table name
-     * @param array  $fieldsDefinitions = [ 
-     *                  'id' => 'INT(11) NOT NULL DEFAULT 0'
-     *               ]
-     *
-     * @param array $primaryKeys = [ 'id' ]
-     */
-    public function create(string $table, array $fieldsDefinitions = [], array $primaryKeys = [], bool $ifExists = true): self
-    {
-        $this->setType(QueryInterface::TYPE_CREATE_TABLE);
-
-        $fields = [];
-
-        foreach ( $fieldsDefinitions as $field => $definition ) {
-            $fields[] = "$field $definition";
-        }
-
-        $describedFields = ArrayService::getKeys($fieldsDefinitions);
-
-        $fieldsPrimary = ArrayService::intersect($describedFields, $primaryKeys);
-        $fieldsPrimary = ArrayService::sort($fieldsPrimary);
-
-        $this->containers[$this->type]['table'] = $table;
-        $this->containers[$this->type]['fields'] = $fields;
-        $this->containers[$this->type]['fields'][] = 'PRIMARY KEY(' . implode(',', $fieldsPrimary) . ')';
-        $this->containers[$this->type]['ifExists'] = $ifExists;
-
-        return $this;
-    }
 
     public function setType(string $type): void
     {
@@ -99,16 +56,6 @@ class Query implements QueryInterface
         }
 
         $this->type = $type;
-    }
-
-    public function drop(string $table, bool $ifExists = true): self
-    {
-        $this->setType(QueryInterface::TYPE_DROP_TABLE);
-
-        $this->containers[$this->type]['table'] = $table;
-        $this->containers[$this->type]['ifExists'] = $ifExists;
-
-        return $this;
     }
 
     public function select(array $fields = [ '*' ]): self
@@ -279,21 +226,6 @@ class Query implements QueryInterface
             $container = $this->getContainer($this->type);
 
             switch ( $this->type ) {
-                case QueryInterface::TYPE_CREATE_TABLE:
-                        $query .= $this->type . ' ';
-                        $query .= $container['ifExists'] ? 'IF NOT EXISTS ' : '';
-                        $query .= $container['table'] . ' ';
-                        $query .= '(' . implode(',', $container['fields']) . ')';
-
-                    break;
-
-                case QueryInterface::TYPE_DROP_TABLE:
-                        $query .= $this->type . ' ';
-                        $query .= $container['ifExists'] ? 'IF EXISTS ' : '';
-                        $query .= $container['table'];
-
-                    break;
-
                 case QueryInterface::TYPE_SELECT_FROM:
                         $query .= $this->type . ' ' . implode(',', $container['fields']) . ' ';
                         $query .= 'FROM ' . $container['table']['name'] . ' ';
