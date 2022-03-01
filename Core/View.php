@@ -39,7 +39,7 @@ class View
         return $this->template;
     }
 
-    public function display(): void
+    final public function display(): void
     {
         echo $this->render();
     }
