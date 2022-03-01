@@ -2,9 +2,8 @@
 
 use Exception;
 
-use Interfaces\Controller;
-
 use Core\Route;
+use Core\Controller;
 use Core\Application;
 use Core\FileStream;
 

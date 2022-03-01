@@ -2,9 +2,9 @@
 
 use Interfaces\Singleton;
 use Interfaces\User;
-use Interfaces\Controller;
 use Interfaces\ApplicationRequest;
 
+use Core\Controller;
 use Core\Application;
 
 use Services\ClassService;

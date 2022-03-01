@@ -1,14 +1,12 @@
 <?php namespace Core;
 
-use Interfaces\View as ViewInterface;
-
 use Lib\Twig;
 
 use Services\ArrayService;
 use Services\FileService;
 use Services\StringService;
 
-class View implements ViewInterface
+class View
 {
     protected array  $params = [];
     protected string $template = '';

@@ -147,7 +147,7 @@ class Application
         }
 
         if ( ApplicationService::isController($controller) === false ) {
-            throw new Exception("Current route's controller must to implement controller interface");
+            throw new Exception("Current route's controller must to extend \\Core\\Controller");
         }
 
         Context::getInstance()->controller = $controller;

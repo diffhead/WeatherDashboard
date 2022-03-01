@@ -1,11 +1,8 @@
 <?php namespace Core;
 
-use Interfaces\View as ViewInterface;
-use Interfaces\Controller as ControllerInterface;
-
-class Controller implements ControllerInterface
+class Controller
 {
-    protected ViewInterface $view;
+    protected View $view;
 
     public function init(): void
     {
@@ -19,7 +16,7 @@ class Controller implements ControllerInterface
         return true;
     }
 
-    public function getView(): ViewInterface
+    public function getView(): View
     {
         return $this->view;
     }
