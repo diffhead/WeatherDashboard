@@ -1,14 +1,13 @@
 <?php namespace Modules\WebFrontend\Controller;
 
-use Modules\WebFrontend\WebFrontend;
-
 use Core\Context;
 use Core\Controller;
 use Core\ModulesRegistry;
 
-use Modules\WebFrontend\Views\Frontend as FrontendView;
-
 use Services\StringService;
+
+use Modules\WebFrontend\WebFrontend;
+use Modules\WebFrontend\Views\Frontend;
 
 abstract class WebFrontendController extends Controller
 {
@@ -24,7 +23,7 @@ abstract class WebFrontendController extends Controller
     {
         $context = Context::getInstance();
 
-        $this->view = new FrontendView;
+        $this->view = new Frontend;
         $this->view->assign([
             'user' => $context->user
         ]);
