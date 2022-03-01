@@ -1,22 +1,19 @@
 <?php namespace Core\Database;
 
+use Interfaces\Database\Query as QueryInterface;
+
 use Services\StringService;
 use Services\ArrayService;
 
-class Query
+class Query implements QueryInterface
 {
-    const TYPE_SELECT_FROM  = 'SELECT';
-    const TYPE_UPDATE_TABLE = 'UPDATE';
-    const TYPE_DELETE_FROM  = 'DELETE FROM';
-    const TYPE_INSERT_INTO  = 'INSERT INTO';
-
     private bool   $isLastWhere = true;
 
     private string $queryString = _APP_EMPTY_STRING_;
     private string $type        = _APP_EMPTY_STRING_;
 
     private array  $containers  = [
-        Query::TYPE_SELECT_FROM => [
+        QueryInterface::TYPE_SELECT_FROM => [
             'table'  => [
                 'name'  => '',
                 'alias' => ''
@@ -31,13 +28,13 @@ class Query
             'offset' => 0
         ],
         
-        Query::TYPE_UPDATE_TABLE => [
+        QueryInterface::TYPE_UPDATE_TABLE => [
             'table'  => '',
             'set'    => [],
             'where'  => []
         ],
 
-        Query::TYPE_DELETE_FROM => [
+        QueryInterface::TYPE_DELETE_FROM => [
             'table'  => [
                 'name'  => '',
                 'alias' => ''
@@ -45,7 +42,7 @@ class Query
             'where'  => []
         ],
 
-        Query::TYPE_INSERT_INTO => [
+        QueryInterface::TYPE_INSERT_INTO => [
             'table'  => '',
             'fields' => [],
             'values' => []
@@ -63,7 +60,7 @@ class Query
 
     public function select(array $fields = [ '*' ]): self
     {
-        $this->setType(Query::TYPE_SELECT_FROM);
+        $this->setType(QueryInterface::TYPE_SELECT_FROM);
 
         $this->containers[$this->type]['fields'] = $fields;
 
@@ -166,7 +163,7 @@ class Query
 
     public function update(string $name): self
     {
-        $this->setType(Query::TYPE_UPDATE_TABLE);
+        $this->setType(QueryInterface::TYPE_UPDATE_TABLE);
 
         $this->containers[$this->type]['table'] = $name;
 
@@ -182,14 +179,14 @@ class Query
 
     public function delete(): self
     {
-        $this->setType(Query::TYPE_DELETE_FROM);
+        $this->setType(QueryInterface::TYPE_DELETE_FROM);
 
         return $this;
     }
 
     public function insert(string $intoTable, array $fields = []): self
     {
-        $this->setType(Query::TYPE_INSERT_INTO);
+        $this->setType(QueryInterface::TYPE_INSERT_INTO);
 
         $this->containers[$this->type]['table'] = $intoTable;
         $this->containers[$this->type]['fields'] = $fields;
@@ -229,7 +226,7 @@ class Query
             $container = $this->getContainer($this->type);
 
             switch ( $this->type ) {
-                case Query::TYPE_SELECT_FROM:
+                case QueryInterface::TYPE_SELECT_FROM:
                         $query .= $this->type . ' ' . implode(',', $container['fields']) . ' ';
                         $query .= 'FROM ' . $container['table']['name'] . ' ';
                         $query .= $container['table']['alias'] . ' ';
@@ -268,7 +265,7 @@ class Query
 
                     break;
 
-                case Query::TYPE_UPDATE_TABLE:
+                case QueryInterface::TYPE_UPDATE_TABLE:
                         $query .= $this->type . ' ' . $container['table'] . ' ';
                         $query .= 'SET ' . implode(',', $container['set']) . ' ';
 
@@ -278,7 +275,7 @@ class Query
 
                     break;
 
-                case Query::TYPE_DELETE_FROM:
+                case QueryInterface::TYPE_DELETE_FROM:
                         $query .= $this->type . ' ' . $container['table']['name'] . ' ';
                         $query .= $container['table']['alias'] . ' ';
 
@@ -288,7 +285,7 @@ class Query
 
                     break;
 
-                case Query::TYPE_INSERT_INTO:
+                case QueryInterface::TYPE_INSERT_INTO:
                         $query .= $this->type . ' ' . $container['table'] . ' ';
                         $query .= '(' . implode(',', $container['fields']) . ') ';
                         $query .= 'VALUES ';
