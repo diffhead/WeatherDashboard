@@ -2,13 +2,11 @@
 
 use ReflectionClass;
 
-use Core\Model;
+use Models\Module as ModuleModel;
 
-use Interfaces\Module;
-
-abstract class AbstractModule implements Module
+abstract class AbstractModule
 {
-    protected Model $model;
+    protected ModuleModel $model;
 
     protected string $name;
     protected string $path;
@@ -16,7 +14,7 @@ abstract class AbstractModule implements Module
 
     abstract public function init(): void;
 
-    final public function __construct(Model $model)
+    final public function __construct(ModuleModel $model)
     {
         $this->model = $model;
 

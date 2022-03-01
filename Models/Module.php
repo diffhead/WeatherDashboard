@@ -1,7 +1,5 @@
 <?php namespace Models;
 
-use Interfaces\Module as ModuleInterface;
-
 use Core\Model;
 use Core\ActiveRecord;
 
