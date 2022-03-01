@@ -24,14 +24,14 @@ export class RegisterComponent implements Component
 
     public init(): void
     {
-        this.formSpinner = new SpinnerComponent('.login-form .login-form-button');
+        this.formSpinner = new SpinnerComponent('.auth-form .auth-form-button');
         this.formSpinner.init();
 
         for ( let entity of this.inputEntities ) {
-            this.inputFields.push(new InputComponent(`.login-form input[data-entity="${entity}"]`));
+            this.inputFields.push(new InputComponent(`.auth-form input[data-entity="${entity}"]`));
         }
 
-        this.registerButton = new ButtonComponent('.login-form button[data-entity="register"]');
+        this.registerButton = new ButtonComponent('.auth-form button[data-entity="register"]');
         this.registerButton.onClick(() => this.actionRegister.call(this));
     }
 

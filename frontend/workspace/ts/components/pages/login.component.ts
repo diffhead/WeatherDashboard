@@ -22,14 +22,14 @@ export class LoginComponent implements Component
 
     public init(): void
     {
-        this.formSpinner = new SpinnerComponent('.login-form .login-form-button');
+        this.formSpinner = new SpinnerComponent('.auth-form .auth-form-button');
         this.formSpinner.init();
 
         for ( let entity of this.inputEntities ) {
-            this.inputFields.push(new InputComponent(`.login-form input[data-entity="${entity}"]`));
+            this.inputFields.push(new InputComponent(`.auth-form input[data-entity="${entity}"]`));
         }
 
-        this.loginButton = new ButtonComponent('.login-form button[data-entity="login"]');
+        this.loginButton = new ButtonComponent('.auth-form button[data-entity="login"]');
         this.loginButton.onClick(() => this.actionLogin.call(this));
     }
 

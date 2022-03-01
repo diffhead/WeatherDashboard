@@ -1,1 +1,1 @@
-{% include '/authform.tpl' %}
+{% include 'auth-form.tpl' %}
