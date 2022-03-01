@@ -4,6 +4,8 @@ import { ButtonComponent } from './button.component';
 
 import { DomService } from '../services/dom.service';
 
+import { NotificationState } from '../types/notification-state.type';
+
 import { 
     PAGE_CONTENT_CLASS,
     PAGE_NOTIFICATION_CLASS,
@@ -30,7 +32,8 @@ export class NotificationComponent implements Component
 
     private visible: number = 0;
 
-    private notification: Promise<boolean> = new Promise(resolve => resolve(true));
+    private notification: null|Promise<boolean> = null;
+    private notificationState: null|NotificationState;
 
     public init(): void
     {
@@ -67,7 +70,19 @@ export class NotificationComponent implements Component
             );
 
             this.closeButton.init();
-            this.closeButton.onClick(() => this.hide.call(this));
+            this.closeButton.onClick(() => {
+                if ( this.notificationState !== null ) {
+                    clearTimeout(this.notificationState.hideTimeout);
+                    clearTimeout(this.notificationState.drawTimeout);
+
+                    this.notificationState.resolve(true);
+                    this.notificationState = null;
+                }
+
+                this.hide();
+
+                return true;
+            });
 
             this.$el = $notification;
             this.$titleDiv = $notificationTitle;
@@ -105,14 +120,16 @@ export class NotificationComponent implements Component
         }
 
         if ( this.visible ) {
-            this.notification = this.notification.then(() => {
-                return this.getNewNotificationPromise();
-            });
-
-            return false;
+            if ( this.notification === null ) {
+                this.notification = this.getNewNotificationPromise();
+            } else {
+                this.notification = this.notification.then(
+                    () => this.getNewNotificationPromise()
+                );
+            }
+        } else {
+            this.render();
         }
-
-        this.render();
 
         this.visible++;
 
@@ -121,17 +138,28 @@ export class NotificationComponent implements Component
 
     private getNewNotificationPromise(): Promise<boolean>
     {
-        return new Promise(resolve => {
-            setTimeout(() => {
+        let hideTimeout: number = 0;
+        let drawTimeout: number = 0;
+
+        let promise: Promise<boolean> = new Promise(resolve => {
+
+            hideTimeout = setTimeout(() => {
                 this.hide();
 
-                setTimeout(() => {
-                    this.draw();
+                drawTimeout = setTimeout(() => {
+                    this.render();
+                    this.notificationState = null;
 
                     resolve(true);
                 }, 400);
             }, 1500);
+
+            this.notificationState = { 
+                resolve, hideTimeout, drawTimeout
+            };
         });
+
+        return promise;
     }
 
     private render(): void
@@ -165,7 +193,9 @@ export class NotificationComponent implements Component
 
         this.$el.classList.remove('visible');
 
-        this.visible--;
+        if ( this.visible ) {
+            this.visible--;
+        }
 
         return true;
     }
