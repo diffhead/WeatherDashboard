@@ -92,19 +92,6 @@ class User extends Model implements UserInterface
         return CryptService::decrypt($this->password) === $password;
     }
 
-    public function isLogged(): bool
-    {
-        if ( $this->isValidModel() === false ) {
-            return false;
-        }
-
-        if ( isset($this->session) === false ) {
-            $this->session = new Session($this->id);
-        }
-
-        return $this->session->isExpired() === false;
-    }
-
     public function isGuest(): bool
     {
         if ( $this->isValidModel() === false ) {
