@@ -17,4 +17,63 @@ body {
             margin-top: 4rem;
         }
     }
+
+    select {
+        height: 1.7rem;
+        outline: none;
+        border: 1px solid $blackHalfTransparent;
+        font-size: 1rem;
+        background: $white;
+        padding: 0 .6rem;
+    }
+
+    input {
+        height: 1.7rem;
+        outline: none;
+        border: 1px solid $blackHalfTransparent;
+        transition: border-color, box-shadow .2s;
+        font-size: 1rem;
+        padding: 0 1rem 0 .5rem;
+
+        &.invalid {
+            border-color: $red;
+            box-shadow: 0 0 3px $red;
+
+            &:focus {
+                border-color: $red;
+                box-shadow: 0 0 3px $red;
+            }
+        }
+
+        &:focus {
+            border-color: $sapphire;
+            box-shadow: 0 0 3px $sapphire;
+        }
+
+        &[type="checkbox"] {
+            &:focus {
+                box-shadow: none;
+                border-color: transparent;
+            }
+        }
+    }
+
+    button {
+        height: 1.7rem;
+        outline: none;
+        border: 1px solid $blackHalfTransparent;
+        background-color: $white;
+        padding: 0 1rem;
+        transition: border-color, background-color, color .3s;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $sapphire;
+            box-shadow: 0 0 3px $sapphire;
+            border-color: $white;
+            color: $white;
+        }
+    }
 }
