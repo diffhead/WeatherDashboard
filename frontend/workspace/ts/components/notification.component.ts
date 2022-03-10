@@ -1,7 +1,5 @@
 import { Component } from '../interfaces/component.interface';
 
-import { ButtonComponent } from './button.component';
-
 import { DomService } from '../services/dom.service';
 
 import { NotificationState } from '../types/notification-state.type';
@@ -21,8 +19,7 @@ export class NotificationComponent implements Component
     private $el: HTMLDivElement;
     private $titleDiv: HTMLDivElement;
     private $messageDiv: HTMLDivElement;
-
-    private closeButton: ButtonComponent;
+    private $closeButton: HTMLButtonElement;
 
     private defaultTitle: string = 'Notification';
     private defaultMessage: string = 'Attention';
@@ -33,7 +30,7 @@ export class NotificationComponent implements Component
     private visible: number = 0;
 
     private notification: null|Promise<boolean> = null;
-    private notificationState: null|NotificationState;
+    private notificationState: null|NotificationState = null;
 
     public init(): void
     {
@@ -45,6 +42,7 @@ export class NotificationComponent implements Component
             let $notificationMenuClose: HTMLButtonElement;
             let $notificationTitle: HTMLDivElement;
             let $notificationTitleText: Text;
+            let $closeButton: HTMLButtonElement;
 
             $content = document.querySelector(`.${PAGE_CONTENT_CLASS}`);
 
@@ -65,12 +63,10 @@ export class NotificationComponent implements Component
             DomService.appendBatch($notification, [ $notificationMenu, $notificationText ]);
             DomService.append($content, $notification);
 
-            this.closeButton = new ButtonComponent(
-                `.${PAGE_NOTIFICATION_CLASS} .${PAGE_NOTIFICATION_CLOSE_CLASS}`
-            );
+            $closeButton = (<HTMLButtonElement>DomService.findOne(`.${PAGE_NOTIFICATION_CLASS} .${PAGE_NOTIFICATION_CLOSE_CLASS}`));
 
-            this.closeButton.init();
-            this.closeButton.onClick(() => {
+            this.$closeButton = $closeButton;
+            this.$closeButton.addEventListener('click', () => {
                 if ( this.notificationState !== null ) {
                     clearTimeout(this.notificationState.hideTimeout);
                     clearTimeout(this.notificationState.drawTimeout);
@@ -80,8 +76,6 @@ export class NotificationComponent implements Component
                 }
 
                 this.hide();
-
-                return true;
             });
 
             this.$el = $notification;
