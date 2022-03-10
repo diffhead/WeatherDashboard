@@ -1,13 +1,12 @@
 import { Component } from '../../interfaces/component.interface';
 
 import { SpinnerComponent } from '../spinner.component';
-import { InputComponent } from '../input.component';
-import { ButtonComponent } from '../button.component';
 
 import { Request } from '../../types/request.type';
 import { Response } from '../../types/response.type';
 
 import { AuthService } from '../../services/auth.service';
+import { DomService } from '../../services/dom.service';
 
 export class RegisterComponent implements Component
 {
@@ -19,8 +18,8 @@ export class RegisterComponent implements Component
         'phone'
     ];
 
-    private inputFields: InputComponent[] = [];
-    private registerButton: ButtonComponent;
+    private inputFields: HTMLInputElement[] = [];
+    private $regButton: HTMLButtonElement;
 
     public init(): void
     {
@@ -28,11 +27,13 @@ export class RegisterComponent implements Component
         this.formSpinner.init();
 
         for ( let entity of this.inputEntities ) {
-            this.inputFields.push(new InputComponent(`.auth-form input[data-entity="${entity}"]`));
+            this.inputFields.push(
+                (<HTMLInputElement>DomService.findOne(`.auth-form input[data-entity="${entity}"]`))
+            );
         }
 
-        this.registerButton = new ButtonComponent('.auth-form button[data-entity="register"]');
-        this.registerButton.onClick(() => this.actionRegister.call(this));
+        this.$regButton = (<HTMLButtonElement>DomService.findOne('.auth-form button[data-entity="register"]'));
+        this.$regButton.addEventListener('click', () => this.actionRegister());
     }
 
     private async actionRegister(): Promise<void>
@@ -43,13 +44,17 @@ export class RegisterComponent implements Component
 
         for ( let i = 0; i < this.inputEntities.length; i++ ) {
             let entity: string = this.inputEntities[i];
-            let input: InputComponent = this.inputFields[i];
+            let $input: HTMLInputElement = this.inputFields[i];
 
-            if ( input.validate(noEmptyValidationRegExp) === false ) {
+            if ( $input.value.match(noEmptyValidationRegExp) === null ) {
                 foundInvalidFields = true;
+
+                $input.classList.add('valid')
+            } else {
+                $input.classList.remove('valid');
             }
 
-            loginData[entity] = input.getValue();
+            loginData[entity] = $input.value;
         }
 
         if ( foundInvalidFields ) {

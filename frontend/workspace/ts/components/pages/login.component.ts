@@ -1,13 +1,12 @@
 import { Component } from '../../interfaces/component.interface';
 
 import { SpinnerComponent } from '../spinner.component';
-import { InputComponent } from '../input.component';
-import { ButtonComponent } from '../button.component';
 
 import { Request } from '../../types/request.type';
 import { Response } from '../../types/response.type';
 
 import { AuthService } from '../../services/auth.service';
+import { DomService } from '../../services/dom.service';
 
 export class LoginComponent implements Component
 {
@@ -17,8 +16,8 @@ export class LoginComponent implements Component
         'login', 'password'
     ];
 
-    private inputFields: InputComponent[] = [];
-    private loginButton: ButtonComponent;
+    private inputFields: HTMLInputElement[] = [];
+    private $loginBtn: HTMLButtonElement;
 
     public init(): void
     {
@@ -26,11 +25,13 @@ export class LoginComponent implements Component
         this.formSpinner.init();
 
         for ( let entity of this.inputEntities ) {
-            this.inputFields.push(new InputComponent(`.auth-form input[data-entity="${entity}"]`));
+            this.inputFields.push(
+                (<HTMLInputElement>DomService.findOne(`.auth-form input[data-entity="${entity}"]`))
+            );
         }
 
-        this.loginButton = new ButtonComponent('.auth-form button[data-entity="login"]');
-        this.loginButton.onClick(() => this.actionLogin.call(this));
+        this.$loginBtn = (<HTMLInputElement>DomService.findOne('.auth-form button[data-entity="login"]'));
+        this.$loginBtn.addEventListener('click', () => this.actionLogin());
     }
 
     private async actionLogin(): Promise<void>
@@ -41,13 +42,17 @@ export class LoginComponent implements Component
 
         for ( let i = 0; i < this.inputEntities.length; i++ ) {
             let entity: string = this.inputEntities[i];
-            let input: InputComponent = this.inputFields[i];
+            let $input: HTMLInputElement = this.inputFields[i];
 
-            if ( input.validate(noEmptyValidationRegExp) === false ) {
+            if ( $input.value.match(noEmptyValidationRegExp) === null ) {
                 foundInvalidFields = true;
+
+                $input.classList.add('invalid');
+            } else {
+                $input.classList.remove('invalid');
             }
 
-            loginData[entity] = input.getValue();
+            loginData[entity] = $input.value;
         }
 
         if ( foundInvalidFields ) {
@@ -65,11 +70,6 @@ export class LoginComponent implements Component
         } else {
             window.application.sendNotify(loginResponse.message, 'Error', true);
         }
-    }
-
-    private getRegisterPage(): void
-    {
-        document.location = '/register';
     }
 
     public draw(): boolean

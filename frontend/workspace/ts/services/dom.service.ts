@@ -40,13 +40,13 @@ export class DomService
         return document.createTextNode(text);
     }
 
-    public static findOne(selector: string): null|Element
+    public static findOne(selector: string, $el: Element|Document = document): null|Element
     {
-        return document.querySelector(selector);
+        return $el.querySelector(selector);
     }
 
-    public static findAll(selector: string): null|NodeList
+    public static findAll(selector: string, $el: Element|Document = document): null|NodeList
     {
-        return document.querySelectorAll('selector');
+        return $el.querySelectorAll('selector');
     }
 }

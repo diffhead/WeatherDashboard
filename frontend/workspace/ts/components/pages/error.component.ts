@@ -1,24 +1,24 @@
 import { Component } from '../../interfaces/component.interface';
-import { ButtonComponent } from '../button.component';
+
+import { DomService } from '../../services/dom.service';
 
 export class ErrorComponent implements Component
 {
     private $el: Element;
 
-    private buttonHome: ButtonComponent;
-    private buttonExpand: ButtonComponent;
+    private $homeBtn: HTMLButtonElement;
+    private $expandBtn: HTMLButtonElement;
 
     private contentExpanded: boolean = false;
 
     public init(): void
     {
         this.initElements();
-        this.initEventListeners();
     }
 
     private initElements(): void
     {
-        let $el: Element|null = document.querySelector('.error-modal');
+        let $el: Element|null = DomService.findOne('.error-modal');
 
         if ( $el === null ) {
             throw new Error("Failed to error modal finding");
@@ -26,23 +26,11 @@ export class ErrorComponent implements Component
 
         this.$el = $el;
 
-        this.buttonHome = new ButtonComponent('[data-entity="home"]');
-        this.buttonExpand = new ButtonComponent('[data-entity="expand"]');
-    }
+        this.$homeBtn = (<HTMLButtonElement>DomService.findOne('[data-entity="home"]'));
+        this.$homeBtn.addEventListener('click', () => window.application.getHome());
 
-    private initEventListeners(): void
-    {
-        this.buttonHome.onClick(() => { 
-            window.application.getHome() 
-
-            return true;
-        });
-
-        this.buttonExpand.onClick(() => { 
-            this.toggleContent();
-
-            return true;
-        });
+        this.$expandBtn = (<HTMLButtonElement>DomService.findOne('[data-entity="expand"]'));
+        this.$expandBtn.addEventListener('click', () => this.toggleContent());
     }
 
     private toggleContent(): void
@@ -69,7 +57,7 @@ export class ErrorComponent implements Component
 
     private setButtonText(text: string): void
     {
-        this.buttonExpand.setText(text);
+        this.$expandBtn.textContent = text;
     }
 
     public draw(): boolean

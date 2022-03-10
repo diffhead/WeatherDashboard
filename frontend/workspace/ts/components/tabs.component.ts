@@ -1,13 +1,13 @@
 import { Component } from '../interfaces/component.interface';
 
-import { ButtonComponent } from './button.component';
+import { DomService } from '../services/dom.service';
 
 export class TabsComponent implements Component
 {
     private tabs: NodeList;
     private contents: NodeList;
 
-    private tabButtons: ButtonComponent[] = [];
+    private tabButtons: HTMLButtonElement[] = [];
 
     private inited: boolean = false;
     private rootSelector: string;
@@ -36,16 +36,14 @@ export class TabsComponent implements Component
                 throw new Error("TabsComponent didnt find root element");
             }
 
-            this.tabs = $el.querySelectorAll('.tabs .tab');
-            this.contents = $el.querySelectorAll('.contents .content');
+            this.tabs = DomService.findAll('.tabs .tab', (<Element>$el));
+            this.contents = DomService.findAll('.contents .content', (<Element>$el));
 
             this.tabs.forEach(node => {
                 let nodeEntity: string = (<HTMLElement>node).dataset.entity;
-                let tabButton: ButtonComponent = new ButtonComponent(
-                    `${this.rootSelector} .tab[data-entity="${nodeEntity}"]`
-                );
+                let $tabButton: HTMLButtonElement = (<HTMLButtonElement>DomService.findOne(`${this.rootSelector} .tab[data-entity="${nodeEntity}"]`));
 
-                tabButton.onClick(() => this.switchTab(nodeEntity));
+                $tabButton.addEventListener('click', () => this.switchTab(nodeEntity));
 
                 if ( (<HTMLElement>node).classList.contains('active') ) {
                     this.setEntity(nodeEntity);
