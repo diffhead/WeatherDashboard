@@ -47,6 +47,6 @@ export class DomService
 
     public static findAll(selector: string, $el: Element|Document = document): null|NodeList
     {
-        return $el.querySelectorAll('selector');
+        return $el.querySelectorAll(selector);
     }
 }
