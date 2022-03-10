@@ -39,4 +39,14 @@ export class DomService
     {
         return document.createTextNode(text);
     }
+
+    public static findOne(selector: string): null|Element
+    {
+        return document.querySelector(selector);
+    }
+
+    public static findAll(selector: string): null|NodeList
+    {
+        return document.querySelectorAll('selector');
+    }
 }
