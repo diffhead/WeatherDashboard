@@ -6,7 +6,6 @@ import { Modules } from './admin/Modules';
 import { Weather } from './admin/Weather';
 
 import { DomService } from '../../services/DomService';
-import { AjaxService } from '../../services/AjaxService';
 
 export class Admin extends View
 {
@@ -27,6 +26,18 @@ export class Admin extends View
         this.tabs = new Tabs;
         this.tabs.setElement(this.element);
         this.tabs.render();
+
+        this.modules = new Modules;
+        this.modules.setElement(DomService.findOne('.module-items', this.element));
+        this.modules.render();
+
+        this.users = new Users;
+        this.users.setElement(DomService.findOne('.users-items', this.element));
+        this.users.render();
+
+        this.weather = new Weather;
+        this.weather.setElement(DomService.findOne('.weather-api-settings', this.element));
+        this.weather.render();
 
         return true;
     }
