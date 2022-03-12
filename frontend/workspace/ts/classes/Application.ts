@@ -7,16 +7,19 @@ import { Notification } from './Notification';
 
 import { Error as ErrorView } from '../views/pages/Error';
 import { Index as IndexView } from '../views/pages/Index';
-import { Login as LoginView } from '../views/pages/Login';
+import { Auth as AuthView } from '../views/pages/Auth';
 
 export class Application
 {
     private routes: RoutesViewsAssociation = { 
-        '/':      IndexView,
-        '/login': LoginView
+        '/':         IndexView,
+        '/login':    AuthView,
+        '/register': AuthView,
+        '/reset':    AuthView
     };
 
     private view: View;
+    private route: string;
 
     public constructor(route: string, error: Error = null)
     {

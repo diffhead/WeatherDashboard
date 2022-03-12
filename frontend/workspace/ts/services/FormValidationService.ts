@@ -25,14 +25,14 @@ export class FormValidationService
                 status = false;
 
                 test.status = false;
-                test.message = 'Required field not found';
+                test.message = `Required field '${field}' not found`;
 
                 result[field] = test;
             } else if ( rule.pattern && form[field].match(rule.pattern) === null ) {
                 status = false;
 
                 test.status = false;
-                test.message = 'Failed pattern testing';
+                test.message = `Field '${field}' pattern testing failed`;
 
                 result[field] = test;
             } else {
