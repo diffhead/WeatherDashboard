@@ -29,15 +29,15 @@ export class Auth extends View
     private setInputs(): void
     {
         this.inputs = DomService.findAll('input[data-entity]', this.element);
-        this.inputs.forEach(element => {
-            element.addEventListener('change', () => {
-                let entity: string = (element as HTMLInputElement).getAttribute('data-entity');
-                let value: string = (element as HTMLInputElement).value;
+        this.inputs.forEach(node => {
+            node.addEventListener('change', () => {
+                let entity: string = (node as HTMLInputElement).getAttribute('data-entity');
+                let value: string = (node as HTMLInputElement).value;
 
                 this.getModel().assignData({ [entity]: value });
 
-                if ( (element as HTMLInputElement).classList.contains('invalid') ) {
-                    (element as HTMLInputElement).classList.remove('invalid');
+                if ( (node as HTMLInputElement).classList.contains('invalid') ) {
+                    (node as HTMLInputElement).classList.remove('invalid');
                 }
             });
         });
@@ -131,9 +131,9 @@ export class Auth extends View
 
     private setupInvalidFields(fields: string[]): void
     {
-        this.inputs.forEach(element => {
-            if ( fields.includes((element as HTMLInputElement).getAttribute('data-entity')) ) {
-                (element as HTMLInputElement).classList.add('invalid');
+        this.inputs.forEach(node => {
+            if ( fields.includes((node as HTMLInputElement).getAttribute('data-entity')) ) {
+                (node as HTMLInputElement).classList.add('invalid');
             }
         })
     }
