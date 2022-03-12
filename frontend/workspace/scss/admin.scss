@@ -11,6 +11,30 @@
             justify-content: center;
         }
 
+        &:not(.decoration) {
+            div {
+                span {
+                    display: block;
+                }
+
+                input:not([type="checkbox"]), select {
+                    display: none;
+                } 
+            }
+
+            &.editable {
+                div {
+                    span {
+                        display: none;
+                    }
+
+                    input:not([type="checkbox"]), select {
+                        display: block;
+                    } 
+                }
+            }
+        }
+
         &__name {
             width: 20%;
             margin-right: 1%;
@@ -40,10 +64,12 @@
 
                 &[data-active="true"] {
                     display: block;
+                    margin-left: auto;
                 }
 
                 &[data-active="false"] {
                     display: none;
+                    margin-right: 0;
                 }
 
                 &:first-of-type {

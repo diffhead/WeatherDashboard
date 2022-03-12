@@ -1,13 +1,12 @@
-import { Application } from './classes/application.class';
-
-import { Error } from './types/error.type';
+import { Application } from './classes/Application';
+import { Error } from './types/Error';
 
 declare global {
     interface Window {
-        application: Application,
-        error: Error
+        error: Error,
+        application: Application
     }
 }
 
 window.application = new Application(document.location.pathname, window.error);
-window.application.run();
+window.application.render();

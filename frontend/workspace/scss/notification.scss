@@ -41,6 +41,11 @@
             border: none;
             background: no-repeat center/75% url('/images/close.webp');
             outline: none;
+
+            &:hover {
+                border: none;
+                box-shadow: none;
+            }
         }
     }
 
