@@ -5,7 +5,7 @@ import { Model as ModelInterface } from '../interfaces/Model';
 
 export class Model implements ModelInterface
 {
-    protected modelData: ModelData = { id: 0 };
+    protected modelData: ModelData = {};
     protected modelDefinitions: ModelDefinitions = {};
 
     public getId(): number
