@@ -8,6 +8,7 @@ import { Notification } from './Notification';
 import { Error as ErrorView } from '../views/pages/Error';
 import { Index as IndexView } from '../views/pages/Index';
 import { Auth as AuthView } from '../views/pages/Auth';
+import { Admin as AdminView } from '../views/pages/Admin';
 
 export class Application
 {
@@ -15,7 +16,8 @@ export class Application
         '/':         IndexView,
         '/login':    AuthView,
         '/register': AuthView,
-        '/reset':    AuthView
+        '/reset':    AuthView,
+        '/admin':    AdminView
     };
 
     private view: View;
