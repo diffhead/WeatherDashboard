@@ -44,7 +44,7 @@ class ApplicationService
     public static function getCurrentRoute(): string
     {
         if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
-            return $_SERVER['REQUEST_URI'];
+            return $_SERVER['PHP_SELF'];
         } else {
             return $argv[1];
         }
