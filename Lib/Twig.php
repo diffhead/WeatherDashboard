@@ -3,6 +3,7 @@
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
+use Twig\Extension\AbstractExtension;
 
 class Twig
 {
@@ -19,6 +20,11 @@ class Twig
         $environment->addExtension(new DebugExtension());
 
         $this->twig = $environment;
+    }
+
+    public function addExtension(AbstractExtension $extension): void
+    {
+        $this->twig->addExtension($extension);
     }
 
     public function render(string $template, array $params = []): string
