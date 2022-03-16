@@ -240,6 +240,18 @@ class ActiveRecord
             $query->set($prop, self::filter($prop, $this->$prop, true));
         }
 
+        /* If model has date_upd field then update its value for current time */
+        if ( 
+            isset(static::$definitions['date_upd']) && 
+            ( 
+                isset($this->date_upd) === false || empty($this->date_upd) 
+            ) 
+        ) {
+            $updateTime = new DateTime();
+
+            $query->set('date_upd', $updateTime->format('Y-m-d H:i:s'));
+        }
+
         $query->where("{$idField}='{$this->$idField}'");
 
         $db = Db::getConnection();
