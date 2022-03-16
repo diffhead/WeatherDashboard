@@ -2,6 +2,8 @@
 
 use Core\Controller;
 
+use Web\HttpHeader;
+
 use Views\Error as ErrorView;
 
 use Services\HttpService;
@@ -27,6 +29,7 @@ class Error extends Controller
     public function execute(array $params = []): bool
     {
         HttpService::setResponseCode($this->code);
+        HttpService::setResponseHeader(new HttpHeader('Content-Type', 'text/html'));
 
         return true;
     }
