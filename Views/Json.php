@@ -7,7 +7,12 @@ use Services\StringService;
 
 class Json extends View
 {
-    private bool $needToRebuildString = true;
+    private bool $rebuildFlag = true;
+
+    private function setRebuildFlag(bool $flag = true): void
+    {
+        $this->rebuildFlag = $flag;
+    }
 
     public function __construct(array $params = [])
     {
@@ -17,15 +22,17 @@ class Json extends View
 
     public function assign(array $params): void
     {
-        $this->needToRebuildString = true;
-
         parent::assign($params);
+
+        $this->setRebuildFlag(true);
     }
 
     public function render(): string
     {
-        if ( $this->needToRebuildString || StringService::isEmpty($this->template) ) {
+        if ( $this->rebuildFlag || StringService::isEmpty($this->template) ) {
             $this->template = JsonService::encode($this->params);
+
+            $this->setRebuildFlag(false);
         }
 
         return $this->template;
