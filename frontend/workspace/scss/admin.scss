@@ -32,6 +32,23 @@
                         display: block;
                     } 
                 }
+
+                .module-item__controls {
+
+                    button {
+
+                        &[data-entity="edit"] {
+                            display: none;
+                            margin-left: auto;
+                        }
+
+                        &[data-entity="save"] {
+                            display: block;
+                            margin-right: 0;
+                            margin-left: auto;
+                        }
+                    }
+                }
             }
         }
 
@@ -62,12 +79,12 @@
                 width: 20%;
                 margin-left: 1%;
 
-                &[data-active="true"] {
+                &[data-entity="edit"] {
                     display: block;
                     margin-left: auto;
                 }
 
-                &[data-active="false"] {
+                &[data-entity="save"] {
                     display: none;
                     margin-right: 0;
                 }

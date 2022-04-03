@@ -1,6 +1,8 @@
 body {
     margin: 0px;
     background-color: $white;
+
+    font-family: 'RedHatMono';
     
     & div {
         display: flex;
@@ -64,7 +66,7 @@ body {
         border: 1px solid $blackHalfTransparent;
         background-color: $white;
         padding: 0 1rem;
-        transition: border-color, background-color, color .3s;
+        transition: border-color, background-color .3s;
         font-size: 1rem;
         font-weight: 500;
         cursor: pointer;
