@@ -4,13 +4,21 @@ import { ValidationFields } from '../types/ValidationFields';
 import { ValidationDescription } from '../types/ValidationDescription';
 
 import { Model } from '../classes/Model';
-import { ModelData } from '../types/ModelData';
+import { ModelDefinitions } from '../types/ModelDefinitions';
 
 import { FormValidationService } from '../services/FormValidationService';
 
-export class Auth extends Model
+import { ValidationSupport } from '../interfaces/ValidationSupport';
+
+export class Auth extends Model implements ValidationSupport
 {
     private validator: FormValidationService;
+
+    protected modelDefinitions: ModelDefinitions = {
+        'login': 'string',
+        'password': 'string',
+        'email': 'string'
+    };
 
     public constructor(entity: string) 
     {
