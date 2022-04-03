@@ -7,9 +7,10 @@
     </div>
 
     {% for module in modules %}
-    <div class="module-item" data-module="{{ module.name }}" 
+    <div class="module-item" data-name="{{ module.name }}" 
                              data-enable="{{ module.enable }}" 
                              data-environment="{{ module.environment }}"
+                             data-priority="{{ module.priority }}"
                              data-id="{{ module.id }}"
     >
         <div class="module-item__name">
@@ -31,8 +32,8 @@
             <input name="priority" type="number" value="{{ module.priority }}">
         </div>
         <div class="module-item__controls">
-            <button class="module-item__controls--button-edit" data-active="true">Изменить</button>
-            <button class="module-item__controls--button-save" data-active="false">Сохранить</button>
+            <button class="module-item__controls--button-edit" data-entity="edit">Изменить</button>
+            <button class="module-item__controls--button-save" data-entity="save">Сохранить</button>
             <button class="module-item__controls--button-delete">Удалить</button>
         </div>
     </div>
