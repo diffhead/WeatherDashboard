@@ -42,6 +42,25 @@ export class DomService
         return span;
     }
 
+    public static createSelect(className: string = '', name: string = ''): HTMLSelectElement
+    {
+        let select: HTMLSelectElement = DomService.createElement('select', className) as HTMLSelectElement;
+
+        select.name = name;
+
+        return select;
+    }
+
+    public static createSelectOption(className: string = '', textContent: string, value: string): HTMLOptionElement
+    {
+        let option: HTMLOptionElement = DomService.createElement('option', className) as HTMLOptionElement;
+
+        option.textContent = textContent;
+        option.value = value;
+
+        return option;
+    }
+
     public static append(parent: Element, child: Element): void
     {
         parent.appendChild(child);
