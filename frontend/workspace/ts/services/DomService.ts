@@ -2,36 +2,55 @@ export class DomService
 {
     public static createElement(elementName: string, className: string = ''): HTMLElement
     {
-        let $el = document.createElement(elementName);
+        let el = document.createElement(elementName);
 
-        $el.classList.add(className);
+        if ( className.length ) {
+            el.classList.add(className);
+        }
 
-        return $el;
+        return el;
     }
 
-    public static createDiv(className: string): HTMLDivElement
+    public static createDiv(className: string = ''): HTMLDivElement
     {
-        return (<HTMLDivElement>DomService.createElement('div', className));
+        return DomService.createElement('div', className) as HTMLDivElement;
     }
 
     public static createButton(title: string, className: string = ''): HTMLButtonElement
     {
-        let $button: HTMLButtonElement = (<HTMLButtonElement>DomService.createElement('button', className));
+        let button: HTMLButtonElement = DomService.createElement('button', className) as HTMLButtonElement;
 
-        $button.textContent = title;
+        button.textContent = title;
 
-        return $button;
+        return button;
     }
 
-    public static append($parent: Element, $child: Element): void
+    public static createInput(className: string = '', name: string = '', value: string = ''): HTMLInputElement
     {
-        $parent.appendChild($child);
+        let input: HTMLInputElement = DomService.createElement('input', className) as HTMLInputElement;
+
+        input.name = name;
+        input.value = value;
+
+        return input;
     }
 
-    public static appendBatch($parent: Element, children: Element[]): void
+    public static createSpan(className: string = ''): HTMLSpanElement
     {
-        for ( let $el of children ) {
-            $parent.appendChild($el);
+        let span: HTMLSpanElement = DomService.createElement('span', className) as HTMLSpanElement;
+
+        return span;
+    }
+
+    public static append(parent: Element, child: Element): void
+    {
+        parent.appendChild(child);
+    }
+
+    public static appendBatch(parent: Element, children: Element[]): void
+    {
+        for ( let el of children ) {
+            parent.appendChild(el);
         }
     }
     
