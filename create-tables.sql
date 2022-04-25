@@ -1,3 +1,5 @@
+/* PostgreSQL migration */
+
 CREATE TABLE modules(
     id SERIAL,
     name TEXT,
@@ -9,9 +11,10 @@ CREATE TABLE modules(
 
 INSERT INTO modules (name, enable, environment) 
 VALUES 
-    ('AuthModule', 1), 
-    ('WebFrontend', 1),
-    ('CacheHandler', 1);
+    ('AuthModule', 1, 'web'), 
+    ('WebFrontend', 1, 'web'),
+    ('CacheHandler', 1, 'web'),
+    ('ModuleHandler', 1, 'web');
 
 CREATE TABLE cache(
     id SERIAL,
