@@ -67,7 +67,13 @@ export class Module extends Model implements ValidationSupport
 
      public async create(): Promise<Response>
      {
-         return await AjaxService.request('/module/create', 'POST', this.getData());
+         let response: Response = await AjaxService.request('/module/create', 'POST', this.getData());
+
+         if ( response.status === true && response.module && response.moduleId ) {
+             this.assignData({ id: response.moduleId as number });
+         }
+
+         return response;
      }
 
      public async delete(): Promise<Response>
