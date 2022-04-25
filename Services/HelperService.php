@@ -17,6 +17,11 @@ class HelperService
         return is_numeric($isNumeric);
     }
 
+    public static function isCallable(array|string $isCallable): bool
+    {
+        return is_callable($isCallable);
+    }
+
     public static function serialize(mixed $value): string
     {
         return serialize($value);
