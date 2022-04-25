@@ -36,7 +36,7 @@ export class Notification extends View
             notificationTitle = DomService.createDiv('notification-title');
             notificationTitleText = DomService.createText('Notification');
 
-            notificationMenuClose = DomService.createButton('', 'close-button');
+            notificationMenuClose = DomService.createButton('close-button');
             notificationMenuClose.addEventListener('click', () => {
                 if ( this.beforeClose !== undefined ) {
                     this.beforeClose();

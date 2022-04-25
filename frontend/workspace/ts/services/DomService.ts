@@ -16,7 +16,7 @@ export class DomService
         return DomService.createElement('div', className) as HTMLDivElement;
     }
 
-    public static createButton(title: string, className: string = ''): HTMLButtonElement
+    public static createButton(className: string = '', title: string = ''): HTMLButtonElement
     {
         let button: HTMLButtonElement = DomService.createElement('button', className) as HTMLButtonElement;
 
