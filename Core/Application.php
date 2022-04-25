@@ -10,6 +10,8 @@ use Interfaces\ApplicationRequest;
 use Core\Router;
 use Core\Display;
 
+use Core\Hook\HookProvider;
+
 use Models\User;
 use Models\Module;
 use Models\Session;
@@ -53,29 +55,41 @@ class Application
             }
 
             foreach ( $modulesData as $moduleData ) {
-                $moduleModel = new Module;
-                $moduleModel->setModelData($moduleData);
-
-                if ( $moduleModel->isValidModel() === false ) {
-                    throw new Exception("Invalid module model '{$moduleData['name']}'");
-                }
-
-                $moduleClass = "\\Modules\\{$moduleModel->name}\\{$moduleModel->name}";
-                $moduleReflector = new ReflectionClass($moduleClass);
-
-                $moduleInstance = $moduleReflector->newInstanceArgs([ $moduleModel ]);
-
-                if ( $moduleInstance->isEnabled() ) {
-                    $moduleInstance->init();
-                }
-
-                ModulesRegistry::setModule($moduleInstance->getName(), $moduleInstance);
+                $this->registerModule($moduleData);
             }
 
             return true;
         }
 
         return false;
+    }
+
+    private function registerModule(array $moduleData): void
+    {
+        $moduleModel = new Module;
+        $moduleModel->setModelData($moduleData);
+
+        if ( $moduleModel->isValidModel() === false ) {
+            throw new Exception("Invalid module model '{$moduleData['name']}'");
+        }
+
+        $moduleClass = "\\Modules\\{$moduleModel->name}\\{$moduleModel->name}";
+        $moduleReflector = new ReflectionClass($moduleClass);
+
+        $moduleInstance = $moduleReflector->newInstanceArgs([ $moduleModel ]);
+
+        if ( $moduleInstance->isEnabled() ) {
+            $moduleInstance->init();
+            $moduleHooks = $moduleInstance->registerHooks();
+
+            if ( $moduleHooks->length() ) {
+                foreach ( $moduleHooks as $action ) {
+                    HookProvider::register($action);
+                }
+            }
+        }
+
+        ModulesRegistry::setModule($moduleInstance->getName(), $moduleInstance);
     }
 
     public function run(ApplicationRequest $request): void
