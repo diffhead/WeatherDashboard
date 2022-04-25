@@ -45,7 +45,7 @@ class HookAction implements CollectionItem
 
         if ( $methodExists === false ) {
             $hookResult->setFailed();
-            $hookResult->setErrorCode(HookAction::ERROR_METHOD_NOT_EXISTS);
+            $hookResult->setErrorCode(HookResult::ERROR_METHOD_NOT_EXISTS);
         } else {
             try {
                 $executionData = call_user_func_array($callable, $args);
@@ -54,7 +54,7 @@ class HookAction implements CollectionItem
                 $hookResult->setSuccess();
             } catch ( Exception $e ) {
                 $hookResult->setFailed();
-                $hookResult->setErrorCode(HookAction::ERROR_METHOD_CALL_FAILED);
+                $hookResult->setErrorCode(HookResult::ERROR_METHOD_CALL_FAILED);
             }
         }
 
