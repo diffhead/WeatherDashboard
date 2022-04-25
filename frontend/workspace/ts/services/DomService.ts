@@ -73,6 +73,11 @@ export class DomService
         }
     }
     
+    public static appendBefore(parent: Element, child: Element): void
+    {
+        parent.before(child);
+    }
+
     public static createText(text: string): Text
     {
         return document.createTextNode(text);
