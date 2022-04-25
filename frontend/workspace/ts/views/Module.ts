@@ -6,11 +6,12 @@ import { Module as ModuleModel } from '../models/Module';
 
 import { DomService } from '../services/DomService';
 
-const EDIT_FIELDS_SELECTOR = '.module-item:not(.decoration) input, .module-item:not(.decoration) select';
+const EDIT_FIELDS_SELECTOR = '.module-item input, .module-item select';
 
 const SAVE_BUTTON_SELECTOR = '.module-item__controls--button-save';
 const EDIT_BUTTON_SELECTOR = '.module-item__controls--button-edit';
 const DELETE_BUTTON_SELECTOR = '.module-item__controls--button-delete';
+const CREATE_BUTTON_SELECTOR = '.module-item__controls--button-create';
 
 export class Module extends View
 {
@@ -23,6 +24,7 @@ export class Module extends View
         let saveBtn: HTMLButtonElement = DomService.findOne(SAVE_BUTTON_SELECTOR, this.element) as HTMLButtonElement;
         let editBtn: HTMLButtonElement = DomService.findOne(EDIT_BUTTON_SELECTOR, this.element) as HTMLButtonElement;
         let deleteBtn: HTMLButtonElement = DomService.findOne(DELETE_BUTTON_SELECTOR, this.element) as HTMLButtonElement;
+        let createBtn: HTMLButtonElement = DomService.findOne(CREATE_BUTTON_SELECTOR, this.element) as HTMLButtonElement;
 
         DomService.findAll(EDIT_FIELDS_SELECTOR, this.element).forEach(element => {
             element.addEventListener('change', () => {
@@ -32,47 +34,68 @@ export class Module extends View
             });
         });
 
-        saveBtn.addEventListener('click', async () => {
-            let enableCheckbox: HTMLInputElement = DomService.findOne('input[name="enable"]', this.element) as HTMLInputElement;
-            let response: Response = { status: true };
+        if ( saveBtn !== null && editBtn !== null && deleteBtn !== null ) {
+            saveBtn.addEventListener('click', async () => {
+                let enableCheckbox: HTMLInputElement = DomService.findOne('input[name="enable"]', this.element) as HTMLInputElement;
+                let response: Response = { status: true };
 
-            this.element.classList.remove('editable');
+                this.element.classList.remove('editable');
 
-            enableCheckbox.setAttribute('disabled', 'disabled');
+                enableCheckbox.setAttribute('disabled', 'disabled');
 
-            response = await (this.getModel() as ModuleModel).save();
-
-            if ( response.status === false ) {
-                window.application.showNotification('Fail', response.message as string || 'Module saving failed. See logs', true);
-            } else {
-                window.application.showNotification('Success', 'Module data saving successfully processed');
-            }
-        });
-
-        editBtn.addEventListener('click', () => {
-            let enableCheckbox: HTMLInputElement = DomService.findOne('input[name="enable"]', this.element) as HTMLInputElement;
-
-            this.element.classList.add('editable');
-
-            enableCheckbox.removeAttribute('disabled');
-        });
-
-        deleteBtn.addEventListener('click', async () => {
-            let confirmation: boolean = confirm("Are you sure?");
-            let response: Response = { status: true };
-
-            if ( confirmation ) {
-                response = await (this.getModel() as ModuleModel).delete();
+                response = await (this.getModel() as ModuleModel).save();
 
                 if ( response.status === false ) {
-                    window.application.showNotification('Fail', response.message as string || 'Module removing failed. See logs', true);
+                    window.application.showNotification('Fail', response.message as string || 'Module saving failed. See logs', true);
                 } else {
-                    window.application.showNotification('Success', 'Module removing successfully processed.');
-
-                    this.element.remove();
+                    window.application.showNotification('Success', 'Module data saving successfully processed');
                 }
-            }
-        });
+            });
+
+            editBtn.addEventListener('click', () => {
+                let enableCheckbox: HTMLInputElement = DomService.findOne('input[name="enable"]', this.element) as HTMLInputElement;
+
+                this.element.classList.add('editable');
+
+                enableCheckbox.removeAttribute('disabled');
+            });
+
+            deleteBtn.addEventListener('click', async () => {
+                let confirmation: boolean = confirm("Are you sure?");
+                let response: Response = { status: true };
+
+                if ( confirmation ) {
+                    response = await (this.getModel() as ModuleModel).delete();
+
+                    if ( response.status === false ) {
+                        window.application.showNotification('Fail', response.message as string || 'Module removing failed. See logs', true);
+                    } else {
+                        this.element.dispatchEvent(
+                            new CustomEvent('module:removed', { bubbles: true, detail: this.getModel().getData() }) as Event
+                        );
+
+                        window.application.showNotification('Success', 'Module removing successfully processed.');
+                    }
+                }
+            });
+
+        }
+
+        if ( createBtn !== null ) {
+            createBtn.addEventListener('click', async() => {
+                let response: Response = await (this.getModel() as ModuleModel).create();
+
+                if ( response.status === false ) {
+                    window.application.showNotification('Fail', response.message as string || 'Module creation failed. See logs', true);
+                } else {
+                    this.element.dispatchEvent(
+                        new CustomEvent('module:created', { bubbles: true, detail: this.getModel().getData() }) as Event
+                    );
+
+                    window.application.showNotification('Success', 'Module creation success');
+                }
+            });
+        }
 
         return true;
     }

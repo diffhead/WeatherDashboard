@@ -39,7 +39,7 @@
     </div>
     {% endfor %}
 
-    <div class="module-item decoration" data-id="new">
+    <div class="module-item decoration" data-id="NULL" data-name="" data-environment="web" data-priority="10" data-enable="1">
         <div class="module-item__name">
             <input name="name">
         </div>
