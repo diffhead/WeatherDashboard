@@ -16,4 +16,9 @@ class ClassService
     {
         return StringService::isString($class) ? get_class_vars($class) : get_class_vars(get_class($class));
     }
+
+    public static function isClass(Object $class, string $className): bool
+    {
+        return is_a($class, $className);
+    }
 }
