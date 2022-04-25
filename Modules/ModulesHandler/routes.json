@@ -1,0 +1,20 @@
+{
+    "/module/create": {
+        "type": 1,
+        "controller": "\\Modules\\ModulesHandler\\Controller\\Create",
+        "params": [ "POST" ],
+        "protected": true
+    },
+    "/module/save": {
+        "type": 1,
+        "controller": "\\Modules\\ModulesHandler\\Controller\\Save",
+        "params": [ "POST" ],
+        "protected": true
+    },
+    "/module/delete": {
+        "type": 1,
+        "controller": "\\Modules\\ModulesHandler\\Controller\\Delete",
+        "params": [ "POST" ],
+        "protected": true
+    }
+}
