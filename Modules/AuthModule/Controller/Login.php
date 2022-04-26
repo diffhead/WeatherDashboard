@@ -84,7 +84,7 @@ class Login extends Controller
                 'message' => Login::ERR_SESSION_CREATION
             ]);
             
-            return true;
+            return false;
         }
         
         $this->view->assign([
