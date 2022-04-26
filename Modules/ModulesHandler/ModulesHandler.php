@@ -1,7 +1,19 @@
 <?php namespace Modules\ModulesHandler;
 
+use Core\Context;
+use Core\FileStream;
 use Core\RouterProvider;
 use Core\AbstractModule;
+
+use Core\Hook\HookAction;
+use Core\Hook\HookActionCollection;
+
+use Models\Module;
+
+use Services\DirectoryService;
+use Services\FileService;
+
+use Modules\ModulesHandler\Views\ModuleTemplate;
 
 class ModulesHandler extends AbstractModule
 {
@@ -9,5 +21,59 @@ class ModulesHandler extends AbstractModule
     {
         $routerProvider = new RouterProvider();
         $routerProvider->setRoutesFromJsonFile($this->path . 'routes.json');
+    }
+
+    public function registerHooks(): HookActionCollection
+    {
+        return new HookActionCollection([ 
+            new HookAction('createModule', $this, 'hookCreateModule'),
+            new HookAction('updateModule', $this, 'hookUpdateModule'),
+            new HookAction('deleteModule', $this, 'hookDeleteModule')
+        ]);
+    }
+
+    public function hookCreateModule(array $moduleData): ?Module
+    {
+        $module = new Module();
+        $module->setModelData($moduleData);
+
+        if ( $module->create() === false ) {
+            return null;
+        }
+
+        $moduleDir = _APP_BASE_DIR_ . 'Modules/' . $moduleData['name'];
+        $moduleFile = $moduleDir . '/' . $moduleData['name'] . _PHP_EXTENSION_;
+
+        if ( DirectoryService::isDirExists($moduleDir) === false ) {
+            DirectoryService::createDir($moduleDir);
+        }
+
+        if ( FileService::fileExists($moduleFile) === false ) {
+            $file = new FileStream($moduleFile, FileStream::ACCESS_RW);
+
+            if ( $file->touch() ) {
+                $file->open();
+                $file->write(
+                    (new ModuleTemplate($moduleData['name']))->render()
+                );
+            }
+        }
+
+        return $module;
+    }
+
+    public function hookUpdateModule(array $moduleData): bool
+    {
+        $module = new Module((int)$moduleData['id']);
+        $module->setModelData($moduleData);
+
+        return $module->update();
+    }
+
+    public function hookDeleteModule(int $moduleId): bool
+    {
+        $module = new Module($moduleId);
+
+        return $module->delete();
     }
 }
