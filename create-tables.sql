@@ -106,7 +106,7 @@ CREATE TABLE country(
     id SERIAL,
     title TEXT NOT NULL,
     iso TEXT NOT NULL,
-    itu INT NOT NULL DEFAULT 0,
+    itu TEXT NOT NULL DEFAULT '',
 
     PRIMARY KEY(id)
 );
