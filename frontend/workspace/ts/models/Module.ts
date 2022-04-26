@@ -69,7 +69,7 @@ export class Module extends Model implements ValidationSupport
      {
          let response: Response = await AjaxService.request('/module/create', 'POST', this.getData());
 
-         if ( response.status === true && response.module && response.moduleId ) {
+         if ( response.status === true && response.moduleId ) {
              this.assignData({ id: response.moduleId as number });
          }
 

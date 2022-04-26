@@ -46,6 +46,7 @@ export class DomModuleItemService
         let nameInput: HTMLInputElement = DomService.createInput('', 'name');
 
         nameSpan.textContent = this.moduleData.name as string;
+        nameInput.value = this.moduleData.name as string;
 
         DomService.appendBatch(nameDiv as Element, [
             nameSpan as Element,
@@ -78,15 +79,16 @@ export class DomModuleItemService
         let environmentDiv: HTMLDivElement = DomService.createDiv(this.defaultClass + '__environment');
         let environmentSpan: HTMLSpanElement = DomService.createSpan();
         let environmentValue: string = this.moduleData.environment as string;
-        let environmentSpanText: string = environmentValue[0].toUpperCase() + environmentValue.slice(1);
 
         let environmentSelect: HTMLSelectElement = DomService.createSelect('', 'environment');
         let optionWeb: HTMLOptionElement = DomService.createSelectOption('', 'Web', 'web');
         let optionCli: HTMLOptionElement = DomService.createSelectOption('', 'Cli', 'cli');
 
         if ( this.moduleData.environment === 'web' ) {
+            environmentSelect.value = 'web';
             optionWeb.setAttribute('selected', 'selected');
         } else {
+            environmentSelect.value = 'cli';
             optionCli.setAttribute('selected', 'selected');
         }
 
@@ -95,7 +97,7 @@ export class DomModuleItemService
             optionCli as Element 
         ]);
 
-        environmentSpan.textContent = environmentSpanText;
+        environmentSpan.textContent = environmentValue;
         
         DomService.appendBatch(environmentDiv as Element, [
             environmentSpan as Element,

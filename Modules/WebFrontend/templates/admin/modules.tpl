@@ -1,14 +1,14 @@
 <div class="module-items">
     <div class="module-item decoration" data-id="head">
-        <div class="module-item__name">Имя модуля</div>
-        <div class="module-item__enable">Вкл.</div>
-        <div class="module-item__environment">Окружение</div>
-        <div class="module-item__priority">Приоритет</div>
+        <div class="module-item__name">Name</div>
+        <div class="module-item__enable">Enabled</div>
+        <div class="module-item__environment">Environment</div>
+        <div class="module-item__priority">Priority</div>
     </div>
 
     {% for module in modules %}
     <div class="module-item" data-name="{{ module.name }}" 
-                             data-enable="{{ module.enable }}" 
+                             data-enable="{{ module.enable ? 1 : 0 }}" 
                              data-environment="{{ module.environment }}"
                              data-priority="{{ module.priority }}"
                              data-id="{{ module.id }}"
@@ -32,9 +32,9 @@
             <input name="priority" type="number" value="{{ module.priority }}">
         </div>
         <div class="module-item__controls">
-            <button class="module-item__controls--button-edit" data-entity="edit">Изменить</button>
-            <button class="module-item__controls--button-save" data-entity="save">Сохранить</button>
-            <button class="module-item__controls--button-delete">Удалить</button>
+            <button class="module-item__controls--button-edit" data-entity="edit">Edit</button>
+            <button class="module-item__controls--button-save" data-entity="save">Save</button>
+            <button class="module-item__controls--button-delete">Delete</button>
         </div>
     </div>
     {% endfor %}
@@ -56,7 +56,7 @@
             <input name="priority" type="number" value="10">
         </div>
         <div class="module-item__controls">
-            <button class="module-item__controls--button-create">Добавить</button>
+            <button class="module-item__controls--button-create">Create</button>
         </div>
     </div>
 </div>
