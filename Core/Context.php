@@ -18,7 +18,7 @@ class Context implements Singleton
     private Application        $application;
     private ApplicationRequest $applicationRequest;
 
-    public static function setInstance(Singleton $instance): bool
+    public static function setInstance(Context $instance): bool
     {
         if ( isset(self::$_INSTANCE) === false ) {
             self::$_INSTANCE = $instance;
