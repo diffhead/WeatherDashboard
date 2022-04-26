@@ -9,7 +9,7 @@ class StringService
         );
     }
 
-    public static function isMatch(string $regExp, $string): bool
+    public static function isMatch(string $regExp, string $string): bool
     {
         return (bool)preg_match($regExp, $string);
     }
