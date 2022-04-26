@@ -15,7 +15,7 @@
     >
         <div class="module-item__name">
             <span>{{ module.name }}</span>
-            <input name="name" value="{{ module.name }}">
+            <input name="name" value="{{ module.name }}" disabled>
         </div>
         <div class="module-item__enable">
             <input class="module-item__enable-input" name="enable" type="checkbox" title="Enabled" {% if module.enable %}checked{% endif %} disabled>

@@ -46,7 +46,9 @@ export class DomModuleItemService
         let nameInput: HTMLInputElement = DomService.createInput('', 'name');
 
         nameSpan.textContent = this.moduleData.name as string;
+
         nameInput.value = this.moduleData.name as string;
+        nameInput.setAttribute('disabled', 'disabled');
 
         DomService.appendBatch(nameDiv as Element, [
             nameSpan as Element,
