@@ -26,4 +26,14 @@ class FileService
     {
         return filectime($filePath);
     }
+
+    public static function createFile(string $filePath): bool
+    {
+        return touch($filePath);
+    }
+
+    public static function removeFile(string $filePath): bool
+    {
+        return unlink($filePath);
+    }
 }
