@@ -8,6 +8,8 @@ use Views\Error as ErrorView;
 
 use Services\HttpService;
 
+use Config\ApplicationConfig;
+
 class Error extends Controller
 {
     private int    $code;
@@ -17,8 +19,13 @@ class Error extends Controller
     public function __construct(int $code, string $message, string $additionalMessage = '')
     {
         $this->code = $code;
+
         $this->message = $message;
         $this->additionalMessage = $additionalMessage;
+
+        if ( ApplicationConfig::get('dev') === false && $this->additionalMessage !== '' ) {
+            $this->additionalMessage = '';
+        }
     }
 
     public function init(): void
