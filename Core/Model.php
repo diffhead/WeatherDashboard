@@ -1,12 +1,14 @@
 <?php namespace Core;
 
+use JsonSerializable;
+
 use ReflectionClass;
 use ReflectionProperty;
 
 use Services\ArrayService;
 use Services\JsonService;
 
-class Model extends ActiveRecord
+class Model extends ActiveRecord implements JsonSerializable
 {
     public function __construct(int $id = 0)
     {
@@ -46,17 +48,19 @@ class Model extends ActiveRecord
         return true;
     }
 
-    public function __toString(): string
+    public function jsonSerialize(): mixed
     {
-        $reflectionClass = new ReflectionClass(get_class($this));
-        $reflectionProperties = $reflectionClass->getProperties(ReflectionProperty::IS_PROTECTED);
+        $reflectionClass = new ReflectionClass($this);
+        $reflectionProperties = $reflectionClass->getProperties();
 
         $modelData = [];
 
         foreach ( $reflectionProperties as $property ) {
-            $modelData[$property->getName()] = $property->getValue();
+            if ( $property->isStatic() === false && $property->isProtected() && $property->isInitialized($this) ) {
+                $modelData[$property->getName()] = $property->getValue($this);
+            }
         }
 
-        return JsonService::encode($modelData);
+        return $modelData;
     }
 }
