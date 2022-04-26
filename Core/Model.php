@@ -1,6 +1,10 @@
 <?php namespace Core;
 
+use ReflectionClass;
+use ReflectionProperty;
+
 use Services\ArrayService;
+use Services\JsonService;
 
 class Model extends ActiveRecord
 {
@@ -40,5 +44,19 @@ class Model extends ActiveRecord
         }
 
         return true;
+    }
+
+    public function __toString(): string
+    {
+        $reflectionClass = new ReflectionClass(get_class($this));
+        $reflectionProperties = $reflectionClass->getProperties(ReflectionProperty::IS_PROTECTED);
+
+        $modelData = [];
+
+        foreach ( $reflectionProperties as $property ) {
+            $modelData[$property->getName()] = $property->getValue();
+        }
+
+        return JsonService::encode($modelData);
     }
 }
