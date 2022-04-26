@@ -101,3 +101,12 @@ CREATE TABLE user_session (
 
     PRIMARY KEY (user_id)
 );
+
+CREATE TABLE country(
+    id SERIAL,
+    title TEXT NOT NULL,
+    iso TEXT NOT NULL,
+    itu INT NOT NULL DEFAULT 0,
+
+    PRIMARY KEY(id)
+);
