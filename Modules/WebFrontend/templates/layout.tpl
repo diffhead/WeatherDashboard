@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 {% set contentTemplate = './' ~ entity %}
 {% set contentTemplate = contentTemplate ~ '/content.tpl' %}
 
@@ -17,6 +19,13 @@
         <div class="footer">
             {% include 'footer.tpl' %}
         </div>
-        <script src="/bundle/index.js"></script>
+
+        <script type="application/javascript">
+            let jsonObjects = JSON.parse(`{{ hooks.addJsonObjectToDocument|json_encode|e('js') }}`);
+
+            Object.assign(window, jsonObjects);
+        </script>
+
+        <script type="application/javascript" src="/bundle/index.js"></script>
     </body>
 </html>
