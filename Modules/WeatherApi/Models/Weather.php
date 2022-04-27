@@ -1,12 +1,15 @@
 <?php namespace Modules\WeatherApi\Models;
 
 use Core\Model;
+use Core\Cache;
 use Core\ActiveRecord;
 
 use Core\Database\Db;
 use Core\Database\Query;
 
 use Interfaces\CollectionItem;
+
+use Services\ArrayService;
 
 class Weather extends Model implements CollectionItem
 {
@@ -57,21 +60,30 @@ class Weather extends Model implements CollectionItem
 
     public static function getLastByCityId(int $cityId): array
     {
-        $db = Db::getConnection();
+        $cache = new Cache("weather.lastByCityId.$cityId", 1800);
 
-        $query = new Query();
+        $weatherData = $cache->getData();
 
-        $query->select()
-              ->from('weather', 'w')
-              ->where("w.city = '$cityId'")
-              ->and("w.date_add = (SELECT MAX(date_add) FROM weather)");
+        if ( $weatherData === false ) {
+            $db = Db::getConnection();
 
-        $db->execute($query);
+            $maxDateQuery = new Query();
+            $maxDateQuery->select([ 'MAX(date_add) as max_date_add' ])->from('weather')->where("city = '$cityId'");
+            $maxDateQueryStr = '('. $maxDateQuery->getString() .')';
 
-        if ( $data = $db->fetch() ) {
-            return array_pop($data);
+            $records = self::where("city = '$cityId' and date_add = $maxDateQueryStr");
+
+            if ( $records ) {
+                $weatherData = ArrayService::pop($records);
+            } else {
+                $weatherData = [];
+            }
         }
 
-        return [];
+        if ( $weatherData ) {
+            $cache->setData($weatherData);
+        }
+
+        return $weatherData;
     }
 }
