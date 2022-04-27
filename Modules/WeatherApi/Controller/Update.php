@@ -3,6 +3,8 @@
 use Core\Controller;
 use Core\Context;
 
+use Web\HttpHeader;
+
 use Views\Json as JsonView;
 
 use Services\HttpService;
@@ -19,6 +21,8 @@ class Update extends Controller
     public function init(): void
     {
         $this->view = new JsonView([ 'status' => false ]);
+
+        HttpService::setResponseHeader(new HttpHeader('Content-Type', 'application/json'));
     }
 
     public function execute(array $params = []): bool
@@ -40,7 +44,7 @@ class Update extends Controller
 
     private function downloadWeatherRecords(): bool
     {
-        $cities = WeatherCity::where("active = '1' AND id = 1");
+        $cities = WeatherCity::where("active = '1'");
 
         $appid = $this->getConfigApiKey();
 

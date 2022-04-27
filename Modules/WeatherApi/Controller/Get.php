@@ -5,6 +5,8 @@ use Core\Country;
 
 use Core\Database\Db;
 
+use Web\HttpHeader;
+
 use Views\Json as JsonView;
 
 use Services\HttpService;
@@ -17,6 +19,8 @@ class Get extends Controller
     public function init(): void
     {
         $this->view = new JsonView([ 'status' => false ]);
+
+        HttpService::setResponseHeader(new HttpHeader('Content-Type', 'application/json'));
     }
 
     public function execute(array $params = []): bool
