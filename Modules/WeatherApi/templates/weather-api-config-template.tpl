@@ -1,0 +1,4 @@
+{
+    "apikey": "{{ weatherApiKey }}",
+    "apiuri": "{{ weatherApiUri }}"
+}

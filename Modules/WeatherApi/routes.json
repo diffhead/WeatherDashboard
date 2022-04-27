@@ -1,0 +1,14 @@
+{
+    "/weather/update": {
+        "type": 1,
+        "controller": "\\Modules\\WeatherApi\\Controller\\Update",
+        "params": [ "GET" ],
+        "protected": true
+    },
+    "/weather/get": {
+        "type": 1,
+        "controller": "\\Modules\\WeatherApi\\Controller\\Get",
+        "params": [ "GET" ],
+        "protected": false
+    }
+}
