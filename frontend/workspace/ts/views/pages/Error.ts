@@ -7,13 +7,15 @@ export class Error extends View
     private expanded: boolean = false;
     private extendedMessage: HTMLDivElement;
 
-    public contructor()
+    public constructor()
     {
         let element: Element = DomService.findOne('.error-modal');
-        let extendedMessage: Element = DomService.findOne('.error-modal-additional', element)
+        let extendedMessage: HTMLDivElement = DomService.findOne('.error-modal-additional', element) as HTMLDivElement;
+
+        super();
 
         this.setElement(element);
-        this.setExtendedMessage(extendedMessage as HTMLDivElement);
+        this.setExtendedMessage(extendedMessage);
     }
 
     private setExtendedMessage(element: HTMLDivElement): void
@@ -47,9 +49,9 @@ export class Error extends View
     {
         if ( this.extendedMessage ) {
             if ( this.expanded ) {
-                this.extendedMessage.classList.add('expanded');
+                this.element.classList.add('expanded');
             } else {
-                this.extendedMessage.classList.remove('expanded');
+                this.element.classList.remove('expanded');
             }
         }
     }
