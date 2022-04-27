@@ -5,8 +5,8 @@ use Core\FileStream;
 use Core\RouterProvider;
 use Core\AbstractModule;
 
-use Core\Hook\HookAction;
-use Core\Hook\HookActionCollection;
+use Core\Hook\Hook;
+use Core\Hook\HookCollection;
 
 use Models\Module;
 
@@ -23,12 +23,12 @@ class ModulesHandler extends AbstractModule
         $routerProvider->setRoutesFromJsonFile($this->path . 'routes.json');
     }
 
-    public function registerHooks(): HookActionCollection
+    public function registerHooks(): HookCollection
     {
-        return new HookActionCollection([ 
-            new HookAction('createModule', $this, 'hookCreateModule'),
-            new HookAction('updateModule', $this, 'hookUpdateModule'),
-            new HookAction('deleteModule', $this, 'hookDeleteModule')
+        return new HookCollection([ 
+            new Hook('createModule', $this, 'hookCreateModule'),
+            new Hook('updateModule', $this, 'hookUpdateModule'),
+            new Hook('deleteModule', $this, 'hookDeleteModule')
         ]);
     }
 

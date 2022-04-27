@@ -4,7 +4,7 @@ use ReflectionClass;
 
 use Models\Module as ModuleModel;
 
-use Core\Hook\HookActionCollection;
+use Core\Hook\HookCollection;
 
 abstract class AbstractModule
 {
@@ -28,9 +28,9 @@ abstract class AbstractModule
         $this->namespace = $reflectionClass->getNamespaceName();
     }
 
-    public function registerHooks(): HookActionCollection
+    public function registerHooks(): HookCollection
     {
-        return new HookActionCollection();
+        return new HookCollection();
     }
 
     public function enable(): bool

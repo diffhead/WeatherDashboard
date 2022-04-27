@@ -5,8 +5,8 @@ use Core\FileStream;
 use Core\AbstractModule;
 use Core\RouterProvider;
 
-use Core\Hook\HookAction;
-use Core\Hook\HookActionCollection;
+use Core\Hook\Hook;
+use Core\Hook\HookCollection;
 
 use Services\JsonService;
 use Services\ArrayService;
@@ -21,10 +21,10 @@ class WebFrontend extends AbstractModule
         $routerProvider->setRoutesFromJsonFile($this->path . 'routes.json');
     }
 
-    public function registerHooks(): HookActionCollection
+    public function registerHooks(): HookCollection
     {
-        return new HookActionCollection([
-            new HookAction('addJsonObjectToDocument', $this, 'hookAddJsonObjectToDocument')
+        return new HookCollection([
+            new Hook('addJsonObjectToDocument', $this, 'hookAddJsonObjectToDocument')
         ]);
     }
 

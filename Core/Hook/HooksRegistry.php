@@ -4,7 +4,7 @@ class HooksRegistry
 {
     private static array $_HOOKS = [];
 
-    public static function register(HookAction $action): void
+    public static function register(Hook $action): void
     {
         $hookName = $action->getHook();
 
@@ -15,7 +15,7 @@ class HooksRegistry
         self::$_HOOKS[$hookName][] = $action;
     }
 
-    public static function getHookActions(string $hookName): array
+    public static function getHooks(string $hookName): array
     {
         if ( isset(self::$_HOOKS[$hookName]) === false ) {
             return [];
