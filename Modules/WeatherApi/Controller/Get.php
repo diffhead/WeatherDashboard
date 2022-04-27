@@ -55,7 +55,8 @@ class Get extends Controller
 
         $this->view->assign([
             'status'  => true,
-            'weather' => $weather
+            'weather' => $weather,
+            'city'    => $cityData
         ]);
 
         return true;
