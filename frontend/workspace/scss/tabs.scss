@@ -1,7 +1,9 @@
 .tabbed-content {
+    width: 100%;
     flex-direction: column;
 
     & .tabs {
+        width: 100%;
         flex-direction: row;
 
         .tab {
@@ -32,10 +34,13 @@
         }
     }
 
-    & .contents {
+    & .tab-contents {
+        width: 100%;
         box-shadow: 1px 2px 3px $blackHalfTransparent;
 
-        .content {
+        .tab-content {
+            width: 100%;
+            padding: 2rem 1.5rem 1rem 1.5rem;
             display: none;
 
             &.active {

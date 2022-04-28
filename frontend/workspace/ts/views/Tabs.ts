@@ -15,7 +15,7 @@ export class Tabs extends View
         }
 
         this.tabs = DomService.findAll('.tabs .tab', this.element);
-        this.contents = DomService.findAll('.contents .content', this.element);
+        this.contents = DomService.findAll('.tab-contents .tab-content', this.element);
 
         if ( this.tabs === null || this.contents === null ) {
             throw new Error('Tabs or Contents not found');
