@@ -10,7 +10,7 @@ body {
     
     & .content {
         flex-direction: column;
-        min-height: calc(100% - 6rem);
+        min-height: calc(100vh - 6rem);
         width: calc(100% - 2rem);
         overflow: auto;
         padding: 1rem;
