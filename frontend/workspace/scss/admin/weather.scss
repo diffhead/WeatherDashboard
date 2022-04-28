@@ -1,0 +1,36 @@
+.weather-settings {
+    width: 100%;
+
+    &__api {
+        width: 100%;
+        flex-direction: column;
+
+        &--key {
+            margin-bottom: .5rem;
+
+            input {
+                min-width: 20rem;
+            }
+        }
+
+        &--uri {
+            margin-bottom: 1.5rem;
+
+            input {
+                min-width: 20rem;
+            }
+        }
+
+        &--location {
+            flex-direction: column;
+
+            .cselect-with-input {
+                width: 20rem;
+            }
+
+            .country-select {
+                margin-bottom: .5rem;
+            }
+        }
+    }
+}
