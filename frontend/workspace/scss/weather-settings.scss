@@ -1,0 +1,16 @@
+.weather-settings {
+    &__api {
+        flex-direction: column;
+
+        &--key {
+            margin-bottom: 1.5rem;
+        }
+
+        &--uri {
+            margin-bottom: 1.5rem;
+        }
+
+        &--cities {
+        }
+    }
+}

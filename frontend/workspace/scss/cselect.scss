@@ -1,0 +1,146 @@
+.cselect-with-input {
+    position: relative;
+    flex-direction: column;
+    line-height: 2rem;
+    height: 2.5rem;
+    min-width: 15rem;
+    border: 1px solid $blackHalfTransparent;
+    box-shadow: 1px 1px 3px 0px $blackHalfTransparent;
+    box-sizing: border-box;
+    background-color: $white;
+
+    .hidden {
+        display: none;
+    }
+
+    &--input {
+        display: none;
+        height: 100%;
+
+        input {
+            width: calc(100% - 3.5rem);
+            height: calc(100% - .5rem);
+            padding: .2rem 0rem .2rem 1rem;
+            border: none;
+        }
+    }
+
+    &--placeholder {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        user-select: none;
+        z-index: 10;
+
+        span {
+            padding: .2rem 3.5rem .2rem 1rem;
+            color: $blackHalfTransparent;
+        }
+    }
+
+    &--value {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        user-select: none;
+        z-index: 10;
+
+        span {
+            padding: .2rem 3.5rem .2rem 1rem;
+            color: $black;
+        }
+    }
+
+    &--select {
+        position: absolute;
+        display: none;
+        flex-direction: column;
+        max-height: 12rem;
+        top: 2.5rem;
+        left: 0;
+        border: 1px solid $blackHalfTransparent;
+
+        .cselect-select--option {
+            min-width: 12.78rem;
+            padding: .2rem 1rem .2rem 1rem;
+            cursor: pointer;
+            background-color: $white;
+
+            &.hidden {
+                display: none;
+            }
+
+            &.selected {
+                background-color: #DCDCDC;
+            }
+
+            &:hover {
+                background-color: $sapphire;
+
+                span {
+                    color: $white;
+                }
+            }
+
+        }
+    }
+
+    &--toggle {
+        position: absolute;
+        width: 2.5rem;
+        height: 100%;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        justify-content: center;
+        border-left: 1px solid $blackHalfTransparent;
+        z-index: 15;
+
+        &-open {
+            width: .5rem;
+            height: .5rem;
+            border-left: 2px solid $sapphire;
+            border-bottom: 2px solid $sapphire;
+            transform: rotate(-45deg);
+            margin-top: .7rem;
+            overflow: hidden;
+        }
+
+        &-close {
+            display: none;
+            width: .5rem;
+            height: .5rem;
+            border-left: 2px solid $red;
+            border-bottom: 2px solid $red;
+            transform: rotate(135deg);
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+    }
+}
+
+.cselect-with-input.open {
+    z-index: 5000;
+
+    .cselect-with-input--input {
+        display: flex;
+    }
+    .cselect-with-input--value {
+        display: none;
+    }
+    .cselect-with-input--placeholder{
+        display: none;
+    }
+    .cselect-with-input--select {
+        display: flex;
+    }
+    .cselect-with-input--toggle {
+        &-open {
+            display: none;
+        }
+
+        &-close {
+            display: flex;
+        }
+    }
+}
