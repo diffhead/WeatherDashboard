@@ -9,12 +9,12 @@ CREATE TABLE modules(
     PRIMARY KEY(id)
 );
 
-INSERT INTO modules (name, enable, environment) 
+INSERT INTO modules (name, enable, environment, priority) 
 VALUES 
-    ('AuthModule', 1, 'web'), 
-    ('WebFrontend', 1, 'web'),
-    ('CacheHandler', 1, 'web'),
-    ('ModuleHandler', 1, 'web');
+    ('CacheHandler', 1, 'web', 1),
+    ('ModuleHandler', 1, 'web', 2),
+    ('AuthModule', 1, 'web', 3),
+    ('WebFrontend', 1, 'web', 4);
 
 CREATE TABLE cache(
     id SERIAL,
