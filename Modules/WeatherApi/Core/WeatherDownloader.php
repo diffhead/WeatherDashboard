@@ -7,7 +7,6 @@ use Web\HttpResponse;
 
 use Modules\WeatherApi\Models\Weather;
 use Modules\WeatherApi\Models\WeatherCity;
-use Modules\WeatherApi\Models\WeatherApiResponse;
 
 use Modules\WeatherApi\Config\WeatherApiConfig;
 
@@ -21,13 +20,14 @@ class WeatherDownloader
 
     private ?WeatherCity $city = null;
 
-    public function __construct(string $appid, WeatherCity $city, string $units = 'metric', string $lang = 'en')
+    public function __construct(string $appid, WeatherCity $city)
     {
         $this->appid = $appid;
         $this->lat = $city->latitude;
         $this->lon = $city->longitude;
-        $this->units = $units;
-        $this->lang = $lang;
+
+        $this->units = 'metric';
+        $this->lang = 'en';
 
         $this->setCity($city);
     }
