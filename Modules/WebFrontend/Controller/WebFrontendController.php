@@ -1,9 +1,13 @@
 <?php namespace Modules\WebFrontend\Controller;
 
+use Core\View;
 use Core\Context;
 use Core\Controller;
 use Core\ModulesRegistry;
 
+use Core\Hook\HookProvider;
+
+use Services\ArrayService;
 use Services\StringService;
 
 use Modules\WebFrontend\WebFrontend;
@@ -18,15 +22,14 @@ abstract class WebFrontendController extends Controller
 
     protected WebFrontend $module;
     protected string      $baseTitle = 'WeatherDashboard';
+    protected array       $jsonObjectsForDocument = [];
 
     final public function init(): void
     {
         $context = Context::getInstance();
 
         $this->view = new Frontend;
-        $this->view->assign([
-            'user' => $context->user
-        ]);
+        $this->view->assign([ 'user'  => $context->user ]);
 
         $this->module = ModulesRegistry::getModule('WebFrontend');
     }
@@ -50,8 +53,24 @@ abstract class WebFrontendController extends Controller
         return $this->module->getNavigationMenuItems($entity);
     }
 
+    protected function addJsonObjectToDocument(array $json): void
+    {
+        $this->jsonObjectsForDocument = ArrayService::merge($this->jsonObjectsForDocument, $json);
+    }
+
     public function execute(array $params = []): bool
     {
         return true;
+    }
+
+    public function getView(): View
+    {
+        $this->view->assign([
+            'hooks' => [
+                'addJsonObjectToDocument' => $this->jsonObjectsForDocument
+            ]
+        ]);
+
+        return $this->view;
     }
 }

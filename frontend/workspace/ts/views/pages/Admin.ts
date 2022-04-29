@@ -36,7 +36,7 @@ export class Admin extends View
         this.users.render();
 
         this.weather = new Weather;
-        this.weather.setElement(DomService.findOne('.weather-api-settings', this.element));
+        this.weather.setElement(DomService.findOne('.weather-settings', this.element));
         this.weather.render();
 
         return true;

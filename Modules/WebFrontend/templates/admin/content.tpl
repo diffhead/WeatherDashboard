@@ -7,16 +7,16 @@
             <div class="tab" data-entity="users">Users</div>
             <div class="tab" data-entity="weather-api">Weather API</div>
         </div>
-        <div class="contents">
-            <div class="content active" data-entity="modules">
+        <div class="tab-contents">
+            <div class="tab-content active" data-entity="modules">
                 {% include 'admin/modules.tpl' %}
             </div>
 
-            <div class="content" data-entity="users">
+            <div class="tab-content" data-entity="users">
                 {% include 'admin/users.tpl' %}
             </div>
 
-            <div class="content" data-entity="weather-api">
+            <div class="tab-content" data-entity="weather-api">
                 {% include 'admin/weather.tpl' %}
             </div>
         </div>

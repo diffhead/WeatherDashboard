@@ -31,18 +31,6 @@ export class SelectWithInput extends View
     private filteredById: FilteredIdStorage = {};
     private filteredByTitle: FilteredIdStorage = {};
 
-    public constructor(id: string)
-    {
-        super();
-
-        this.setElement(DomService.findOne(CSELECT_SELECTOR + '#' + id));
-        this.setInput(DomService.findOne(CSELECT_INPUT_SELECTOR, this.element) as HTMLInputElement);
-        this.setValueSpan(DomService.findOne(CSELECT_VALUE_SELECTOR + ' span', this.element) as HTMLSpanElement);
-        this.setPlaceholder(DomService.findOne(CSELECT_PLACEHOLDER_SELECTOR, this.element) as HTMLDivElement);
-
-        this.render();
-    }
-
     private setInput(input: HTMLInputElement): void
     {
         this.input = input;
@@ -56,53 +44,6 @@ export class SelectWithInput extends View
     private setPlaceholder(placeholder: HTMLDivElement): void
     {
         this.placeholder = placeholder;
-    }
-
-    public render(): boolean
-    {
-        if ( this.element === undefined ) {
-            throw new Error('Failed to finding element');
-        }
-
-        if ( this.element.classList.contains('disabled') ) {
-            this.disabled();
-        }
-
-        let togglersSelector: string = `${CSELECT_TOGGLE_SELECTOR}, ${CSELECT_VALUE_SELECTOR}, ${CSELECT_PLACEHOLDER_SELECTOR}`;
-        let togglers: NodeList = DomService.findAll(togglersSelector, this.element);
-
-        togglers.forEach(element => {
-            element.addEventListener('click', e => this.toggleSelect());
-        });
-
-        let options: NodeList = DomService.findAll(CSELECT_OPTION_SELECTOR, this.element);
-
-        this.selectModel = new Select(this.element.id);
-
-        options.forEach(element => {
-            let id: number = Number((element as Element).getAttribute('data-id'));
-            let title: string = (element as Element).getAttribute('data-title');
-            let value: string = (element as Element).getAttribute('data-value');
-            let selected: number = Number((element as Element).getAttribute('data-selected'));
-
-            let option: SelectOption = new SelectOption(id, title, value, selected);
-
-            this.selectModel.appendOptions([ option ]);
-
-            if ( option.isSelected() ) {
-                this.selectModel.select(option.getId());
-            }
-
-            element.addEventListener('click', ({ target }) => this.selectElement(target as HTMLDivElement));
-        });
-
-        this.domOptions = options;
-
-        this.input.addEventListener('input', () => this.setSearchingTimeout());
-
-        document.addEventListener('click', ({ target }) => this.checkTargetAndCloseSelectIfNeed(target as Element));
-
-        return true;
     }
 
     private toggleSelect(): void
@@ -124,7 +65,7 @@ export class SelectWithInput extends View
         }
     }
 
-    private selectElement(target: HTMLDivElement): void
+    private selectElement(target: HTMLDivElement, toggle: boolean = true): void
     {
         let selectedOptionId: number = Number(target.getAttribute('data-id'));
 
@@ -135,7 +76,9 @@ export class SelectWithInput extends View
             detail: this.selectModel.getSelected() 
         }));
 
-        this.toggleSelect();
+        if ( toggle ) {
+            this.toggleSelect();
+        }
 
         this.domOptions.forEach(option => {
             let optionId: number = Number((option as Element).getAttribute('data-id'));
@@ -182,6 +125,114 @@ export class SelectWithInput extends View
         if ( DomService.hasParent(target, this.element) === false && this.opened ) {
             this.toggleSelect();
         }
+    }
+
+    public constructor(id: string)
+    {
+        super();
+
+        this.setElement(DomService.findOne(CSELECT_SELECTOR + '#' + id));
+        this.setInput(DomService.findOne(CSELECT_INPUT_SELECTOR, this.element) as HTMLInputElement);
+        this.setValueSpan(DomService.findOne(CSELECT_VALUE_SELECTOR + ' span', this.element) as HTMLSpanElement);
+        this.setPlaceholder(DomService.findOne(CSELECT_PLACEHOLDER_SELECTOR, this.element) as HTMLDivElement);
+
+        this.render();
+    }
+
+    public select(id: number, toggle: boolean = true): void
+    {
+        this.domOptions.forEach(option => {
+            let optionDiv: HTMLDivElement = option as HTMLDivElement;
+            let optionId: number = Number(optionDiv.getAttribute('data-id'));
+
+            if ( optionId === id ) {
+                this.selectElement(optionDiv, toggle);
+            }
+        });
+    }
+
+    public unselect(): void
+    {
+        this.selectModel.select();
+        this.setCurrentData();
+
+        this.filteredById = {};
+        this.filteredByTitle = {};
+
+        this.valueSpan.parentElement.classList.add('hidden');
+        this.placeholder.classList.remove('hidden');
+
+        this.element.dispatchEvent(
+            new CustomEvent('select.option.unset', { bubbles: true, detail: true })
+        );
+    }
+
+    public disabled(value: boolean = true): void
+    {
+        this.selectDisabled = value;
+
+        if ( value ) {
+            this.element.classList.add('disabled');
+        } else {
+            this.element.classList.remove('disabled');
+        }
+    }
+
+    public render(): boolean
+    {
+        if ( this.element === undefined ) {
+            throw new Error('Failed to finding element');
+        }
+
+        if ( this.element.classList.contains('disabled') ) {
+            this.disabled();
+        }
+
+        let togglersSelector: string = `${CSELECT_TOGGLE_SELECTOR}, ${CSELECT_VALUE_SELECTOR}, ${CSELECT_PLACEHOLDER_SELECTOR}`;
+        let togglers: NodeList = DomService.findAll(togglersSelector, this.element);
+
+        togglers.forEach(element => {
+            element.addEventListener('click', e => this.toggleSelect());
+        });
+
+        let options: NodeList = DomService.findAll(CSELECT_OPTION_SELECTOR, this.element);
+
+        this.selectModel = new Select(this.element.id);
+
+        options.forEach(element => {
+            let id: number = Number((element as Element).getAttribute('data-id'));
+            let title: string = (element as Element).getAttribute('data-title');
+            let value: string = (element as Element).getAttribute('data-value');
+            let selected: number = Number((element as Element).getAttribute('data-selected'));
+
+            let option: SelectOption = new SelectOption(id, title, value, selected);
+
+            this.selectModel.appendOptions([ option ]);
+
+            if ( option.isSelected() ) {
+                this.selectModel.select(option.getId());
+            }
+
+            element.addEventListener('click', ({ target }) => {
+                let t: Element = target as Element;
+
+                if ( t.nodeName === 'SPAN' ) {
+                    target = t.parentElement;
+                }
+
+                this.select(
+                    Number((target as HTMLDivElement).getAttribute('data-id'))
+                );
+            });
+        });
+
+        this.domOptions = options;
+
+        this.input.addEventListener('input', () => this.setSearchingTimeout());
+
+        document.addEventListener('click', ({ target }) => this.checkTargetAndCloseSelectIfNeed(target as Element));
+
+        return true;
     }
 
     public filterOptionsByTitle(title: string = ''): void
@@ -237,42 +288,8 @@ export class SelectWithInput extends View
         });
     }
 
-    public select(id: number): void
+    public replaceOption(id: number, option: SelectOption): void
     {
-        this.domOptions.forEach(option => {
-            let optionDiv: HTMLDivElement = option as HTMLDivElement;
-            let optionId: number = Number(optionDiv.getAttribute('data-id'));
-
-            if ( optionId === id && !this.filteredById[optionId] && !this.filteredByTitle[optionId] ) {
-                this.selectElement(optionDiv);
-            }
-        });
-    }
-
-    public unselect(): void
-    {
-        this.selectModel.select();
-        this.setCurrentData();
-
-        this.filteredById = {};
-        this.filteredByTitle = {};
-
-        this.valueSpan.parentElement.classList.add('hidden');
-        this.placeholder.classList.remove('hidden');
-
-        this.element.dispatchEvent(
-            new CustomEvent('select.option.unset', { bubbles: true, detail: true })
-        );
-    }
-
-    public disabled(value: boolean = true): void
-    {
-        this.selectDisabled = value;
-
-        if ( value ) {
-            this.element.classList.add('disabled');
-        } else {
-            this.element.classList.remove('disabled');
-        }
+        this.selectModel.replaceOption(id, option);
     }
 }

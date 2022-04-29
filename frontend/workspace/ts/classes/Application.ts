@@ -1,4 +1,6 @@
 import { Error } from '../types/Error';
+import { City } from '../types/City';
+import { Country } from '../types/Country';
 import { RoutesViewsAssociation } from '../types/RoutesViewsAssociation';
 
 import { View } from '../interfaces/View';
@@ -51,6 +53,21 @@ export class Application
     public getPage(uri: string): void
     {
         document.location = uri;
+    }
+
+    public getCities(): City[]
+    {
+        return window.cities;
+    }
+
+    public updateCities(cities: City[]): void
+    {
+        window.cities = cities;
+    }
+
+    public getCountries(): Country[]
+    {
+        return window.countries;
     }
 
     public render(): boolean

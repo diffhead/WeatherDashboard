@@ -27,6 +27,15 @@ export class Select
         this.options = this.options.concat(options);
     }
 
+    public replaceOption(id: number, option: SelectOption): void
+    {
+        for ( let i = 0; i < this.options.length; i++ ) {
+            if ( this.options[i].getId() === id ) {
+                this.options[i] = option; break;
+            }
+        }
+    }
+
     public select(id: number = 0): boolean
     {
         if ( id ) {

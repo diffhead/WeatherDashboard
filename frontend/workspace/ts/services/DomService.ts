@@ -92,4 +92,17 @@ export class DomService
     {
         return contextElement.querySelectorAll(selector);
     }
+
+    public static hasParent(element: Element, parent: Element): boolean
+    {
+        if ( element.parentElement !== null ) {
+            if ( element.parentElement === parent ) {
+                return true;
+            }
+
+            return DomService.hasParent(element.parentElement, parent);
+        }
+
+        return false;
+    }
 }

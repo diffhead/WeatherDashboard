@@ -21,23 +21,6 @@ class WebFrontend extends AbstractModule
         $routerProvider->setRoutesFromJsonFile($this->path . 'routes.json');
     }
 
-    public function registerHooks(): HookCollection
-    {
-        return new HookCollection([
-            new Hook('addJsonObjectToDocument', $this, 'hookAddJsonObjectToDocument')
-        ]);
-    }
-
-    public function hookAddJsonObjectToDocument(array $jsonObject): void
-    {
-        $this->jsonObjectsForDocument = ArrayService::merge($this->jsonObjectsForDocument, $jsonObject);
-    }
-
-    public function getJsonObjectsForDocument(): array
-    {
-        return $this->jsonObjectsForDocument;
-    }
-
     public function getNavigationMenuItems(string $activeEntity): array
     {
         $menuFile = new FileStream($this->path . 'menu.json');
