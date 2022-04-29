@@ -62,9 +62,8 @@ class WeatherApiConfig implements Configuration
     private static function writeNewConfig(): bool
     {
         if ( 
-            isset(self::$config['weatherApi'])           === false ||
-            isset(self::$config['weatherApi']['apikey']) === false ||
-            isset(self::$config['weatherApi']['apiuri']) === false
+            isset(self::$config['apikey']) === false ||
+            isset(self::$config['apiuri']) === false
         ) {
             return false;
         }
@@ -75,10 +74,10 @@ class WeatherApiConfig implements Configuration
             'weatherApiUri' => self::$config['apiuri']
         ]);
 
-        $file = new FileStream(self::$configPath);
+        $file = new FileStream(self::$configPath, FileStream::ACCESS_RW);
         $writeStatus = false;
 
-        if ( $file->open() || $file->touch() ) {
+        if ( $file->open() || ($file->touch() && $file->open()) ) {
             $writeStatus = $file->write($fileView->render());
         }
 

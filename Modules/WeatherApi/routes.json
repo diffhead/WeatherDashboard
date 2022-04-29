@@ -10,5 +10,17 @@
         "controller": "\\Modules\\WeatherApi\\Controller\\Get",
         "params": [ "GET" ],
         "protected": false
+    },
+    "/weather/api/save": {
+        "type": 1,
+        "controller": "\\Modules\\WeatherApi\\Controller\\SaveApiSettings",
+        "params": [ "POST" ],
+        "protected": false
+    },
+    "/weather/city/save": {
+        "type": 1,
+        "controller": "\\Modules\\WeatherApi\\Controller\\SaveCity",
+        "params": [ "POST" ],
+        "protected": false
     }
 }
