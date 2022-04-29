@@ -14,15 +14,20 @@
         }
 
         &--uri {
-            margin-bottom: 1.5rem;
+            margin-bottom: .5rem;
 
             input {
                 min-width: 20rem;
             }
         }
 
+        &--save {
+            margin-bottom: 1.5rem;
+        }
+
         &--location {
             flex-direction: column;
+            margin-bottom: 2rem;
 
             .cselect-with-input {
                 width: 20rem;
@@ -30,6 +35,33 @@
 
             .country-select {
                 margin-bottom: .5rem;
+            }
+
+            .weather-coords {
+                margin-bottom: 1rem;
+
+                &-input {
+                    flex-direction: column;
+                    margin-right: 2rem;
+                }
+
+                &-latlon {
+                    flex-direction: column;
+                    width: 15rem;
+
+                    &--lat {
+                        margin-bottom: auto;
+                    }
+
+                    &--label {
+                        align-items: center;
+                    }
+
+                    &--input {
+                        width: 7rem;
+                        margin-left: auto;
+                    }
+                }
             }
         }
     }
