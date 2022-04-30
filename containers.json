@@ -36,6 +36,8 @@
                     "type": "class",
                     "value": "\\Cli\\Request",
                     "arguments": [
+                        { "type": "static-method", "value": "\\Services\\ApplicationService::getCurrentRoute", "arguments": [] },
+                        { "type": "static-method", "value": "\\Services\\ApplicationService::getCurrentData", "arguments": [] }
                     ]
                 }
             ]

@@ -151,7 +151,7 @@ class Application
             $route = $this->router->getRoute($request->getRequestData()['action']);
 
             if ( HelperService::isNull($route) ) {
-                $controller = new \Cli\Controller\Error('Route not found');
+                $controller = new \Cli\Controller\Error(1, 'Route not found');
             }
         }
 
@@ -188,6 +188,7 @@ class Application
 
             Context::getInstance()->user = $user;
         } else {
+            Context::getInstance()->user = new User(2);
         }
     }
 

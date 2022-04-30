@@ -46,7 +46,7 @@ class ApplicationService
         if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
             return $_SERVER['PHP_SELF'];
         } else {
-            return $argv[1];
+            return isset($_SERVER['argv'][1]) ? (string)$_SERVER['argv'][1] : '';
         }
     }
 
@@ -103,7 +103,7 @@ class ApplicationService
 
             $dataContainer = ArrayService::merge($dataContainer, $_POST, $_GET);
         } else {
-            $dataContainer = ArrayService::slice($argv, 2);
+            $dataContainer = ArrayService::slice($_SERVER['argv'], 2);
         }
 
         return $dataContainer;
