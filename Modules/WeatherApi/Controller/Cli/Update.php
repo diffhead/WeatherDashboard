@@ -1,4 +1,4 @@
-<?php namespace Modules\WeatherApi\Controller;
+<?php namespace Modules\WeatherApi\Controller\Cli;
 
 use Core\Controller;
 use Core\Context;
@@ -28,6 +28,7 @@ class Update extends Controller
 
     public function execute(array $params = []): bool
     {
+        /*
         $user = Context::getInstance()->user;
 
         if ( $user->isAdmin() === false ) {
@@ -39,6 +40,7 @@ class Update extends Controller
 
             return false;
         }
+         */
 
         return $this->downloadWeatherRecords();
     }

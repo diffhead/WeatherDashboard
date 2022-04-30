@@ -1,4 +1,4 @@
-<?php namespace Modules\WeatherApi\Controller;
+<?php namespace Modules\WeatherApi\Controller\Web;
 
 use Core\Context;
 use Core\Controller;
@@ -11,7 +11,7 @@ use Views\Json as JsonView;
 
 use Modules\WeatherApi\Config\WeatherApiConfig;
 
-class SaveApiSettings extends Controller
+class UpdateApiSettings extends Controller
 {
     public function init(): void 
     {

@@ -1,25 +1,25 @@
 {
-    "/weather/update": {
+    "weather-api-update": {
         "type": 1,
-        "controller": "\\Modules\\WeatherApi\\Controller\\Update",
-        "params": [ "GET" ],
+        "controller": "\\Modules\\WeatherApi\\Controller\\Cli\\Update",
+        "params": [],
         "protected": true
     },
     "/weather/get": {
         "type": 1,
-        "controller": "\\Modules\\WeatherApi\\Controller\\Get",
+        "controller": "\\Modules\\WeatherApi\\Controller\\Web\\Get",
         "params": [ "GET" ],
         "protected": false
     },
     "/weather/api/save": {
         "type": 1,
-        "controller": "\\Modules\\WeatherApi\\Controller\\SaveApiSettings",
+        "controller": "\\Modules\\WeatherApi\\Controller\\Web\\UpdateApiSettings",
         "params": [ "POST" ],
         "protected": false
     },
     "/weather/city/save": {
         "type": 1,
-        "controller": "\\Modules\\WeatherApi\\Controller\\SaveCity",
+        "controller": "\\Modules\\WeatherApi\\Controller\\Web\\UpdateApiCity",
         "params": [ "POST" ],
         "protected": false
     }
