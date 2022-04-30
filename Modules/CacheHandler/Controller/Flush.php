@@ -6,7 +6,7 @@ use Lib\Memcached;
 
 use Cli\ErrorCode;
 
-use View\StdOut;
+use Views\StdOut;
 
 class Flush extends Controller
 {
