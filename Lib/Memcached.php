@@ -57,7 +57,7 @@ class Memcached
 
     public function flush(): bool
     {
-        if ( self::isEnabled() ) {
+        if ( self::isEnabled() === false ) {
             return false;
         }
 
