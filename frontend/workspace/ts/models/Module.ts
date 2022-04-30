@@ -41,7 +41,7 @@ export class Module extends Model implements ValidationSupport
              },
              'environment': {
                  required: true,
-                 pattern: new RegExp('^(cli|web)$', 'm')
+                 pattern: new RegExp('^(cli|web|any)$', 'm')
              },
              'priority': {
                  required: true,

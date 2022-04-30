@@ -85,18 +85,28 @@ export class DomModuleItemService
         let environmentSelect: HTMLSelectElement = DomService.createSelect('', 'environment');
         let optionWeb: HTMLOptionElement = DomService.createSelectOption('', 'Web', 'web');
         let optionCli: HTMLOptionElement = DomService.createSelectOption('', 'Cli', 'cli');
+        let optionAny: HTMLOptionElement = DomService.createSelectOption('', 'Any', 'any');
 
-        if ( this.moduleData.environment === 'web' ) {
-            environmentSelect.value = 'web';
-            optionWeb.setAttribute('selected', 'selected');
-        } else {
-            environmentSelect.value = 'cli';
-            optionCli.setAttribute('selected', 'selected');
+        switch ( this.moduleData.environment ) {
+            case 'web':
+                    environmentSelect.value = 'web';
+                    optionWeb.setAttribute('selected', 'selected');
+                break;
+            case 'cli':
+                    environmentSelect.value = 'cli';
+                    optionCli.setAttribute('selected', 'selected');
+                break;
+            case 'any':
+                    environmentSelect.value = 'any';
+                    optionAny.setAttribute('selected', 'selected');
+                break;
+
         }
 
         DomService.appendBatch(environmentSelect as Element, [ 
             optionWeb as Element, 
-            optionCli as Element 
+            optionCli as Element,
+            optionAny as Element
         ]);
 
         environmentSpan.textContent = environmentValue;

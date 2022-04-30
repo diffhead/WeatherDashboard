@@ -25,6 +25,7 @@
             <select name="environment">
                 <option value="web">Web</option>
                 <option value="cli">Cli</option>
+                <option value="any">Any</option>
             </select>
         </div>
         <div class="module-item__priority">
@@ -50,6 +51,7 @@
             <select name="environment">
                 <option value="web">Web</option>
                 <option value="cli">Cli</option>
+                <option value="any">Any</option>
             </select>
         </div>
         <div class="module-item__priority">
