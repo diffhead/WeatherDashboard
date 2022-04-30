@@ -27,7 +27,7 @@ class Create extends Controller
             ],
             'environment' => [
                 'required' => true,
-                'pattern'  => '/^(cli|web)$/m'
+                'pattern'  => '/^(cli|web|any)$/m'
             ],
             'priority' => [
                 'required' => true,

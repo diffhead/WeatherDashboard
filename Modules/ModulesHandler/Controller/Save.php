@@ -29,7 +29,7 @@ class Save extends Controller
                 'pattern'  => '/\w{1,64}/m'
             ],
             'environment' => [
-                'pattern'  => '/^(cli|web)$/m'
+                'pattern'  => '/^(cli|web|any)$/m'
             ],
             'priority' => [
                 'pattern'  => '/\d{1,10}/m'
