@@ -1,46 +1,33 @@
 <?php namespace Modules\WeatherApi\Controller\Cli;
 
-use Core\Controller;
 use Core\Context;
+use Core\Controller;
 
-use Web\HttpHeader;
+use Cli\ErrorCode;
 
-use Views\Json as JsonView;
+use Views\StdOut;
 
-use Services\HttpService;
-
-use Modules\WeatherApi\Models\Weather;
 use Modules\WeatherApi\Models\WeatherCity;
-
 use Modules\WeatherApi\Core\WeatherDownloader;
-use Modules\WeatherApi\Core\WeatherApiResponse;
-
 use Modules\WeatherApi\Config\WeatherApiConfig;
 
 class Update extends Controller
 {
     public function init(): void
     {
-        $this->view = new JsonView([ 'status' => false ]);
-
-        HttpService::setResponseHeader(new HttpHeader('Content-Type', 'application/json'));
+        $this->view = new StdOut();
     }
 
     public function execute(array $params = []): bool
     {
-        /*
         $user = Context::getInstance()->user;
 
         if ( $user->isAdmin() === false ) {
-            HttpService::setResponseCode(401);
-
-            $this->view->assign([
-                'message' => 'You dont have permissions to do that'
-            ]);
+            $this->view->setCode(ErrorCode::ACCESS_DENIED);
+            $this->view->setMessage('You dont have permissions to do that');
 
             return false;
         }
-         */
 
         return $this->downloadWeatherRecords();
     }
@@ -50,9 +37,7 @@ class Update extends Controller
         $cities = WeatherCity::where("active = '1'");
 
         $appid = $this->getConfigApiKey();
-
-        $failedWeatherArray = [];
-        $successWeatherArray = [];
+        $errors = [];
 
         foreach ( $cities as $city ) {
             $wCity = new WeatherCity();
@@ -62,28 +47,21 @@ class Update extends Controller
 
             $weather = $wDownloader->download();
 
-            if ( $weather->create() ) {
-                $successWeatherArray[] = $weather;
-            } else {
-                $failedWeatherArray[] = $weather;
+            if ( $weather->create() === false ) {
+                $errors[] = $wCity->title;
             }
         }
 
-        if ( empty($failedWeatherArray) === false ) {
-            HttpService::setResponseCode(500);
-
-            $this->view->assign([
-                'errors'  => $failedWeatherArray,
-                'weather' => $successWeatherArray
-            ]);
+        if ( empty($errors) === false ) {
+            $this->view->setCode(ErrorCode::ERR_HAVE_ERRORS);
+            $this->view->setMessage(
+                'Failed to update these cities: ' . PHP_EOL . implode(',', $errors) . PHP_EOL
+            );
 
             return false;
         }
 
-        $this->view->assign([ 
-            'status'  => true,
-            'weather' => $successWeatherArray
-        ]);
+        $this->view->setMessage('Successfully weather records updating');
 
         return true;
     }
