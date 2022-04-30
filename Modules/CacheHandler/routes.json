@@ -1,8 +1,8 @@
 {
-    "/cache": {
+    "mem-flush": {
         "type": 1,
-        "controller": "\\Modules\\CacheHandler\\Controller\\Cache",
-        "params": [ "GET", "POST" ],
+        "controller": "\\Modules\\CacheHandler\\Controller\\Flush",
+        "params": [],
         "protected": true
     }
 }
