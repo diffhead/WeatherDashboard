@@ -33,11 +33,11 @@ class SaveCity extends Controller
             return false;
         }
 
-        $cityId = $params['data']['id'] ?: 0;
-        $latitude = $params['data']['latitude'] ?: 0;
-        $longitude = $params['data']['longitude'] ?: 0;
+        $cityId = (int)$params['data']['id'] ?: 0;
+        $latitude = (float)$params['data']['latitude'] ?: 0;
+        $longitude = (float)$params['data']['longitude'] ?: 0;
 
-        if ( $cityId === 0 ) {
+        if ( $cityId === 0 || ($latitude === 0 && $longitude === 0) ) {
             HttpService::setResponseCode(400);
 
             $this->view->assign([
@@ -47,7 +47,7 @@ class SaveCity extends Controller
             return false;
         }
 
-        $city = new WeatherCity((int)$cityId);
+        $city = new WeatherCity($cityId);
 
         if ( $city->isValidModel() === false ) { 
             HttpService::setResponseCode(400);
@@ -78,14 +78,5 @@ class SaveCity extends Controller
         ]);
 
         return true;
-    }
-
-    private function prepareCityData(array $city): array
-    {
-        foreach ( $city as $prop => $value ) {
-            $city[$prop] = Db::getConnection()->escapeString($value);
-        }
-
-        return $city;
     }
 }

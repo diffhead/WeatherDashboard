@@ -25,7 +25,9 @@ class Get extends Controller
 
     public function execute(array $params = []): bool
     {
-        $city = $params['data']['city'];
+        $db = Db::getConnection();
+
+        $city = $db->escapeString($params['data']['city']);
         $cityData = WeatherCity::getByTitle($city);
 
         if ( empty($cityData) ) {

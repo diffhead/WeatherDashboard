@@ -11,9 +11,10 @@ use Services\HttpService;
 
 use Modules\WeatherApi\Models\Weather;
 use Modules\WeatherApi\Models\WeatherCity;
-use Modules\WeatherApi\Models\WeatherApiResponse;
 
 use Modules\WeatherApi\Core\WeatherDownloader;
+use Modules\WeatherApi\Core\WeatherApiResponse;
+
 use Modules\WeatherApi\Config\WeatherApiConfig;
 
 class Update extends Controller
@@ -70,16 +71,16 @@ class Update extends Controller
             HttpService::setResponseCode(500);
 
             $this->view->assign([
-                'errorWeather' => $failedWeatherArray,
-                'successWeather' => $successWeatherArray
+                'errors'  => $failedWeatherArray,
+                'weather' => $successWeatherArray
             ]);
 
             return false;
         }
 
         $this->view->assign([ 
-            'status' => true,
-            'successWeather' => $successWeatherArray
+            'status'  => true,
+            'weather' => $successWeatherArray
         ]);
 
         return true;
