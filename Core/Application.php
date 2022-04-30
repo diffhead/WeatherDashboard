@@ -50,7 +50,7 @@ class Application
             $modulesData = $modulesDataCache->getData();
 
             if ( $modulesData === false ) {
-                $modulesData = Module::where("environment = '$modulesDataEnvironment'");
+                $modulesData = Module::where("environment IN ('any', '$modulesDataEnvironment')");
                 $modulesDataCache->setData($modulesData);
             }
 
