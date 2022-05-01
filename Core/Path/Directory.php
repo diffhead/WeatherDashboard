@@ -8,21 +8,21 @@ class Directory extends File
 
     private bool $isDir = false;
 
-    public function __construct(string $pathToDir)
+    public function __construct(string $pathToDir, bool $scan = true)
     {
         parent::__construct($pathToDir);
 
         $this->isDir = is_dir($pathToDir);
-        $this->initDirItems();
+        $this->initDirItems($scan);
     }
 
-    private function initDirItems(): void
+    private function initDirItems(bool $scan): void
     {
         $this->dirItems = new FileCollection();
         $this->dirFiles = new FileCollection();
         $this->dirDirectories = new DirectoryCollection();
 
-        if ( $this->isDir ) {
+        if ( $scan && $this->isDir ) {
             $dirItems = array_diff(scandir($this->path), ['.', '..']);
 
             foreach ( $dirItems as $item ) {
