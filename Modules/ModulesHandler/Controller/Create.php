@@ -67,6 +67,8 @@ class Create extends Controller
             return false;
         }
 
+        HookProvider::execute('flushCache');
+
         $this->view->assign([
             'status'   => true,
             'moduleId' => $this->moduleModel->id

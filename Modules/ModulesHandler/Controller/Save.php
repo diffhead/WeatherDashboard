@@ -71,6 +71,8 @@ class Save extends Controller
             return false;
         }
 
+        HookProvider::execute('flushCache');
+
         $this->view->assign([ 'status'   => true ]);
 
         return true;
