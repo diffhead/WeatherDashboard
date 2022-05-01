@@ -97,7 +97,7 @@ CREATE TABLE user_session (
     token TEXT NOT NULL, 
     expiration TIMESTAMP NOT NULL DEFAULT NOW() + INTERVAL '1 day', 
     
-    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
 
     PRIMARY KEY (user_id)
 );
