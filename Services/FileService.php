@@ -26,9 +26,4 @@ class FileService
     {
         return filectime($filePath);
     }
-
-    public static function removeFile(string $filePath): bool
-    {
-        return unlink($filePath);
-    }
 }
