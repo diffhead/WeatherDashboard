@@ -62,7 +62,7 @@ CREATE TABLE users (
     PRIMARY KEY(id)
 );
 
-INSERT INTO users (name, email, login) VALUES ('Guest', 'info@site.com', 'guest');
+INSERT INTO users (name, email, login, password) VALUES ('Guest', 'info@site.com', 'guest', '');
 
 CREATE TABLE access (
     id SERIAL, 
