@@ -1,13 +1,12 @@
 <?php namespace Modules\WeatherApi\Controller\Web;
 
 use Core\Controller;
-use Core\Country;
-
 use Core\Database\Db;
 
 use Web\HttpHeader;
 
 use Views\Json as JsonView;
+use Models\Country;
 
 use Services\HttpService;
 
@@ -52,13 +51,18 @@ class Get extends Controller
             return false;
         }
 
+        $country = new Country($cityData['id']);
+
         $weather = new Weather();
         $weather->setModelData($weatherData);
 
         $this->view->assign([
-            'status'  => true,
-            'weather' => $weather,
-            'city'    => $cityData
+            'status'   => true,
+            'weather'  => $weather,
+            'location' => [
+                'country' => $country,
+                'city'    => $cityData
+            ]
         ]);
 
         return true;
