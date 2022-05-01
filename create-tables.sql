@@ -12,7 +12,7 @@ CREATE TABLE modules(
 INSERT INTO modules (name, enable, environment, priority) 
 VALUES 
     ('CacheHandler', 1, 'any', 1),
-    ('ModuleHandler', 1, 'any', 2),
+    ('ModulesHandler', 1, 'any', 2),
     ('AuthModule', 1, 'web', 3),
     ('WebFrontend', 1, 'web', 4),
     ('WeatherApi', 1, 'any', 5);
