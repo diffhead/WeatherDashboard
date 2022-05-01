@@ -13,5 +13,8 @@ interface Collection
 
     public function putItemIntoCollection(CollectionItem $item): bool;
 
+    public function deleteItemByUniqueId(string $uid): bool;
+    public function deleteItemByIndex(int $index): bool;
+
     public function length(): int;
 }

@@ -82,6 +82,42 @@ abstract class AbstractCollection implements Collection, IteratorAggregate
         return false;
     }
 
+    public function deleteItemByIndex(int $index): bool
+    {
+        $items = [];
+        $itemFound = false;
+
+        foreach ( $this->collectionItems as $itemIndex => $item ) {
+            if ( $itemIndex === $index ) {
+                $itemFound = true;
+            } else {
+                $items[] = $item;
+            }
+        }
+
+        $this->collectionItems = $items;
+
+        return $itemFound;
+    }
+
+    public function deleteItemByUniqueId(string $uid): bool
+    {
+        $items = [];
+        $itemFound = false;
+
+        foreach ( $this->collectionItems as $item ) {
+            if ( $item->getUniqueId() === $uid ) {
+                $itemFound = true;
+            } else {
+                $items[] = $item;
+            }
+        }
+
+        $this->collectionItems = $items;
+
+        return $itemFound;
+    }
+
     public function length(): int
     {
         return count($this->collectionItems);
