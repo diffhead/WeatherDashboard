@@ -57,7 +57,7 @@ class Loader
             define('_APP_ENVIRONMENT_', Application::WEB_ENVIRONMENT);
         }
 
-        define('_PHP_INPUT_MAX_LENGTH_', 64 * 1024 * 1024);
+        define('_PHP_INPUT_MAX_LENGTH_', 32 * 1024 * 1024);
     }
 
     private function initContext(): void
