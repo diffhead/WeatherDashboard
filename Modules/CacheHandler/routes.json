@@ -1,5 +1,5 @@
 {
-    "mem-flush": {
+    "cache-flush": {
         "type": 1,
         "controller": "\\Modules\\CacheHandler\\Controller\\Flush",
         "params": [],
