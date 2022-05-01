@@ -3,7 +3,7 @@ CREATE TABLE modules(
     id SERIAL,
     name TEXT,
     enable INTEGER,
-    environment TEXT NOT NULL DEFAULT 'any'
+    environment TEXT NOT NULL DEFAULT 'any',
 
     PRIMARY KEY(id)
 );
