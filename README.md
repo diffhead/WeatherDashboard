@@ -48,10 +48,13 @@ The great example is WebFrontend module which renders all base pages like - Inde
 
 ### Application API reference
 
-## Cli - run ./dcli script with params:
-1. weather-api-update - downloads weather records from api for active cities. !!API HAVE THE COUNT RESTRICTIONS!!
-2. weather-cities-export - exports countries and cities from the Modules\WeatherApi\worldcities.csv file
-3. cache-flush - flushes memcached cache, file cache and DB cache
+## Cli
+
+Run dcli script with the following params: 
+
+1. **weather-api-update** - downloads weather records from api for active cities. !!API HAVE THE COUNT RESTRICTIONS!!
+2. **weather-cities-export** - exports countries and cities from the Modules\WeatherApi\worldcities.csv file
+3. **cache-flush** - flushes memcached cache, file cache and DB cache
 
 ## Web - send request and get response
 !TODO
