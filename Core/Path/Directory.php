@@ -43,7 +43,11 @@ class Directory extends File
 
     public function delete(): bool
     {
-        foreach ( $items as $item ) {
+        if ( $this->isExists() === false ) {
+            return false;
+        }
+
+        foreach ( $this->dirItems as $item ) {
             $itemUid = $item->getUniqueId();
 
             if ( $item->delete() ) {
@@ -61,7 +65,9 @@ class Directory extends File
             return false;
         }
 
-        return rmdir($this->path);
+        $this->exists = rmdir($this->path) === false;
+
+        return $this->exists;
     }
 
     public function create(): bool
