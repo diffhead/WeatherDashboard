@@ -63,7 +63,7 @@ class FileStream
 
     public function touch(): bool
     {
-        return $this->file->touch();
+        return $this->file->create();
     }
 
     public function close(): void
