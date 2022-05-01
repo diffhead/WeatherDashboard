@@ -1,6 +1,5 @@
 <?php namespace Modules\ModulesHandler;
 
-use Core\Context;
 use Core\FileStream;
 use Core\RouterProvider;
 use Core\AbstractModule;
@@ -8,10 +7,10 @@ use Core\AbstractModule;
 use Core\Hook\Hook;
 use Core\Hook\HookCollection;
 
-use Models\Module;
+use Core\Path\File;
+use Core\Path\Directory;
 
-use Services\DirectoryService;
-use Services\FileService;
+use Models\Module;
 
 use Modules\ModulesHandler\Views\ModuleTemplate;
 
@@ -41,15 +40,15 @@ class ModulesHandler extends AbstractModule
             return null;
         }
 
-        $moduleDir = _APP_BASE_DIR_ . 'Modules/' . $moduleData['name'];
-        $moduleFile = $moduleDir . '/' . $moduleData['name'] . _PHP_EXTENSION_;
+        $moduleDir = new Directory(_APP_BASE_DIR_ . 'Modules/' . $moduleData['name'], false);
+        $moduleFile = new File($moduleDir->getPath() . '/' . $moduleData['name'] . _PHP_EXTENSION_);
 
-        if ( DirectoryService::isDirExists($moduleDir) === false ) {
-            DirectoryService::createDir($moduleDir);
+        if ( $moduleDir->isExists() === false ) {
+            $moduleDir->create();
         }
 
-        if ( FileService::fileExists($moduleFile) === false ) {
-            $file = new FileStream($moduleFile, FileStream::ACCESS_RW);
+        if ( $moduleFile->isExists() === false ) {
+            $file = new FileStream($moduleFile->getPath(), FileStream::ACCESS_RW);
 
             if ( $file->touch() ) {
                 $file->open();
