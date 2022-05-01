@@ -39,9 +39,9 @@ class FileStream
     {
         if ( $this->stream )  {
             if ( $this->phpStream ) {
-                $streamInfo = stream_get_meta_data($this->stream);
+                $streamSize = (int)stream_get_meta_data($this->stream)['unread_bytes'];
 
-                return (int)$streamInfo['unread_bytes'];
+                return $streamSize ?: _PHP_INPUT_MAX_LENGTH_;
             }
 
             return $this->file->getSize();
