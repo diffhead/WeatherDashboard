@@ -44,7 +44,7 @@ class CacheHandler extends AbstractModule
 
         $cacheDir = new Directory(_CACHE_DIR_ . 'file/');
 
-        $status &= $cacheDir->isExists() === false || $cacheDir->delete();
+        $status &= ($cacheDir->isExists() === false || $cacheDir->delete());
         $status &= $cacheDir->create();
 
         return $status;
