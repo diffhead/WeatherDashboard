@@ -2,6 +2,8 @@
 
 use Generator;
 
+use Core\Path\File;
+
 use Services\FileService;
 
 class FileStream
@@ -10,15 +12,16 @@ class FileStream
     public const ACCESS_WO = 'w';
     public const ACCESS_RO = 'r';
 
+    private File   $file;
     private string $access;
-    private string $filePath;
     private mixed  $stream = null;
     private bool   $phpStream = false;
 
     public function __construct(string $filePath, string $access = FileStream::ACCESS_RO, bool $phpStream = false)
     {
+        $this->file = new File($filePath);
+
         $this->access = $access;
-        $this->filePath = $filePath;
         $this->phpStream = $phpStream;
     }
 
@@ -29,7 +32,7 @@ class FileStream
 
     public function getFilePath(): string
     {
-        return $this->filePath;
+        return $this->file->getPath();
     }
 
     public function getFileSize(): int
@@ -41,7 +44,7 @@ class FileStream
                 return (int)$streamInfo['unread_bytes'];
             }
 
-            return filesize($this->filePath);
+            return $this->file->getSize();
         }
 
         return 0;
@@ -49,8 +52,8 @@ class FileStream
 
     public function open(): bool
     {
-        if ( $this->phpStream || FileService::fileExists($this->filePath) ) {
-            $this->stream = fopen($this->filePath, $this->access);
+        if ( $this->phpStream || $this->file->isExists() ) {
+            $this->stream = fopen($this->file->getPath(), $this->access);
 
             return (bool)$this->stream;
         }
@@ -60,7 +63,7 @@ class FileStream
 
     public function touch(): bool
     {
-        return touch($this->filePath);
+        return $this->file->touch();
     }
 
     public function close(): void
