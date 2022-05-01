@@ -1,4 +1,4 @@
-<?php namespace Modules\WeatherApi\Controller;
+<?php namespace Modules\WeatherApi\Controller\Web;
 
 use Core\Controller;
 use Core\Country;
