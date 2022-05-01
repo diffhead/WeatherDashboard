@@ -65,9 +65,13 @@ class Directory extends File
             return false;
         }
 
-        $this->exists = rmdir($this->path) === false;
+        if ( rmdir($this->path) === false ) {
+            return false;
+        }
 
-        return $this->exists;
+        $this->exists = true;
+
+        return true;
     }
 
     public function create(): bool
