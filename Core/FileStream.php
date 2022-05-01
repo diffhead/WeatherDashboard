@@ -103,7 +103,7 @@ class FileStream
         return $this->access === self::ACCESS_RW || $this->access === self::ACCESS_WO;
     }
 
-    public function getLinesGenerator(): Generator
+    public function getLines(): Generator
     {
         if ( $this->stream ) {
             while ( ($line = fgets($this->stream)) !== false ) {
@@ -111,6 +111,6 @@ class FileStream
             }
         }
 
-        yield '';
+        return '';
     }
 }
