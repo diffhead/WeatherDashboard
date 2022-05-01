@@ -5,6 +5,12 @@
         "params": [],
         "protected": true
     },
+    "weather-cities-export": {
+        "type": 1,
+        "controller": "\\Modules\\WeatherApi\\Controller\\Cli\\CitiesExport",
+        "params": [],
+        "protected": true
+    },
     "/weather/get": {
         "type": 1,
         "controller": "\\Modules\\WeatherApi\\Controller\\Web\\Get",
