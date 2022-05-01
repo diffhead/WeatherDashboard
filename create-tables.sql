@@ -1,20 +1,20 @@
 /* PostgreSQL migration */
-
 CREATE TABLE modules(
     id SERIAL,
     name TEXT,
     enable INTEGER,
-    environment TEXT NOT NULL DEFAULT 'web'
+    environment TEXT NOT NULL DEFAULT 'any'
 
     PRIMARY KEY(id)
 );
 
 INSERT INTO modules (name, enable, environment, priority) 
 VALUES 
-    ('CacheHandler', 1, 'web', 1),
-    ('ModuleHandler', 1, 'web', 2),
+    ('CacheHandler', 1, 'any', 1),
+    ('ModuleHandler', 1, 'any', 2),
     ('AuthModule', 1, 'web', 3),
-    ('WebFrontend', 1, 'web', 4);
+    ('WebFrontend', 1, 'web', 4),
+    ('WeatherApi', 1, 'any', 5);
 
 CREATE TABLE cache(
     id SERIAL,
