@@ -1,8 +1,7 @@
 <?php namespace Modules\CacheHandler\Controller;
 
 use Core\Controller;
-
-use Lib\Memcached;
+use Core\Hook\HookProvider;
 
 use Cli\ErrorCode;
 
@@ -17,9 +16,10 @@ class Flush extends Controller
 
     public function execute(array $params = []): bool
     {
-        $memcached = new Memcached();
+        $hookResCollection = HookProvider::execute('flushCache');
+        $hookResult = $hookResCollection->getItemByIndex(0);
 
-        $flush = $memcached->flush();
+        $flush = $hookResult && $hookResult->getData();
 
         if ( $flush === false ) {
             $this->view->setCode(ErrorCode::ERR_HAVE_ERRORS);
