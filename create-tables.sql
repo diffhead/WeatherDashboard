@@ -4,6 +4,7 @@ CREATE TABLE modules(
     name TEXT,
     enable INTEGER,
     environment TEXT NOT NULL DEFAULT 'any',
+    priority INT NOT NULL DEFAULT 1,
 
     PRIMARY KEY(id)
 );
