@@ -136,8 +136,7 @@ ALTER SEQUENCE public.config_id_seq OWNED BY public.config.id;
 CREATE TABLE public.country (
     id integer NOT NULL,
     title text NOT NULL,
-    iso text NOT NULL,
-    itu text DEFAULT ''::text NOT NULL
+    iso text NOT NULL
 );
 
 
@@ -441,10 +440,10 @@ COPY public.config (id, key, value, date_add, date_update) FROM stdin;
 -- Data for Name: country; Type: TABLE DATA; Schema: public; Owner: tree
 --
 
-COPY public.country (id, title, iso, itu) FROM stdin;
-1	Russia	RU	250,251
-2	Ukraine	UA	255
-3	United Kindom	GB	234, 235, 236, 237
+COPY public.country (id, title, iso) FROM stdin;
+1	Russia	RU 	
+2	Ukraine	UA 	
+3	United Kindom	GB	
 \.
 
 
