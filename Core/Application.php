@@ -1,5 +1,6 @@
 <?php namespace Core;
 
+use DateTime;
 use Exception;
 use Throwable;
 use ReflectionClass;
@@ -11,6 +12,7 @@ use Core\Router;
 use Core\Display;
 
 use Core\Hook\HookProvider;
+use Core\Log\FileLog;
 
 use Models\User;
 use Models\Module;
@@ -25,18 +27,26 @@ class Application
     const WEB_ENVIRONMENT = 1;
     const CLI_ENVIRONMENT = 2;
 
-    private Router $router;
+    private Router  $router;
     private Display $display;
+    private FileLog $logger;
 
     public function __construct(Router $router, Display $display) 
     {
         $this->router = $router;
         $this->display = $display;
+
+        $logDate = (new DateTime())->format('dmY');
+
+        $this->logger = new FileLog(_APP_BASE_DIR_ . 'log/application_' . $logDate . '.log');
+        $this->logger->notice(PHP_EOL . PHP_EOL . 'Application constructed');
     }
 
     public function initModules(): bool
     {
         if ( _ENABLE_MODULES_ ) {
+            $this->logger->notice('Modules initialization');
+
             if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
                 $modulesDataCacheKey = 'modules.web';
                 $modulesDataEnvironment = 'web';
@@ -58,8 +68,12 @@ class Application
                 $this->registerModule($moduleData);
             }
 
+            $this->logger->notice('Modules initialization ended' . PHP_EOL);
+
             return true;
         }
+
+        $this->logger->notice('Modules disabled. Skipping initialization');
 
         return false;
     }
@@ -87,6 +101,8 @@ class Application
                     HookProvider::register($action);
                 }
             }
+
+            $this->logger->notice('Module ' . $moduleInstance->getName() . ' inited');
         }
 
         ModulesRegistry::setModule($moduleInstance->getName(), $moduleInstance);
@@ -107,6 +123,9 @@ class Application
             
             $view = $controller->getView();
         } catch ( Throwable $e ) {
+            $this->logger->warning('Application controller is set to an error controller');
+            $this->logger->error('Error: ' . $e->getMessage());
+
             if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
                 $controller = new \Web\Controller\Error(500, $e->getMessage(), $e->getTraceAsString());
             } else {
@@ -120,7 +139,7 @@ class Application
         } 
 
         $view->display();
-        
+
         $this->display->echo();
     }
 
