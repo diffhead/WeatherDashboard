@@ -11,6 +11,8 @@ class FileStream
     public const ACCESS_RW = 'r+';
     public const ACCESS_WO = 'w';
     public const ACCESS_RO = 'r';
+    public const ACCESS_AW = 'a';
+    public const ACCESS_AR = 'a+';
 
     private File   $file;
     private string $access;
@@ -95,12 +97,18 @@ class FileStream
 
     public function isAvailableForReading(): bool
     {
-        return $this->access === self::ACCESS_RW || $this->access === self::ACCESS_RO;
+        return $this->access === self::ACCESS_RW || 
+               $this->access === self::ACCESS_RO || 
+               $this->access === self::ACCESS_AW ||
+               $this->access === self::ACCESS_AR;
     }
 
     public function isAvailableForWriting(): bool
     {
-        return $this->access === self::ACCESS_RW || $this->access === self::ACCESS_WO;
+        return $this->access === self::ACCESS_RW || 
+               $this->access === self::ACCESS_WO ||
+               $this->access === self::ACCESS_AW ||
+               $this->access === self::ACCESS_AR;
     }
 
     public function getLines(): Generator
