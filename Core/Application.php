@@ -39,7 +39,7 @@ class Application
         $logDate = (new DateTime())->format('dmY');
 
         $this->logger = new FileLog(_APP_BASE_DIR_ . 'log/application_' . $logDate . '.log');
-        $this->logger->notice(PHP_EOL . PHP_EOL . 'Application constructed');
+        $this->logger->notice('Application constructed');
     }
 
     public function initModules(): bool
