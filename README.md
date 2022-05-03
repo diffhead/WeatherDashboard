@@ -33,14 +33,14 @@ and Database relation described by ActiveRecord pattern.
 
 If you dont have a memcached then set **memcached.enabled=false** in config.json
 
-1. Setup nginx. Directory 'config-examples' contains nginx.conf
+1. Setup nginx. Directory '**config-examples**' contains **nginx.conf**
 2. Setup ur php-fpm
 3. Setup PgSQL DB
-4. Execute create-tables.sql, Modules/WeatherApi/migration-postgre.sql
+4. Execute **create-tables.sql**, **Modules/WeatherApi/migration-postgre.sql**
 5. Go to app root dir and execute **composer require**
 6. Go to **frontend/** dir and execute **npm install**
 7. Go to **frontend/** dir and execute **npm run build-prod**
-8. Make required sys dirs: log/nginx, log/cron, cache/twig, cache/file
+8. Make required sys dirs: **log/nginx**, **log/cron**, **cache/twig**, **cache/file**
 9. Ready. Enjoy
 
 ### Application extending
