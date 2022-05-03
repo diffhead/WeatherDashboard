@@ -57,8 +57,6 @@ The great example is WebFrontend module which renders all base pages like - Inde
 Run **dcli** script with the following params: 
 
 ```bash
-bash dcli cache-flush
-OR
 ./dcli cache-flush
 ```
 
