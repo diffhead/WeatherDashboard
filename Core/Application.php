@@ -12,7 +12,7 @@ use Core\Router;
 use Core\Display;
 
 use Core\Hook\HookProvider;
-use Core\Log\FileLog;
+use Core\Log\ApplicationLogger;
 
 use Models\User;
 use Models\Module;
@@ -36,16 +36,13 @@ class Application
         $this->router = $router;
         $this->display = $display;
 
-        $logDate = (new DateTime())->format('dmY');
-
-        $this->logger = new FileLog(_APP_BASE_DIR_ . 'log/application_' . $logDate . '.log');
-        $this->logger->notice('Application constructed');
+        ApplicationLogger::notice('Application constructed');
     }
 
     public function initModules(): bool
     {
         if ( _ENABLE_MODULES_ ) {
-            $this->logger->notice('Modules initialization');
+            ApplicationLogger::notice('Modules initialization');
 
             if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
                 $modulesDataCacheKey = 'modules.web';
@@ -68,12 +65,12 @@ class Application
                 $this->registerModule($moduleData);
             }
 
-            $this->logger->notice('Modules initialization ended' . PHP_EOL);
+            ApplicationLogger::notice('Modules initialization ended' . PHP_EOL);
 
             return true;
         }
 
-        $this->logger->notice('Modules disabled. Skipping initialization');
+        ApplicationLogger::notice('Modules disabled. Skipping initialization');
 
         return false;
     }
@@ -84,6 +81,8 @@ class Application
         $moduleModel->setModelData($moduleData);
 
         if ( $moduleModel->isValidModel() === false ) {
+            ApplicationLogger::error("Module '{$moduleData['name']}' invalid model");
+
             throw new Exception("Invalid module model '{$moduleData['name']}'");
         }
 
@@ -102,7 +101,9 @@ class Application
                 }
             }
 
-            $this->logger->notice('Module ' . $moduleInstance->getName() . ' inited');
+            ApplicationLogger::notice('Module ' . $moduleInstance->getName() . ' inited');
+        } else {
+            ApplicationLogger::notice('Module ' . $moduleInstance->getName() . ' disabled');
         }
 
         ModulesRegistry::setModule($moduleInstance->getName(), $moduleInstance);
@@ -123,8 +124,8 @@ class Application
             
             $view = $controller->getView();
         } catch ( Throwable $e ) {
-            $this->logger->warning('Application controller is set to an error controller');
-            $this->logger->error('Error: ' . $e->getMessage());
+            ApplicationLogger::warning('Application throws an error controller');
+            ApplicationLogger::error('Error: ' . $e->getMessage());
 
             if ( _APP_ENVIRONMENT_ === Application::WEB_ENVIRONMENT ) {
                 $controller = new \Web\Controller\Error(500, $e->getMessage(), $e->getTraceAsString());
