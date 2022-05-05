@@ -51,7 +51,7 @@ class Get extends Controller
             return false;
         }
 
-        $country = new Country($cityData['id']);
+        $country = new Country((int)$cityData['country']);
 
         $weather = new Weather();
         $weather->setModelData($weatherData);
