@@ -123,7 +123,7 @@ class Loader
         foreach ( $iniSettings as $option => $value ) {
             $ini = new Ini($option);
 
-            if ( $ini->setValue($value) === false ) {
+            if ( $ini->setValue((string)$value) === false ) {
                 ApplicationLogger::warning('Ini option: ' . $option . ' wasnt set to value - ' . $value);
             }
         }
