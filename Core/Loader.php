@@ -1,6 +1,7 @@
 <?php namespace Core;
 
 use Core\Application;
+use Core\Log\ApplicationLogger;
 
 use Services\DependencyInjectionService;
 use Services\ApplicationService;
@@ -28,6 +29,7 @@ class Loader
         $this->initConstants();
         $this->initContext();
         $this->initConfigs();
+        $this->initIniSettings();
         $this->initVendor();
     }
 
@@ -105,6 +107,26 @@ class Loader
         define('_DEV_MODE_', ApplicationConfig::get('dev'));
         define('_CACHE_DIR_', _APP_BASE_DIR_ . ApplicationConfig::get('cacheDir') . '/');
         define('_MODULES_DIR_', _APP_BASE_DIR_ . 'Modules/');
+    }
+
+    private function initIniSettings(): void
+    {
+        $iniSettings = [
+            'memory_limit'           => '64M',
+            'allow_url_fopen'        => 1,
+            'error_log'              => _APP_BASE_DIR_ . '/log/nginx/error_' . date('dmY') . '.log',
+            'error_reporting'        => _DEV_MODE_ ? E_ALL : E_STRICT,
+            'display_errors'         => _DEV_MODE_ ? 1 : 0,
+            'display_startup_errors' => _DEV_MODE_ ? 1 : 0
+        ];
+
+        foreach ( $iniSettings as $option => $value ) {
+            $ini = new Ini($option);
+
+            if ( $ini->setValue($value) === false ) {
+                ApplicationLogger::warning('Ini option: ' . $option . ' wasnt set to value - ' . $value);
+            }
+        }
     }
 
     private function initVendor(): void
