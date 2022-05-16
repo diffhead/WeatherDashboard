@@ -4,6 +4,7 @@ class Ini
 {
     private string $name  = '';
     private string $value = '';
+    private bool   $inited = false;
 
     public function __construct(string $name)
     {
@@ -22,6 +23,11 @@ class Ini
                 $this->inited = true;
             }
         }
+    }
+
+    private function isInited(): bool
+    {
+        return $this->inited;
     }
 
     public function getName(): string
