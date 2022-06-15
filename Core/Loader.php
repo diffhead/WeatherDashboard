@@ -115,7 +115,7 @@ class Loader
             'memory_limit'           => '64M',
             'allow_url_fopen'        => 1,
             'error_log'              => _APP_BASE_DIR_ . '/log/nginx/error_' . date('dmY') . '.log',
-            'error_reporting'        => _DEV_MODE_ ? E_ALL : E_STRICT,
+            'error_reporting'        => _DEV_MODE_ ? E_ALL ^ E_DEPRECATED : E_STRICT,
             'display_errors'         => _DEV_MODE_ ? 1 : 0,
             'display_startup_errors' => _DEV_MODE_ ? 1 : 0
         ];
